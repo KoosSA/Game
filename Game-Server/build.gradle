@@ -1,0 +1,23 @@
+group 'server'
+version '0.0.1'
+
+apply plugin: 'application'
+
+dependencies {
+
+	implementation library.slf4j_api
+	runtimeOnly library.slf4j_jdk
+	
+	implementation group: 'com.jgoodies', name: 'jgoodies-common', version: '1.8.1'
+	implementation group: 'org.kohsuke', name: 'github-api', version: '1.314'
+	
+	implementation fileTree(dir: 'libs', include:'*.jar')
+	
+	implementation project(":Game-Common")
+
+}
+
+application {
+    mainClassName = 'server.Server'
+    
+}

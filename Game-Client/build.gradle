@@ -1,0 +1,72 @@
+apply plugin: 'application'
+
+
+project.ext {
+	lwjglVersion = "3.3.2-SNAPSHOT"
+	lwjglNatives = "natives-windows"
+}
+
+dependencies {
+
+	implementation library.slf4j_api
+	runtimeOnly library.slf4j_jdk
+	
+	implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+
+	implementation "org.lwjgl:lwjgl"
+	implementation "org.lwjgl:lwjgl-assimp"
+	implementation "org.lwjgl:lwjgl-freetype"
+	implementation "org.lwjgl:lwjgl-glfw"
+	implementation "org.lwjgl:lwjgl-harfbuzz"
+	implementation "org.lwjgl:lwjgl-jemalloc"
+	implementation "org.lwjgl:lwjgl-ktx"
+	implementation "org.lwjgl:lwjgl-libdivide"
+	implementation "org.lwjgl:lwjgl-lz4"
+	implementation "org.lwjgl:lwjgl-meshoptimizer"
+	implementation "org.lwjgl:lwjgl-nanovg"
+	implementation "org.lwjgl:lwjgl-nfd"
+	implementation "org.lwjgl:lwjgl-nuklear"
+	implementation "org.lwjgl:lwjgl-odbc"
+	implementation "org.lwjgl:lwjgl-openal"
+	implementation "org.lwjgl:lwjgl-opengl"
+	implementation "org.lwjgl:lwjgl-rpmalloc"
+	implementation "org.lwjgl:lwjgl-shaderc"
+	implementation "org.lwjgl:lwjgl-stb"
+	implementation "org.lwjgl:lwjgl-yoga"
+	implementation "org.lwjgl:lwjgl-zstd"
+	runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-freetype::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-harfbuzz::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-jemalloc::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-ktx::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-libdivide::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-lz4::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-meshoptimizer::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-nanovg::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-nfd::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-nuklear::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-rpmalloc::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-shaderc::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-yoga::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-zstd::$lwjglNatives"
+	
+	implementation fileTree(dir: 'libs', include:'*.jar')
+
+	implementation group: 'com.github.nifty-gui', name: 'nifty-style-black', version: '1.4.3'
+	implementation group: 'com.github.nifty-gui', name: 'nifty-default-controls', version: '1.4.3'
+	implementation 'com.github.KoosSA:NiftyGui-core:master-SNAPSHOT'
+	implementation 'com.github.KoosSA:NiftyGui-renderer-lwjgl3:master-SNAPSHOT'
+	implementation 'com.github.KoosSA:NiftyGui-SoundSystem-OpenAL:master-SNAPSHOT'
+	
+	implementation project(':Game-Common')
+}
+
+application {
+    mainClassName = 'client.Client'
+    
+}

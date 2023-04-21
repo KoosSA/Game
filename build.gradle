@@ -1,0 +1,36 @@
+allprojects{
+	apply from: "${rootProject.projectDir}/gradle/libraries.gradle"
+	
+	apply plugin: 'java'
+	apply plugin: 'java-library'
+	apply plugin: 'eclipse'
+	
+	project.ext {
+		jomlVersion = "1.10.5"
+	}
+	
+	repositories {
+	    mavenCentral()
+	    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+		maven { url 'https://jitpack.io' }
+	}
+	
+	dependencies {
+	    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+   	 	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
+    	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    	
+    	implementation "org.joml:joml:${jomlVersion}"
+    
+    	implementation 'com.github.KoosSA:FileSystem:v2.0.0'
+		implementation 'com.github.KoosSA:SaveLibrary:master-SNAPSHOT'
+		implementation 'com.github.KoosSA:Logger:v3.0.0'
+	}
+	
+	test {
+    	useJUnitPlatform()
+	}
+}
+apply from: "${rootProject.projectDir}/gradle/build-java.gradle"
+apply from: "${rootProject.projectDir}/gradle/build-maven.gradle"
+apply from: "${rootProject.projectDir}/gradle/build-eclipse.gradle"

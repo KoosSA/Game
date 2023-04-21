@@ -1,0 +1,26 @@
+/* ============================================================================
+   This file contains the configurations for 
+   Maven settings
+   ============================================================================
+   
+   Included from: "${rootProject.projectDir}/build.gradle"
+   ============================================================================
+ */
+allprojects{
+	/* define repositories*/
+	repositories {
+		/* add your local maven repo - so you can deploy there */
+		mavenLocal() 
+		/* add maven central */
+		mavenCentral()
+	}
+
+}
+
+subprojects {
+	apply plugin: 'maven-publish'
+	
+	group = "game"
+	version = "0.0.1"
+		
+}
