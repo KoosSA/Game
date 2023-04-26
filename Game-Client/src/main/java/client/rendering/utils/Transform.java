@@ -4,15 +4,18 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import client.utils.MathUtil;
+
 public class Transform {
 
 	private Vector3f position = new Vector3f();
 	private Vector3f offset = new Vector3f();
 	private Vector3f scale = new Vector3f();
 	private Quaternionf rotation = new Quaternionf();
+	private static Vector3f absPos = new Vector3f();
 
 	public Matrix4f getTransformationMatrix() {
-		return RenderMaths.getTransformationMatrix(this);
+		return MathUtil.getTransformationMatrix(this);
 	}
 
 	public Vector3f getOffset() {
@@ -23,8 +26,8 @@ public class Transform {
 		return position;
 	}
 	
-	public Vector3f getAbsolutePosition(Vector3f dest) {
-		return position.add(offset, dest);
+	public Vector3f getAbsolutePosition() {
+		return position.add(offset, absPos);
 	}
 
 	public Quaternionf getRotation() {
