@@ -18,4 +18,6 @@ public abstract class Camera {
 	
 	public abstract Matrix4f getViewMatrix();
 
+	public abstract Matrix4f getProjectionMatrix();
+
 }

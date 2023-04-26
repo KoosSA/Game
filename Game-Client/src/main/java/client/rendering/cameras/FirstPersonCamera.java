@@ -2,7 +2,7 @@ package client.rendering.cameras;
 
 import org.joml.Matrix4f;
 
-import client.rendering.utils.RenderMaths;
+import client.utils.MathUtil;
 
 public class FirstPersonCamera extends Camera {
 	
@@ -18,7 +18,12 @@ public class FirstPersonCamera extends Camera {
 
 	@Override
 	public Matrix4f getViewMatrix() {
-		return RenderMaths.get3DViewMatrix(fovy, near_plane, far_plane);
+		return MathUtil.get3DProjectionMatrix(near_plane, far_plane, fovy);
+	}
+
+	@Override
+	public Matrix4f getProjectionMatrix() {
+		return MathUtil.get3DProjectionMatrix(near_plane, far_plane, fovy);
 	}
 	
 	
