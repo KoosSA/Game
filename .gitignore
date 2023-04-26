@@ -29,3 +29,9 @@ build/
 
 # JRebel parts - are generated
 rebel.xml
+
+
+
+#Resources
+Resources/Models/
+Resources/Logs/
