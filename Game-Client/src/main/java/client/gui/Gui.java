@@ -24,8 +24,10 @@ public class Gui {
 	public Lwjgl3TimeProvider time_provider;
 	private List<String> filePaths;
 	private String currentScreen;
+	private String defaultScreen = "hud";
 	
 	public Gui() {
+		Log.debug(this, "Starting nifty gui initialisation.");
 		Globals.gui = this;
 		input_system = new Lwjgl3InputSystem(Globals.window.getId());
 		sound_device = new OpenALSoundDevice();
@@ -41,6 +43,7 @@ public class Gui {
 		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
 		render_device.setDisplayFPS(true);
 		filePaths = new ArrayList<>();
+		Log.debug(this, "Gui system initialised.");
 	}
 	
 	public void show(String id) {
@@ -49,9 +52,13 @@ public class Gui {
 		currentScreen = id;
 	}
 	
+	/**
+	 * Switches to the default screen.
+	 * Default screen is initialised as "hud"
+	 */
 	public void close() {
-		nifty.gotoScreen("hud");
-		currentScreen = "hud";
+		nifty.gotoScreen(defaultScreen);
+		currentScreen = defaultScreen;
 	}
 
 	public void update() {
@@ -63,12 +70,14 @@ public class Gui {
 	}
 	
 	public void dispose() {
-		Log.debug(this, "Disposing gui and closing niftyGui.");
+		Log.debug(this, "Starting Gui disposal");
 		input_system.shutdown();
 		nifty.exit();
+		Log.debug(this, "Gui disposal finished.");
 	}
 	
 	public void loadXML(String fileName) {
+		Log.debug(this, "Trying to load gui file named: " + fileName);
 		String path = Files.getFolderPath("Gui") + "/" + fileName;
 		try {
 			nifty.validateXml(path);
@@ -78,9 +87,11 @@ public class Gui {
 		}
 		nifty.addXml(path);
 		if (!filePaths.contains(path)) filePaths.add(path);
+		Log.debug(this, "Loading Gui finished: " + fileName);
 	}
 	
 	public void resize(int width, int height) {
+		Log.debug(this, "Initialising restart of GUI systems due to window resize event.");
 		restart();
 	}
 	
@@ -106,6 +117,7 @@ public class Gui {
 			nifty.addXml(path);
 		});
 		if (currentScreen != null) show(currentScreen);
+		Log.debug(this, "GUI sucsesfully restarted.");
 	}
 
 }
