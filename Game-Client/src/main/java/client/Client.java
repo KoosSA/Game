@@ -2,6 +2,7 @@ package client;
 
 import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
+import client.rendering.utils.ModelLoader;
 
 public class Client extends BaseGameLoop {
 	
@@ -25,6 +26,9 @@ public class Client extends BaseGameLoop {
 		//gui.show("start");
 		//gui.show("hud");
 		
+		ModelLoader ml = new ModelLoader();
+		
+		ml.loadModel("plane.fbx");
 		
 	}
 
