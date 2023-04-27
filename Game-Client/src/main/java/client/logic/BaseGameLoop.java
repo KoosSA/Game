@@ -33,10 +33,12 @@ public abstract class BaseGameLoop extends Thread {
 	protected abstract void resize(int width, int height);
 	
 	public void baseInit() {
+		Log.debug(this, "Starting initialisation process.");
 		if (gui == null) gui = new Gui();
 		if (input == null) input = new Input();
 		
 		init();
+		Log.debug(this, "Initialisation of programm complete.");
 	}
 	
 	public void baseUpdate(float delta) {
@@ -46,16 +48,17 @@ public abstract class BaseGameLoop extends Thread {
 	}
 	
 	public void baseRender() {
-		gui.render();
-		
 		render();
+		gui.render();
 	}
 	
 	
 	public void dispose() {
+		Log.debug(this, "Starting base loop disposal.");
 		gui.dispose();
 		input.dispose();
 		Registries.dispose();
+		Log.debug(this, "Disposal of base loop finished. Saving log files....");
 		Log.disposeAll();
 	}
 
