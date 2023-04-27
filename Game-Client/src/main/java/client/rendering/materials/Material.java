@@ -3,16 +3,28 @@ package client.rendering.materials;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.joml.Vector4f;
+
 public class Material {
 	
 	private Map<TextureType, Texture2D> textures;
+	private Vector4f diffuseColour;
 	
 	public Material() {
 		textures = new HashMap<>();
+		diffuseColour = new Vector4f(0,0,0,1);
 	}
 	
 	public Texture2D getTexture(TextureType type) {
 		return textures.getOrDefault(type, null);
+	}
+	
+	public Vector4f getDiffuseColour() {
+		return diffuseColour;
+	}
+	
+	public void setDiffuseColour(float r, float g, float b, float a) {
+		this.diffuseColour.set(r, g, b, a);
 	}
 	
 	/**
