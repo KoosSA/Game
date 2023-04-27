@@ -8,7 +8,12 @@ import com.koossa.logger.Log;
 import client.io.input.InputReceiver;
 import client.utils.Globals;
 
-public class DefaultInputReceiver extends InputReceiver {
+/**
+ * Handles and distributes input events related to the game world.
+ * @author Koos
+ *
+ */
+public class GameInputReceiver extends InputReceiver {
 
 	@Override
 	protected void setCallBacks() {
@@ -19,6 +24,10 @@ public class DefaultInputReceiver extends InputReceiver {
 					Log.error(this, "Quick quit used: Ctrl + Alt + Q");
 					Globals.window.exit();
 				}
+				keyInputHandlers.forEach(handler-> {
+					if (action == GLFW.GLFW_PRESS) handler.onKeyPress(key, mods);
+					if (action == GLFW.GLFW_REPEAT) handler.onKeyDown(key, mods);
+				});
 			}
 		};
 	}

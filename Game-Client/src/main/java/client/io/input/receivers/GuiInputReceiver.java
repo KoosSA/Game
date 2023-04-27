@@ -1,25 +1,24 @@
 package client.io.input.receivers;
 
-import org.lwjgl.glfw.GLFW;
-
 import client.io.input.InputReceiver;
 import client.utils.Globals;
 import de.lessvoid.nifty.renderer.lwjgl3.input.Lwjgl3InputSystem;
 
+
+/**
+ * Input receiver dealing with gui events. Most functionality should be handled by the gui system.
+ */
 public class GuiInputReceiver extends InputReceiver {
 	
-	private Lwjgl3InputSystem inputSystem;
-
-	public GuiInputReceiver() {
-		inputSystem = Globals.gui.input_system;
-	}
+	private Lwjgl3InputSystem inputSystem = Globals.gui.input_system;
 	
 	@Override
 	protected void setCallBacks() {
-		GLFW.glfwSetCursorPosCallback(Globals.window.getId(), inputSystem.cursorPosCallback);
-		GLFW.glfwSetMouseButtonCallback(Globals.window.getId(), inputSystem.mouseButtonCallback);
-		GLFW.glfwSetKeyCallback(Globals.window.getId(), inputSystem.keyCallback);
-		GLFW.glfwSetScrollCallback(Globals.window.getId(), inputSystem.scrollCallback);
+		inputSystem = Globals.gui.input_system;
+		cursorPosCallback = inputSystem.cursorPosCallback;
+		mouseButtonCallback = inputSystem.mouseButtonCallback;
+		keyCallback = inputSystem.keyCallback;
+		scrollCallback = inputSystem.scrollCallback;
 	}
 	
 	@Override
