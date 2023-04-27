@@ -14,11 +14,9 @@ public class Texture2D {
 	
 	private int id;
 	private String name;
-	private TextureType type;
 	
-	public Texture2D(String name, TextureType type) {
+	public Texture2D(String name) {
 		this.name = name;
-		this.type = type;
 		String path = Files.getCommonFolderPath(CommonFolders.Textures) + "/" + name;
 		createTexture(path);
 	}
@@ -54,10 +52,6 @@ public class Texture2D {
 	
 	public void dispose() {
 		GL30.glDeleteTextures(id);
-	}
-	
-	public TextureType getType() {
-		return type;
 	}
 
 }
