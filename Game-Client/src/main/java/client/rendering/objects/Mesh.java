@@ -3,27 +3,27 @@ package client.rendering.objects;
 import client.rendering.materials.Material;
 
 public class Mesh {
-	
-	private float[] vertices, normals,  texCoords;
-	private int[] indices;
+
 	private Material material;
+	private int vaoId;
+	private int numberOfIndices;
 
-	
-
-	public Mesh(float[] vertices, float[] normals, float[] texCoords, int[] indices, Material material) {
-		this.vertices = vertices;
-		this.normals = normals;
-		this.texCoords = texCoords;
-		this.indices = indices;
+	public Mesh(int vaoId, Material material, int numberOfIndices) {
 		this.material = material;
+		this.vaoId = vaoId;
+		this.numberOfIndices = numberOfIndices;
 	}
 
 	public Material getMaterial() {
 		return material;
 	}
 	
-	public float[] getVertices() {
-		return vertices;
+	public int getVaoId() {
+		return vaoId;
+	}
+	
+	public int getNumberOfIndices() {
+		return numberOfIndices;
 	}
 
 }

@@ -66,7 +66,7 @@ public class ModelLoader {
 		meshes = new ArrayList<>(scene.mNumMeshes());
 		for (int i = 0; i < scene.mNumMeshes(); i++) {
 			AIMesh mesh = AIMesh.create(scene.mMeshes().get(i));
-			meshes.add(processMesh(mesh));
+			meshes.add(processMesh(mesh, materials));
 			mesh.free();
 		}
 
@@ -127,7 +127,7 @@ public class ModelLoader {
 		return mat;
 	}
 
-	private Mesh processMesh(AIMesh mesh) {
+	private Mesh processMesh(AIMesh mesh, List<Material> mats) {
 		for (int i = 0; i < mesh.mNumVertices(); i++) {
 			AIVector3D vertex = mesh.mVertices().get(i);
 			vertices.add(vertex.x());
@@ -158,8 +158,7 @@ public class ModelLoader {
 			face.free();
 		}
 
-		return new Mesh(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(normals),
-				MathUtil.listToArrayFloat(texCoords), MathUtil.ListToArrayInteger(indices), null);
+		return new Mesh(Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices)), mats.get(mesh.mMaterialIndex()), indices.size());
 	}
 
 }
