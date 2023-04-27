@@ -23,7 +23,7 @@ import client.rendering.materials.TextureType;
 import client.rendering.objects.Mesh;
 import client.rendering.objects.Model;
 import client.utils.MathUtil;
-import client.utils.Registry;
+import client.utils.Registries;
 
 public class ModelLoader {
 
@@ -93,7 +93,7 @@ public class ModelLoader {
 		if (path.length() > 0 && path != null) {
 			String[] str = path.dataString().split("\\\\");
 			String name = str[str.length-1];
-			mat.setTexture(TextureType.DIFFUSE, Registry.Textures.get2DTexture(name));
+			mat.setTexture(TextureType.DIFFUSE, Registries.Textures.get2DTexture(name));
 		} 
 		Assimp.aiGetMaterialColor(material, Assimp.AI_MATKEY_COLOR_DIFFUSE, 0, 0, colour);
 		mat.setDiffuseColour(colour.r(), colour.g(), colour.b(), colour.a());
@@ -103,7 +103,7 @@ public class ModelLoader {
 		if (path.length() > 0 && path != null) {
 			String[] str = path.dataString().split("\\\\");
 			String name = str[str.length-1];
-			mat.setTexture(TextureType.NORMAL, Registry.Textures.get2DTexture(name));
+			mat.setTexture(TextureType.NORMAL, Registries.Textures.get2DTexture(name));
 		} 
 		
 		//Load displacement texture
@@ -111,7 +111,7 @@ public class ModelLoader {
 		if (path.length() > 0 && path != null) {
 			String[] str = path.dataString().split("\\\\");
 			String name = str[str.length-1];
-			mat.setTexture(TextureType.DISPLACEMENT, Registry.Textures.get2DTexture(name));
+			mat.setTexture(TextureType.DISPLACEMENT, Registries.Textures.get2DTexture(name));
 		} 
 		
 		//Load displacement texture
@@ -119,7 +119,7 @@ public class ModelLoader {
 		if (path.length() > 0 && path != null) {
 			String[] str = path.dataString().split("\\\\");
 			String name = str[str.length-1];
-			mat.setTexture(TextureType.SPECULAR, Registry.Textures.get2DTexture(name));
+			mat.setTexture(TextureType.SPECULAR, Registries.Textures.get2DTexture(name));
 		} 
 		
 		path.free();
