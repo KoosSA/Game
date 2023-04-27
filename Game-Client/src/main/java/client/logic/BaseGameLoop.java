@@ -9,12 +9,19 @@ import client.gui.Gui;
 import client.io.Window;
 import client.io.input.Input;
 
-public abstract class BaseGameLoop {
+public abstract class BaseGameLoop extends Thread {
 	
 	protected Input input;
 	protected Gui gui;
 	
 	public BaseGameLoop() {
+		setName("client_main");
+	}
+	
+	@Override
+	public void run() {
+		Files.init("Resources", RootFileLocation.LOCAL);
+		Log.init(Files.getCommonFolder(CommonFolders.Logs), true);
 		new Window(this);
 	}
 	
@@ -25,9 +32,6 @@ public abstract class BaseGameLoop {
 	protected abstract void resize(int width, int height);
 	
 	public void baseInit() {
-		Files.init("Resources", RootFileLocation.LOCAL);
-		Log.init(Files.getCommonFolder(CommonFolders.Logs), true);
-		
 		if (gui == null) gui = new Gui();
 		if (input == null) input = new Input();
 		

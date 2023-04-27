@@ -64,6 +64,7 @@ public class Window {
 		Log.info(Window.class, "Display created.");
 		gameloop.baseInit();
 		loop();
+		dispose();
 	}
 	
 	private void loop() {
@@ -85,7 +86,6 @@ public class Window {
 				}
 			}
 		}
-		dispose();
 	}
 	
 	private void update(float delta) {
@@ -114,7 +114,7 @@ public class Window {
 		GL30.glViewport(0, 0, width, height);
 	}
 	
-	public void dispose() {
+	private void dispose() {
 		Log.debug(this, "Window disposing.");
 		sizeCallBack.free();
 		GLFW.glfwDestroyWindow(id);

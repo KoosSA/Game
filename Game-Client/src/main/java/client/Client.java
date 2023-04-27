@@ -1,5 +1,6 @@
 package client;
 
+import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
 
 public class Client extends BaseGameLoop {
@@ -12,17 +13,17 @@ public class Client extends BaseGameLoop {
 		
 		//c.disconnect();
 		
-		new Client();
+		new Client().start();
 	}
 
 	@Override
 	protected void init() {
-		
-		gui.loadXML("test.xml");
-		gui.loadXML("hud.xml");
+		input.setInputReceiver(InputStates.NONE);
+		//gui.loadXML("test.xml");
+		//gui.loadXML("hud.xml");
 		
 		//gui.show("start");
-		gui.show("hud");
+		//gui.show("hud");
 		
 		
 	}
