@@ -8,6 +8,7 @@ import com.koossa.logger.Log;
 import client.gui.Gui;
 import client.io.Window;
 import client.io.input.Input;
+import client.utils.Registries;
 
 public abstract class BaseGameLoop extends Thread {
 	
@@ -54,6 +55,7 @@ public abstract class BaseGameLoop extends Thread {
 	public void dispose() {
 		gui.dispose();
 		input.dispose();
+		Registries.dispose();
 		Log.disposeAll();
 	}
 

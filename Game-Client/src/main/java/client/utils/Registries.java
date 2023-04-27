@@ -5,6 +5,7 @@ import java.util.Map;
 
 import client.rendering.materials.Texture2D;
 import client.rendering.objects.Model;
+import client.rendering.utils.Loader;
 import client.rendering.utils.ModelLoader;
 
 public class Registries {
@@ -33,6 +34,13 @@ public class Registries {
 			}
 			return m;
 		}
+	}
+	
+	public static void dispose() {
+		Loader.dispose();
+		Textures.textures2D.forEach((id, tex2d) -> {
+			tex2d.dispose();
+		});
 	}
 
 }
