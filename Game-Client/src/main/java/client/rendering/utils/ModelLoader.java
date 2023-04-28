@@ -49,7 +49,7 @@ public class ModelLoader {
 	public Model loadModel(String name) {
 		clearData();
 		String path = Files.getCommonFolderPath(CommonFolders.Models) + "/" + name;
-		Log.debug(this, "Starting model loading for: " + path);
+		Log.debug(this, "Starting model loading for: " + name);
 
 		AIScene scene = Assimp.aiImportFile(path, flags);
 		if (scene == null) {
@@ -72,6 +72,7 @@ public class ModelLoader {
 
 		scene.free();
 
+		Log.debug(this, "Model loaded: " + name);
 		return new Model(meshes);
 	}
 

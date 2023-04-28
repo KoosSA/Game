@@ -3,6 +3,9 @@ package client;
 import client.io.input.InputStates;
 import client.io.input.receivers.handlers.IKeyInputHandler;
 import client.logic.BaseGameLoop;
+import client.rendering.renderers.StaticRenderer;
+import client.rendering.utils.RenderManager;
+import client.utils.Registries;
 
 public class Client extends BaseGameLoop implements IKeyInputHandler {
 	
@@ -13,6 +16,9 @@ public class Client extends BaseGameLoop implements IKeyInputHandler {
 		//c.disconnect();
 		new Client().start();
 	}
+	
+	
+	private StaticRenderer renderer;
 
 	@Override
 	protected void init() {
@@ -28,6 +34,10 @@ public class Client extends BaseGameLoop implements IKeyInputHandler {
 		
 		//ml.loadModel("plane.fbx");
 		input.setInputReceiver(InputStates.GAME);
+		
+		renderer = new StaticRenderer(null);
+		
+		RenderManager.getStaticModels().add(Registries.Models.getModel("plane.fbx"));
 	}
 
 	@Override
@@ -38,8 +48,7 @@ public class Client extends BaseGameLoop implements IKeyInputHandler {
 
 	@Override
 	protected void render() {
-		// TODO Auto-generated method stub
-		
+		renderer.baseRender();
 	}
 
 	@Override
@@ -56,6 +65,12 @@ public class Client extends BaseGameLoop implements IKeyInputHandler {
 	@Override
 	public void onKeyDown(int key, int mods) {
 		System.out.println("Key down: " + key);
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		renderer.baseDispose();
 	}
 
 }
