@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import com.koossa.logger.Log;
@@ -46,7 +47,13 @@ public class Window {
 	private void createWindow() {
 		if (initialised) return;
 		Log.info(Window.class, "Creating the main display window.");
+		
+		
 		GLFW.glfwDefaultWindowHints();
+		//GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
+		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 4);
+		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 6);
+		
 		if (!GLFW.glfwInit()) {
 			Log.error(Window.class, "Failed to create GLFW context - Aborting...");
 			return;
@@ -56,6 +63,8 @@ public class Window {
 		id = GLFW.glfwCreateWindow(width, height, TITLE, 0, 0);
 		GLFW.glfwMakeContextCurrent(id);
 		GL.createCapabilities();
+		
+		Log.info(this, "OpenGL initialised with version: " + GL11.glGetString(GL11.GL_VERSION));
 		GL30.glViewport(0, 0, width, height);
 		GLFW.glfwSetWindowSizeCallback(id, sizeCallBack);
 		if (FULLSCREEN) makeFullscreen();
