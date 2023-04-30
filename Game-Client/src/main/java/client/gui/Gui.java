@@ -11,7 +11,7 @@ import client.utils.Globals;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.render.batch.BatchRenderDevice;
 import de.lessvoid.nifty.renderer.lwjgl3.input.Lwjgl3InputSystem;
-import de.lessvoid.nifty.renderer.lwjgl3.render.Lwjgl3BatchRenderBackendFactory;
+import de.lessvoid.nifty.renderer.lwjgl3.render.Lwjgl3BatchRenderBackendCoreProfileFactory;
 import de.lessvoid.nifty.renderer.lwjgl3.time.Lwjgl3TimeProvider;
 import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
 
@@ -31,7 +31,8 @@ public class Gui {
 		Globals.gui = this;
 		input_system = new Lwjgl3InputSystem(Globals.window.getId());
 		sound_device = new OpenALSoundDevice();
-		render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendFactory.create(Globals.window.getId()));
+		//render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendFactory.create(Globals.window.getId()));
+		render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendCoreProfileFactory.create(Globals.window.getId()));
 		time_provider = new Lwjgl3TimeProvider();
 		try {
 			input_system.startup();
@@ -101,7 +102,7 @@ public class Gui {
 		nifty.exit();
 		
 		input_system = new Lwjgl3InputSystem(Globals.window.getId());
-		render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendFactory.create(Globals.window.getId()));
+		render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendCoreProfileFactory.create(Globals.window.getId()));
 		nifty = new Nifty(render_device, sound_device, input_system, time_provider);
 		try {
 			input_system.startup();
