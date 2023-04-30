@@ -13,6 +13,7 @@ import org.lwjgl.assimp.AIScene;
 import org.lwjgl.assimp.AIString;
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.assimp.Assimp;
+import org.lwjgl.opengl.GL30;
 
 import com.koossa.filesystem.CommonFolders;
 import com.koossa.filesystem.Files;
@@ -125,6 +126,11 @@ public class ModelLoader {
 		
 		path.free();
 		colour.free();
+		
+		while (GL30.glGetError() != GL30.GL_NO_ERROR) {
+			Log.error(this, "Opengl Error: " + GL30.glGetError());
+		}
+		
 		return mat;
 	}
 

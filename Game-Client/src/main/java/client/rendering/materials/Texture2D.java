@@ -48,6 +48,10 @@ public class Texture2D {
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		STBImage.stbi_image_free(data);
+		
+		while (GL30.glGetError() != GL30.GL_NO_ERROR) {
+			Log.error(this, "Opengl Error: " + GL30.glGetError());
+		}
 	}
 	
 	public void dispose() {
