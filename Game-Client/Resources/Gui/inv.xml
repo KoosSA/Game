@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.lessvoid.com/nifty-gui"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://nifty-gui.lessvoid.com/nifty-gui https://raw.githubusercontent.com/nifty-gui/nifty-gui/1.4/nifty-core/src/main/resources/nifty.xsd">
+ 
+    <screen id="inv">
+        <layer id="background" childLayout="center">
+            <image filename="background.png"/>
+        </layer>
+        <layer id="foreground" childLayout="vertical">
+            <panel id="header" height="10%" width="100%" backgroundColor="#5555" align="center" valign="top" childLayout="horizontal">
+                <text id="title" font="aurulent-sans-16.fnt" text="Inventory" color="#ffff" align="center" valign="center"/>
+            </panel>
+            <panel id="item-list" height="75%" width="100%" backgroundColor="#dddd" align="center" valign="center" childLayout="horizontal">
+                <control name="listBox" id="item-box" selectionMode="Single" displayItems="10" vertical="on" horizontal="off"/>
+            </panel>
+            <panel id="action-buttons" height="15%" width="100%" backgroundColor="#5555" align="center" valign="bottom" childLayout="horizontal">
+                <control name="button" id="use-button" label="Use" backgroundColor="#ffa5" height="70%" width="30%" />
+                <control name="button" id="sell-button" label="Sell" backgroundColor="#0080" height="70%" width="30%" />
+            </panel>
+        </layer>
+    </screen>
+ 
+</nifty>

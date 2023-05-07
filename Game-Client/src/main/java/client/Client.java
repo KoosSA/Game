@@ -24,11 +24,13 @@ public class Client extends BaseGameLoop implements IKeyInputHandler {
 	protected void init() {
 		registerInputHandler(InputStates.GAME);
 		//input.setInputReceiver(InputStates.NONE);
-		//gui.loadXML("test.xml");
-		//gui.loadXML("hud.xml");
+		gui.loadXML("test.xml");
+		gui.loadXML("hud.xml");
+		gui.loadXML("inv.xml");
 		
 		//gui.show("start");
 		//gui.show("hud");
+		gui.show("inv");
 		
 		//ModelLoader ml = new ModelLoader();
 		
@@ -38,6 +40,7 @@ public class Client extends BaseGameLoop implements IKeyInputHandler {
 		renderer = new StaticRenderer(null);
 		
 		RenderManager.getStaticModels().add(Registries.Models.getModel("plane.fbx"));
+		Registries.Models.getModel("plane.fbx").getTransform().setScale(1000, 1000, 1);
 	}
 
 	@Override
