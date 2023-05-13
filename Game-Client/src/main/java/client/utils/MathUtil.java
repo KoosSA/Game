@@ -63,7 +63,7 @@ public class MathUtil {
 	public static Matrix4f get3DProjectionMatrix(float near_plane, float far_plane, float fovy) {
 		Matrix4f tempMat4 = new Matrix4f();
 		tempMat4.identity();
-		tempMat4.perspective(fovy, getAspectRatio(Globals.window.getWidth(), Globals.window.getHeight()), near_plane, far_plane);
+		tempMat4.setPerspective(fovy, getAspectRatio(Globals.window.getWidth(), Globals.window.getHeight()), near_plane, far_plane);
 		return tempMat4;
 	}
 	

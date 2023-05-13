@@ -2,22 +2,25 @@ package client.rendering.cameras;
 
 import org.joml.Matrix4f;
 
+import client.io.input.InputStates;
+import client.io.input.receivers.handlers.IGeneralInputHandler;
 import client.rendering.utils.Transform;
 
-public abstract class Camera {
+public abstract class Camera implements IGeneralInputHandler {
 	
-	private Transform transform;
+	protected Transform transform = new Transform();
 	
 	public Camera() {
-		transform = new Transform();
-	}
-	
-	public Transform getTransform() {
-		return transform;
+		registerInputHandler(InputStates.GAME);
 	}
 	
 	public abstract Matrix4f getViewMatrix();
 
 	public abstract Matrix4f getProjectionMatrix();
+	
+	public Transform getTransform() {
+		return transform;
+	}
+	
 
 }
