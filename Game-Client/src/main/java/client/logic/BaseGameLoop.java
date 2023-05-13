@@ -8,7 +8,7 @@ import com.koossa.logger.Log;
 import client.gui.Gui;
 import client.io.Window;
 import client.io.input.Input;
-import client.utils.Registries;
+import client.utils.registries.Registries;
 
 public abstract class BaseGameLoop extends Thread {
 	
@@ -30,7 +30,6 @@ public abstract class BaseGameLoop extends Thread {
 	protected abstract void update(float delta);
 	protected abstract void render();
 	//protected abstract void onDispose();
-	protected abstract void resize(int width, int height);
 	
 	public void baseInit() {
 		Log.debug(this, "Starting initialisation process.");
@@ -43,7 +42,7 @@ public abstract class BaseGameLoop extends Thread {
 	
 	public void baseUpdate(float delta) {
 		gui.update();
-		
+		InternalRegistries.update(delta);
 		update(delta);
 	}
 	
@@ -58,13 +57,14 @@ public abstract class BaseGameLoop extends Thread {
 		gui.dispose();
 		input.dispose();
 		Registries.dispose();
+		InternalRegistries.dispose();
 		Log.debug(this, "Disposal of base loop finished. Saving log files....");
 		Log.disposeAll();
 	}
 
 	public void baseResize(int width, int height) {
 		if (gui != null) gui.resize(width, height);
-		resize(width, height);
+		InternalRegistries.onResize(width, height);
 	}
 
 	
