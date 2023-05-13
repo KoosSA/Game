@@ -43,19 +43,24 @@ public class Texture2D {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA16, w[0], h[0], 0, c[0], GL11.GL_UNSIGNED_BYTE, data);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA16, w[0], h[0], 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data);
 		GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		STBImage.stbi_image_free(data);
 		
-		while (GL30.glGetError() != GL30.GL_NO_ERROR) {
-			Log.error(this, "Opengl Error: " + GL30.glGetError());
+		int result = GL30.GL_NO_ERROR;
+		while ((result = GL30.glGetError()) != GL30.GL_NO_ERROR) {
+			Log.error(this, "Opengl Error: " + result);
 		}
 	}
 	
 	public void dispose() {
 		GL30.glDeleteTextures(id);
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 }
