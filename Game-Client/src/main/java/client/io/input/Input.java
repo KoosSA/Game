@@ -8,6 +8,7 @@ import com.koossa.logger.Log;
 import client.io.input.receivers.DefaultInputReceiver;
 import client.io.input.receivers.GameInputReceiver;
 import client.io.input.receivers.GuiInputReceiver;
+import client.io.input.receivers.handlers.IGeneralInputHandler;
 import client.io.input.receivers.handlers.IInputHandler;
 import client.io.input.receivers.handlers.IKeyInputHandler;
 import client.io.input.receivers.handlers.IMouseButtonInputHandler;
@@ -58,5 +59,9 @@ public class Input {
 		if (handler instanceof IKeyInputHandler) receivers.get(inputState).addKeyHandler((IKeyInputHandler) handler);
 		if (handler instanceof IMouseButtonInputHandler) receivers.get(inputState).addMouseButtonHandler((IMouseButtonInputHandler) handler);
 		if (handler instanceof IMouseMovementInputHandler) receivers.get(inputState).addMouseMovementHandler((IMouseMovementInputHandler) handler);
+		if (handler instanceof IGeneralInputHandler) receivers.get(inputState).addGeneralInputHandler((IGeneralInputHandler) handler);
 	}
+
+	
+	
 }

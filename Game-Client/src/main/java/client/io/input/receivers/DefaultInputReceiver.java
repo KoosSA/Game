@@ -28,4 +28,10 @@ public class DefaultInputReceiver extends InputReceiver {
 		keyCallback.free();
 	}
 
+	@Override
+	protected void onActivate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

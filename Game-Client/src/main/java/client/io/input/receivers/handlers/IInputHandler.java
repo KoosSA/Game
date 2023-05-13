@@ -11,5 +11,7 @@ public interface IInputHandler {
 		Log.debug(this, "Registering this class as a input handler.");
 		Globals.input.registerInputHandler(this, inputState);
 	}
+	
+	
 
 }

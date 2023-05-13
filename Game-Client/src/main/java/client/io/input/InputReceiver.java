@@ -9,6 +9,8 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
+import client.io.input.receivers.GameInputReceiver;
+import client.io.input.receivers.handlers.IGeneralInputHandler;
 import client.io.input.receivers.handlers.IKeyInputHandler;
 import client.io.input.receivers.handlers.IMouseButtonInputHandler;
 import client.io.input.receivers.handlers.IMouseMovementInputHandler;
@@ -19,6 +21,7 @@ public abstract class InputReceiver {
 	protected List<IKeyInputHandler> keyInputHandlers = new ArrayList<>();
 	protected List<IMouseButtonInputHandler> mouseButtonHandlers = new ArrayList<>();
 	protected List<IMouseMovementInputHandler> mouseMovementInputHandlers = new ArrayList<>();
+	protected List<IGeneralInputHandler> generalInputHandlers = new ArrayList<>();
 	
 	protected GLFWKeyCallback keyCallback;
 	protected GLFWMouseButtonCallback mouseButtonCallback;
@@ -27,6 +30,7 @@ public abstract class InputReceiver {
 	
 	protected abstract void setCallBacks();
 	protected abstract void freeCallbacks();
+	protected abstract void onActivate();
 	
 	public InputReceiver() {
 		setCallBacks();
@@ -36,6 +40,7 @@ public abstract class InputReceiver {
 	 * Used to bind callbacks to the window instance.
 	 */
 	public void activate() {
+		onActivate();
 		GLFW.glfwSetCursorPosCallback(Globals.window.getId(), cursorPosCallback);
 		GLFW.glfwSetMouseButtonCallback(Globals.window.getId(), mouseButtonCallback);
 		GLFW.glfwSetKeyCallback(Globals.window.getId(), keyCallback);
@@ -60,6 +65,16 @@ public abstract class InputReceiver {
 	
 	public void addMouseMovementHandler(IMouseMovementInputHandler mouseMovementHandler) {
 		mouseMovementInputHandlers.add(mouseMovementHandler);
+	}
+	
+	public void addGeneralInputHandler(IGeneralInputHandler generalInputHandler) {
+		generalInputHandlers.add(generalInputHandler);
+	}
+	
+	public void handleInput(GameInputReceiver gameInputReceiver, float delta) {
+		generalInputHandlers.forEach(handler -> {
+			handler.handleInputs(gameInputReceiver, delta);
+		});
 	}
 	
 }
