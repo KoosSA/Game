@@ -24,38 +24,28 @@ import client.rendering.materials.TextureType;
 import client.rendering.objects.Mesh;
 import client.rendering.objects.Model;
 import client.utils.MathUtil;
-import client.utils.Registries;
+import client.utils.registries.Registries;
 
 public class ModelLoader {
 
-	private LinkedList<Float> vertices;
-	private LinkedList<Float> normals;
-	private LinkedList<Float> texCoords;
-	private LinkedList<Integer> indices;
-	private List<Mesh> meshes;
-	private List<Material> materials;
+	private static LinkedList<Float> vertices = new LinkedList<>();;
+	private static LinkedList<Float> normals = new LinkedList<>();
+	private static LinkedList<Float> texCoords = new LinkedList<>();
+	private static LinkedList<Integer> indices = new LinkedList<>();
+	private static List<Mesh> meshes = new ArrayList<>();
+	private static List<Material> materials = new ArrayList<>();
 
-	private int flags = Assimp.aiProcess_Triangulate | Assimp.aiProcess_JoinIdenticalVertices
-			| Assimp.aiProcess_LimitBoneWeights | Assimp.aiProcess_GenSmoothNormals | Assimp.aiProcess_GenUVCoords
-			| Assimp.aiProcess_FixInfacingNormals | Assimp.aiProcess_GenBoundingBoxes;
+	private static int flags =  Assimp.aiProcess_Triangulate | Assimp.aiProcess_FixInfacingNormals;
 
-	public ModelLoader() {
-		vertices = new LinkedList<>();
-		normals = new LinkedList<>();
-		texCoords = new LinkedList<>();
-		indices = new LinkedList<>();
-		materials = new LinkedList<>();
-	}
-
-	public Model loadModel(String name) {
+	public static Model loadModel(String name) {
 		clearData();
 		String path = Files.getCommonFolderPath(CommonFolders.Models) + "/" + name;
-		Log.debug(this, "Starting model loading for: " + name);
+		Log.debug(ModelLoader.class, "Starting model loading for: " + name);
 
 		AIScene scene = Assimp.aiImportFile(path, flags);
 		if (scene == null) {
-			Log.error(this, "Failed to load model: " + path);
-			Log.error(this, Assimp.aiGetErrorString());
+			Log.error(ModelLoader.class, "Failed to load model: " + path);
+			Log.error(ModelLoader.class, Assimp.aiGetErrorString());
 		}
 
 		for (int i = 0; i < scene.mNumMaterials(); i++) {
@@ -64,7 +54,6 @@ public class ModelLoader {
 			material.free();
 		}
 
-		meshes = new ArrayList<>(scene.mNumMeshes());
 		for (int i = 0; i < scene.mNumMeshes(); i++) {
 			AIMesh mesh = AIMesh.create(scene.mMeshes().get(i));
 			meshes.add(processMesh(mesh, materials));
@@ -73,19 +62,20 @@ public class ModelLoader {
 
 		scene.free();
 
-		Log.debug(this, "Model loaded: " + name);
+		Log.debug(ModelLoader.class, "Model loaded: " + name);
 		return new Model(meshes);
 	}
 
-	private void clearData() {
+	private static void clearData() {
 		vertices.clear();
 		normals.clear();
 		texCoords.clear();
 		indices.clear();
 		materials.clear();
+		meshes.clear();
 	}
 
-	private Material processMaterial(AIMaterial material) {
+	private static Material processMaterial(AIMaterial material) {
 		Material mat = new Material();
 		AIColor4D colour = AIColor4D.create();
 		AIString path = AIString.create();
@@ -124,28 +114,29 @@ public class ModelLoader {
 			mat.setTexture(TextureType.SPECULAR, Registries.Textures.get2DTexture(name));
 		} 
 		
-		path.free();
-		colour.free();
+		//path.free();
+		//colour.free();
 		
 		while (GL30.glGetError() != GL30.GL_NO_ERROR) {
-			Log.error(this, "Opengl Error: " + GL30.glGetError());
+			Log.error(ModelLoader.class, "Opengl Error: " + GL30.glGetError());
 		}
 		
 		return mat;
 	}
 
-	private Mesh processMesh(AIMesh mesh, List<Material> mats) {
+	private static Mesh processMesh(AIMesh mesh, List<Material> mats) {
 		for (int i = 0; i < mesh.mNumVertices(); i++) {
 			AIVector3D vertex = mesh.mVertices().get(i);
 			vertices.add(vertex.x());
 			vertices.add(vertex.y());
 			vertices.add(vertex.z());
+			
 			AIVector3D normal = mesh.mNormals().get(i);
 			normals.add(normal.x());
 			normals.add(normal.y());
 			normals.add(normal.z());
-			vertex.free();
-			normal.free();
+			//vertex.free();
+			//normal.free();
 		}
 
 		AIVector3D.Buffer aiT = mesh.mTextureCoords(0);
@@ -153,17 +144,19 @@ public class ModelLoader {
 			AIVector3D v = aiT.get();
 			texCoords.add(v.x());
 			texCoords.add(v.y());
-			v.free();
+			//v.free();
 		}
-		aiT.free();
-
-		for (int i = 0; i < mesh.mNumFaces(); i++) {
-			AIFace face = mesh.mFaces().get(i);
-			for (int u = 0; u < face.mNumIndices(); u++) {
-				indices.add(face.mIndices().get(u));
+		//aiT.free();
+		
+		
+		AIFace.Buffer faces = mesh.mFaces();
+		while (faces.hasRemaining()) {
+			IntBuffer b = faces.get().mIndices();
+			while (b.hasRemaining()) {
+				indices.add(b.get());
 			}
-			face.free();
 		}
+		//faces.free();
 
 		return new Mesh(Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices)), mats.get(mesh.mMaterialIndex()), indices.size());
 	}
