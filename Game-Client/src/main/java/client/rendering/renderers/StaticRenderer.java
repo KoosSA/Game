@@ -3,70 +3,71 @@ package client.rendering.renderers;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import com.koossa.logger.Log;
+
 import client.rendering.cameras.Camera;
+import client.rendering.objects.Model;
 import client.rendering.shaders.StaticShader;
-import client.rendering.utils.Loader;
+import client.utils.registries.Registries;
 
 public class StaticRenderer extends BaseRenderer {
 	
-	float[] vertices = 
-		{ -1000f, 1000f, 0,
-		  -1000f, -1000f, 0,
-		  1000f, 1000f, 0
-		};
-	float[] normals = 
-		{ 0, 0, 1,
-		  0, 0, 1,
-		  0, 0, 1
-		};
-	float[] tc = 
-		{
-			0, 1,
-			0, 1,
-			0, 1
-		};
-	int[] indices = {
-			0, 1, 2
-	};
-	int vao;
+	private StaticShader shader;
 	
 	public StaticRenderer(Camera cam) {
 		super(cam);
 		shader = new StaticShader();
-		vao = Loader.loadModelData(vertices, tc, normals, indices);
+		loadStaticCamData(cam);
+	}
+
+	private void loadStaticCamData(Camera cam) {
+		Log.debug(this, "Updating camera data in shader.");
+		shader.start();
+		shader.loadProjectionMatrix(cam);
+		shader.stop();
 	}
 
 	@Override
 	protected void render() {
-		//shader.start();
+		GL30.glEnable(GL30.GL_DEPTH_TEST);
+		GL30.glEnable(GL30.GL_CULL_FACE);
+		GL30.glCullFace(GL30.GL_BACK);
 		
-		/*RenderManager.getStaticModels().forEach(model -> {
+		
+		shader.start();
+		shader.loadViewMatrix(cam);
+		shader.loadDirectionalLight(Registries.Lights.getDirectionalLight());
+		
+		Model model = Registries.Models.getStaticModel("t.fbx");
+		//Model model = Registries.Models.getStaticModel("uc_uv_sphere.fbx");
+		shader.loadTransformationMatrix(model.getTransform());
+		model.getMeshes().forEach(mesh -> {
+				shader.loadMaterial(mesh.getMaterial());
 			
-			model.getMeshes().forEach(mesh -> {
-				
 				GL30.glBindVertexArray(mesh.getVaoId());
-				
-				shader.loadTransformationMatrix(model.getTransform());
 				
 				GL30.glDrawElements(GL11.GL_TRIANGLES, mesh.getNumberOfIndices(), GL11.GL_UNSIGNED_INT, 0);
 				
 				GL30.glBindVertexArray(0);
 				
 			});
-		}) ;*/
 		
-		GL30.glBindVertexArray(vao);
+		shader.stop();
 		
-		GL30.glDrawArrays(GL11.GL_TRIANGLES, 0, indices.length);
-		
-		GL30.glBindVertexArray(0);
-		
-		//shader.stop();
+		int err = GL30.GL_NO_ERROR;
+		while ((err = GL30.glGetError()) != GL30.GL_NO_ERROR) {
+			Log.error(this, "OpenGL error: " + err);
+		}
 	}
 
 	@Override
-	protected void dispose() {
+	public void dispose() {
 		shader.dispose();
+	}
+
+	@Override
+	public void onResize(int width, int height) {
+		loadStaticCamData(cam);
 	}
 	
 	
