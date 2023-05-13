@@ -1,9 +1,12 @@
 package client.rendering.shaders;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL30;
 
 import com.koossa.filesystem.CommonFolders;
@@ -11,7 +14,6 @@ import com.koossa.filesystem.Files;
 import com.koossa.logger.Log;
 
 import client.rendering.cameras.Camera;
-import client.rendering.utils.Transform;
 import client.utils.FileUtils;
 import client.utils.MathUtil;
 
@@ -20,8 +22,7 @@ public abstract class BaseShader {
 	private int programId;
 	private static LinkedList<Integer> shaderIDS = new LinkedList<>();
 	protected Camera cam;
-	
-	private int loc_viewMatrix, loc_projectionMatrix, loc_transformationMatrix;
+	protected Map<String, Integer> uniforms = new HashMap<>();
 	
 	public BaseShader(String vertexFile, String fragmentFile) {
 		String vertPath = Files.getCommonFolderPath(CommonFolders.Shaders) + "/" + vertexFile;
@@ -35,6 +36,7 @@ public abstract class BaseShader {
 	
 	private int createShaderProgram(String vertPath, String fragPath) {
 		int id = GL30.glCreateProgram();
+		programId = id;
 		int vert = createShader(vertPath, GL30.GL_VERTEX_SHADER);
 		int frag = createShader(fragPath, GL30.GL_FRAGMENT_SHADER);
 		
@@ -55,13 +57,10 @@ public abstract class BaseShader {
 	}
 
 	private void getUniformLocationsBase() {
-		loc_projectionMatrix = getUniformLocation("projectionMatrix");
-		loc_transformationMatrix = getUniformLocation("transformationMatrix");
-		loc_viewMatrix = getUniformLocation("viewMatrix");
+		getUniformLocations();
 		while (GL30.glGetError() != GL30.GL_NO_ERROR) {
 			Log.error(this, "Opengl Error: " + GL30.glGetError() + " Probably an invalid uniform location in a shader");
 		}
-		getUniformLocations();
 	}
 
 	private int createShader(String vertPath, int glVertexShader) {
@@ -97,6 +96,10 @@ public abstract class BaseShader {
 		GL30.glUniform3f(location, vec3.x, vec3.y, vec3.z);
 	}
 	
+	protected void loadVec4f(Vector4f vec4, int location) {
+		GL30.glUniform4f(location, vec4.x, vec4.y, vec4.z, vec4.w);
+	}
+	
 	protected void loadMat4f(Matrix4f mat4, int location) {
 		GL30.glUniformMatrix4fv(location, false, MathUtil.matrix4fToFloatBuffer(mat4));
 	}
@@ -109,20 +112,16 @@ public abstract class BaseShader {
 		loadFloat(bool ? 1 : 0, location);
 	}
 	
-	protected int getUniformLocation(String name) {
-		return GL30.glGetUniformLocation(programId, name);
+	protected void loadInt(int value, int location) {
+		GL30.glUniform1i(location, value);
 	}
 	
-	public void loadViewMatrix(Camera cam) {
-		loadMat4f(cam.getViewMatrix(), loc_viewMatrix);
-	}
-	
-	public void loadProjectionMatrix(Camera cam) {
-		loadMat4f(cam.getProjectionMatrix(), loc_projectionMatrix);
-	}
-	
-	public void loadTransformationMatrix(Transform transform) {
-		loadMat4f(transform.getTransformationMatrix(), loc_transformationMatrix);
+	protected void addUniform(String name) {
+		int id = GL30.glGetUniformLocation(programId, name);
+		while (GL30.glGetError() != GL30.GL_NO_ERROR) {
+			Log.error(this, "Opengl Error: " + GL30.glGetError() + " Probably an invalid uniform location in a shader: " + name);
+		}
+		uniforms.putIfAbsent(name, id);
 	}
 
 	protected abstract void getUniformLocations();
