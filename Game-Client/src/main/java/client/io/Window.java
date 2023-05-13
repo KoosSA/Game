@@ -53,6 +53,7 @@ public class Window {
 		//GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 4);
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 6);
+		GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 8);
 		
 		if (!GLFW.glfwInit()) {
 			Log.error(Window.class, "Failed to create GLFW context - Aborting...");
