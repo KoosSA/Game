@@ -5,6 +5,8 @@ import java.nio.IntBuffer;
 import java.util.List;
 
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import client.rendering.utils.Transform;
@@ -44,13 +46,22 @@ public class MathUtil {
 	
 	public static Matrix4f getTransformationMatrix(Transform transform) {
 		tempMat4.identity();
-		tempMat4.scale(transform.getScale());
+		tempMat4.translate(transform.getPosition());
 		tempMat4.rotate(transform.getRotation());
-		tempMat4.translate(transform.getAbsolutePosition());
+		tempMat4.scale(transform.getScale());
+		return tempMat4;
+	}
+	
+	public static Matrix4f getViewMatrix(Vector3f position, Quaternionf rotation, Vector3f scale) {
+		tempMat4.identity();
+		tempMat4.rotate(rotation);
+		tempMat4.translate(position);
+		tempMat4.scale(scale);
 		return tempMat4;
 	}
 
 	public static Matrix4f get3DProjectionMatrix(float near_plane, float far_plane, float fovy) {
+		Matrix4f tempMat4 = new Matrix4f();
 		tempMat4.identity();
 		tempMat4.perspective(fovy, getAspectRatio(Globals.window.getWidth(), Globals.window.getHeight()), near_plane, far_plane);
 		return tempMat4;
@@ -78,6 +89,8 @@ public class MathUtil {
 		buff.flip();
 		return buff;
 	}
+
+	
 	
 	
 
