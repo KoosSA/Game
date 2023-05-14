@@ -22,8 +22,7 @@ uniform Material material;
 
 vec4 calculateDirColour(DirectionalLight light) {
 	normalize(light.direction);
-	vec3 toLight = -light.direction;
-	float influence = max(dot(passNormal, toLight), 0.05) * light.intensity;
+	float influence = max(dot(passNormal, light.direction), 0) * light.intensity;
 	return vec4(light.colour * influence, 1);
 }
 
