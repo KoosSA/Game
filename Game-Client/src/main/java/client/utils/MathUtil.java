@@ -4,8 +4,8 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 
+import org.joml.Math;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
@@ -15,7 +15,8 @@ public class MathUtil {
 	
 	private static Matrix4f tempMat4 = new Matrix4f();
 	private static FloatBuffer matrix4fBuffer = BufferUtils.createFloatBuffer(16);
-	
+	private static Vector3f tempVec3 = new Vector3f();
+
 	public static float clamp(float value, float min, float max) {
 		if (value > max) value = max;
 		if (value < min) value = min;
@@ -52,18 +53,17 @@ public class MathUtil {
 		return tempMat4;
 	}
 	
-	public static Matrix4f getViewMatrix(Vector3f position, Quaternionf rotation, Vector3f scale) {
+	public static Matrix4f getViewMatrix(Vector3f position, float pitch, float yaw, Vector3f scale) {
 		tempMat4.identity();
-		tempMat4.rotate(rotation);
-		tempMat4.translate(position);
+		tempMat4.setRotationXYZ(pitch, yaw , 0);
+		tempMat4.translate(position.negate(tempVec3));
 		tempMat4.scale(scale);
 		return tempMat4;
 	}
 
 	public static Matrix4f get3DProjectionMatrix(float near_plane, float far_plane, float fovy) {
-		Matrix4f tempMat4 = new Matrix4f();
 		tempMat4.identity();
-		tempMat4.setPerspective(fovy, getAspectRatio(Globals.window.getWidth(), Globals.window.getHeight()), near_plane, far_plane);
+		tempMat4.setPerspective(Math.toRadians(fovy), getAspectRatio(Globals.window.getWidth(), Globals.window.getHeight()), near_plane, far_plane);
 		return tempMat4;
 	}
 	

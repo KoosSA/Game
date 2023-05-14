@@ -2,7 +2,6 @@ package client.rendering.cameras;
 
 import org.joml.Math;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import com.koossa.logger.Log;
@@ -19,11 +18,15 @@ public class FirstPersonCamera extends Camera {
 
 	private Vector3f position = new Vector3f();
 	private Vector3f scale = new Vector3f(1);
-	private Quaternionf rotation = new Quaternionf();
+	private float pitch = 0;
+	private float yaw = 0;
+	
 	private Vector3f forward = new Vector3f(0, 0, -1);
 	private Vector3f right = new Vector3f(1, 0, 0);
 	private Vector3f direction = new Vector3f(0, 0, -1);
 	private Vector3f point = new Vector3f();
+	private float maxPitch = Math.toRadians(99);
+
 
 	private float movementSpeed = 1;
 	private float turnSpeed = 10;
@@ -38,13 +41,12 @@ public class FirstPersonCamera extends Camera {
 
 	public FirstPersonCamera() {
 		super();
-		//rotation.lookAlong(forward, up);
-		//rotation.normalize();
+		//rotation.identity();
 	}
 
 	@Override
 	public Matrix4f getViewMatrix() {
-		return MathUtil.getViewMatrix(position, rotation, scale);
+		return MathUtil.getViewMatrix(position, pitch, yaw, scale);
 	}
 
 	@Override
@@ -74,14 +76,11 @@ public class FirstPersonCamera extends Camera {
 		} else {
 			movementSpeed = 1;
 		}
-
-		rotation.normalize();
-		
 		
 	}
 
 	private void moveForward(float delta, float modifier) {
-		position.add(getForward().x() * modifier * delta * movementSpeed, 0, getForward().z * modifier * delta * movementSpeed);
+		position.add(getForward().x() * modifier * delta * movementSpeed, 0, getForward().z() * modifier * delta * movementSpeed);
 	}
 	
 	public void move(float x, float y, float z) {
@@ -93,29 +92,29 @@ public class FirstPersonCamera extends Camera {
 	}
 
 	public void turn(float angle) {
-		rotation.rotateY(Math.toRadians(angle));
-		forward.rotateY(Math.toRadians(-angle));
-		right.rotateY(Math.toRadians(-angle));
+		angle = Math.toRadians(angle);
+		yaw = MathUtil.loop(angle + yaw, 0, Math.toRadians(360));
+		
+		forward.rotateY(-angle);
+		right.rotateY(-angle);
+		
 		forward.normalize();
 		right.normalize();
 	}
 
 	public void pitch(float angle) {
-		rotation.rotateLocalX(Math.toRadians(-angle));
-
+		angle = Math.toRadians(-angle);
+		pitch = MathUtil.clamp(pitch + angle, -maxPitch, maxPitch);
 	}
 	
 	public Vector3f getPosition() {
 		return position;
 	}
 
-	public Quaternionf getRotation() {
-		return rotation;
-	}
-
 	public Vector3f getDirection() {
 		direction.set(0, 0, -1);
-		rotation.transformInverse(direction);
+		direction.rotateX(-pitch);
+		direction.rotateY(-yaw);
 		direction.normalize();
 		return direction;
 	}
