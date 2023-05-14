@@ -35,7 +35,7 @@ public abstract class  BaseLight<T> {
 	}
 	@SuppressWarnings("unchecked")
 	public T setPosition(float x, float y, float z) {
-		colour.set(x, y, z);
+		position.set(x, y, z);
 		return (T) this;
 	}
 
