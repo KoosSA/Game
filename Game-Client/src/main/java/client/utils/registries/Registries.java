@@ -37,7 +37,7 @@ public class Registries {
 	}
 	
 	public static class Lights {
-		private static DirectionalLight<?> dirLight = (DirectionalLight<?>) new DirectionalLight<Object>(0, -1, 0).setIntensity(10);
+		private static DirectionalLight<?> dirLight = (DirectionalLight<?>) new DirectionalLight<Object>(0, -1, 0);
 		
 		public static DirectionalLight<?> getDirectionalLight() {
 			return dirLight;
