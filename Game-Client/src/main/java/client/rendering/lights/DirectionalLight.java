@@ -5,11 +5,11 @@ import org.joml.Vector3f;
 public class DirectionalLight<T> extends BaseLight<T> {
 	
 	public DirectionalLight(float dirX, float dirY, float dirZ) {
-		position.set(dirX, dirY, dirZ);
+		setDirection(dirX, dirY, dirZ);
 	}
 	
-	public T setDirection(float r, float g, float b) {
-		return (T) setPosition(r, g, b);
+	public T setDirection(float x, float y, float z) {
+		return (T) setPosition(-x, -y, -z);
 	}
 	
 	public Vector3f getDirection() {
