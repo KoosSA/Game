@@ -10,27 +10,17 @@ import client.utils.MathUtil;
 public class Transform {
 
 	private Vector3f position = new Vector3f();
-	private Vector3f offset = new Vector3f();
 	private Vector3f scale = new Vector3f(1);
 	private Quaternionf rotation = new Quaternionf();
-	private static Vector3f absPos = new Vector3f();
 	private Vector3f forward = new Vector3f(0,0,-1);
 	private Vector3f up = new Vector3f(0,1,0);
-
+	
 	public Matrix4f getTransformationMatrix() {
 		return MathUtil.getTransformationMatrix(this);
 	}
 
-	public Vector3f getOffset() {
-		return offset;
-	}
-
 	public Vector3f getPosition() {
 		return position;
-	}
-	
-	public Vector3f getAbsolutePosition() {
-		return position.add(offset, absPos);
 	}
 
 	public Quaternionf getRotation() {
@@ -41,16 +31,14 @@ public class Transform {
 		return scale;
 	}
 
-	public void setOffset(float x, float y, float z) {
-		this.offset.set(x, y, z);
-	}
-
-	public void setPosition(float x, float y, float z) {
+	public Transform setPosition(float x, float y, float z) {
 		this.position.set(x, y, z);
+		return this;
 	}
 	
-	public void setPosition(Vector3f pos) {
+	public Transform setPosition(Vector3f pos) {
 		this.position.set(pos);
+		return this;
 	}
 
 	public void setRotation(Quaternionf rotation) {
@@ -75,9 +63,9 @@ public class Transform {
 		z = Math.toRadians(z);
 		rotation.rotateLocalY(-y);
 		rotation.rotateLocalX(-x);
-		rotation.rotateLocalZ(-z);
+		rotation.rotateLocalZ(z);
 		rotation.normalize();
-		forward.set(0,0,1).rotate(rotation);
+		forward.set(0,0,-1).rotate(rotation);
 		up.set(0, 1, 0).rotate(rotation);
 	}
 	
