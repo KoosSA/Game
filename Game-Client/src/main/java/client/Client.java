@@ -1,5 +1,7 @@
 package client;
 
+import org.joml.Vector3f;
+
 import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
 import client.rendering.cameras.FirstPersonCamera;
@@ -33,7 +35,7 @@ public class Client extends BaseGameLoop {
 		
 		Registries.Models.getStaticModel("t.fbx");
 		Registries.Models.getStaticModel("t.fbx").getTransform().setScale(1f, 1, 1);
-		Registries.Models.getStaticModel("t.fbx").getTransform().move(0, 0, 0f);
+		Registries.Models.getStaticModel("t.fbx").getTransform().move(0, 0, -5f);
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().setScale(0.5f, 0.5f, 1f);
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().move(0, 0, 5f);
 	}
@@ -42,7 +44,6 @@ public class Client extends BaseGameLoop {
 	protected void update(float delta) {
 		//HUDScreenController.update(delta);
 		//Registries.Models.getStaticModel("monkey_ut.fbx").getTransform().turn(0,1,0);
-//		Registries.Models.getStaticModel("t.fbx").getTransform().turn(0,1,0);
 		//Registries.Models.getStaticModel("t.fbx").getTransform().move(-0.1f, 0, -0);
 		//Registries.Models.getStaticModel("t.fbx").getTransform().getRotation().identity();
 //		Registries.Models.getStaticModel("tsc.fbx").getTransform().setScale(1f, 1f, 1f);
