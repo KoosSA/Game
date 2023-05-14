@@ -39,6 +39,8 @@ public class ModelLoader {
 
 	public static Model loadModel(String name) {
 		clearData();
+		materials.clear();
+		meshes.clear();
 		String path = Files.getCommonFolderPath(CommonFolders.Models) + "/" + name;
 		Log.debug(ModelLoader.class, "Starting model loading for: " + name);
 
@@ -58,12 +60,17 @@ public class ModelLoader {
 			AIMesh mesh = AIMesh.create(scene.mMeshes().get(i));
 			meshes.add(processMesh(mesh, materials));
 			mesh.free();
+			clearData();
 		}
 
 		scene.free();
 
 		Log.debug(ModelLoader.class, "Model loaded: " + name);
-		return new Model(meshes);
+		Model model = new Model(meshes);
+		if (name.endsWith(".fbx")) {
+			model.getTransform().turn(90, 0, 0);
+		}
+		return model;
 	}
 
 	private static void clearData() {
@@ -71,8 +78,6 @@ public class ModelLoader {
 		normals.clear();
 		texCoords.clear();
 		indices.clear();
-		materials.clear();
-		meshes.clear();
 	}
 
 	private static Material processMaterial(AIMaterial material) {
