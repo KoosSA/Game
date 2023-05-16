@@ -28,6 +28,7 @@ public class StaticShader extends BaseShader {
 		addUniform("material.colour");
 		addUniform("material.useTexture");
 		addUniform("material.diffuseTex");
+		addUniform("cameraPosition");
 	}
 	
 	public void loadTransformationMatrix(Transform transform) {
@@ -61,6 +62,10 @@ public class StaticShader extends BaseShader {
 			GL30.glActiveTexture(GL30.GL_TEXTURE0);
 			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.DIFFUSE).getId());
 		}
+	}
+	
+	public void loadCameraPosition(Camera cam) {
+		loadVec3f(cam.getPosition(), uniforms.get("cameraPosition"));
 	}
 
 }

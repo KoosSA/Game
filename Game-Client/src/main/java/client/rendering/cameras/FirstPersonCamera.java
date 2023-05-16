@@ -16,22 +16,6 @@ public class FirstPersonCamera extends Camera {
 	private float near_plane = 0.01f;
 	private float far_plane = 1000f;
 
-	private Vector3f position = new Vector3f();
-	private Vector3f scale = new Vector3f(1);
-	private float pitch = 0;
-	private float yaw = 0;
-	
-	private Vector3f forward = new Vector3f(0, 0, -1);
-	private Vector3f right = new Vector3f(1, 0, 0);
-	private Vector3f direction = new Vector3f(0, 0, -1);
-	private Vector3f point = new Vector3f();
-	private float maxPitch = Math.toRadians(99);
-
-
-	private float movementSpeed = 1;
-	private float turnSpeed = 10;
-	private float sprintModifier = 5;
-
 	public FirstPersonCamera(float fovy, float near_plane, float far_plane) {
 		super();
 		this.fovy = fovy;
