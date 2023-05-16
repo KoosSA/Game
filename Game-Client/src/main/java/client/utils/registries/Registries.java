@@ -3,6 +3,7 @@ package client.utils.registries;
 import java.util.HashMap;
 import java.util.Map;
 
+import client.rendering.lights.AmbientLight;
 import client.rendering.lights.DirectionalLight;
 import client.rendering.materials.Texture2D;
 import client.rendering.objects.Model;
@@ -38,9 +39,14 @@ public class Registries {
 	
 	public static class Lights {
 		private static DirectionalLight<?> dirLight = (DirectionalLight<?>) new DirectionalLight<Object>(0, -1, 0);
+		private static AmbientLight<?> ambientLight = new AmbientLight<>(1, 1, 1, 0.05f);
 		
 		public static DirectionalLight<?> getDirectionalLight() {
 			return dirLight;
+		}
+		
+		public static AmbientLight<?> getAmbientLight() {
+			return ambientLight;
 		}
 	}
 	

@@ -10,6 +10,10 @@ struct DirectionalLight {
 	vec3 colour;
 	float intensity;
 };
+struct AmbientLight {
+	vec3 colour;
+	float intensity;
+};
 
 struct Material {
 	vec4 colour;
@@ -18,12 +22,16 @@ struct Material {
 };
 
 uniform DirectionalLight sun;
+uniform AmbientLight ambient;
 uniform Material material;
 
-vec4 calculateDirColour(DirectionalLight light) {
+vec4 calculateDirectionalLightColour(DirectionalLight light) {
 	normalize(light.direction);
-	float influence = max(dot(passNormal, light.direction), 0) * light.intensity;
-	return vec4(light.colour * influence, 1);
+	float influence = max(dot(passNormal, light.direction), 0);
+	return vec4(light.colour.xyz * influence, 1);
+}
+vec4 calculateAmbientLightColour(AmbientLight light) {
+	return vec4(light.colour.xyz * light.intensity, 1);
 }
 
 vec4 calculateDiffuseColour() {
@@ -38,10 +46,15 @@ vec4 calculateDiffuseColour() {
 
 void main() {
 	normalize(passNormal);
-	vec4 dirLightColour = calculateDirColour(sun);
+
+
 	vec4 diffuseColour = calculateDiffuseColour();
 
-	colour = diffuseColour * dirLightColour;
+	vec4 totalLightColour = calculateDirectionalLightColour(sun) + calculateAmbientLightColour(ambient);
+
+	//normalize(totalLightColour);
+
+	colour = diffuseColour * totalLightColour;
 
 }
 

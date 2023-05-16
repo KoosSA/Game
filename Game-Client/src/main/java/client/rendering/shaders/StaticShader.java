@@ -3,6 +3,7 @@ package client.rendering.shaders;
 import org.lwjgl.opengl.GL30;
 
 import client.rendering.cameras.Camera;
+import client.rendering.lights.AmbientLight;
 import client.rendering.lights.DirectionalLight;
 import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
@@ -22,6 +23,8 @@ public class StaticShader extends BaseShader {
 		addUniform("sun.direction");
 		addUniform("sun.colour");
 		addUniform("sun.intensity");
+		addUniform("ambient.colour");
+		addUniform("ambient.intensity");
 		addUniform("material.colour");
 		addUniform("material.useTexture");
 		addUniform("material.diffuseTex");
@@ -43,6 +46,11 @@ public class StaticShader extends BaseShader {
 		loadFloat(light.getIntensity(), uniforms.get("sun.intensity"));
 		loadVec3f(light.getColour(), uniforms.get("sun.colour"));
 		loadVec3f(light.getDirection(), uniforms.get("sun.direction"));
+	}
+	
+	public void loadAmbientLight(AmbientLight<?> light) {
+		loadFloat(light.getIntensity(), uniforms.get("ambient.intensity"));
+		loadVec3f(light.getColour(), uniforms.get("ambient.colour"));
 	}
 	
 	public void loadMaterial(Material material) {
