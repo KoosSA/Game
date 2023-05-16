@@ -1,3 +1,4 @@
+rootProject.name = 'Game'
 
 include 'Game-Client',
 'Game-Common',

@@ -1,3 +1,6 @@
+group 'client'
+version '0.0.1'
+
 apply plugin: 'application'
 
 
@@ -68,5 +71,9 @@ dependencies {
 
 application {
     mainClassName = 'client.Client'
-    
 }
+
+applicationDistribution.from('.') {
+	include 'Resources/'
+}
+

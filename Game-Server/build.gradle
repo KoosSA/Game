@@ -1,5 +1,4 @@
 group 'server'
-version '0.0.1'
 
 apply plugin: 'application'
 
