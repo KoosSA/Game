@@ -34,7 +34,7 @@ public class Client extends BaseGameLoop {
 		
 		renderer = new StaticRenderer(new FirstPersonCamera());
 		
-		Model m = Registries.Models.getStaticModel("p.fbx");
+		Model m = Registries.Models.getStaticModel("box.fbx");
 		m.getTransform().setScale(1f, 1, 1);
 		m.getTransform().move(0, 0, -5f);
 		m.getTransform().resetRotation();
