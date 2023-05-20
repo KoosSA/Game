@@ -10,6 +10,8 @@ out vec3 passNormal;
 out vec2 passTexCoord;
 out vec3 toCamera;
 out mat3 toTangentSpace;
+out vec3 camPos;
+out vec3 crntPos;
 
 uniform mat4 transformationMatrix;
 uniform mat4 viewMatrix;
@@ -29,4 +31,6 @@ void main() {
 	toTangentSpace = mat3(ttangent, tbitangent, passNormal);
 	passTexCoord = textureCoord;
 	toCamera = ((inverse(viewMatrix) * vec4(0,0,0,1)).xyz - worldposition.xyz);
+	crntPos = position;
+	camPos = (viewMatrix * vec4(0,0,0,1)).xyz;
 }

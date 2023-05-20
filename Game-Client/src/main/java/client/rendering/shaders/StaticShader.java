@@ -33,6 +33,8 @@ public class StaticShader extends BaseShader {
 		addUniform("material.normalTex");
 		addUniform("material.useSpecularTexture");
 		addUniform("material.specularTex");
+		addUniform("material.useDisplacementTexture");
+		addUniform("material.displacementTex");
 		
 		addUniform("cameraPosition");
 	}
@@ -65,6 +67,7 @@ public class StaticShader extends BaseShader {
 		loadBoolean(material.isUseTexture(TextureType.DIFFUSE), uniforms.get("material.useDiffuseTexture"));
 		loadBoolean(material.isUseTexture(TextureType.NORMAL), uniforms.get("material.useNormalTexture"));
 		loadBoolean(material.isUseTexture(TextureType.SPECULAR), uniforms.get("material.useSpecularTexture"));
+		loadBoolean(material.isUseTexture(TextureType.DISPLACEMENT), uniforms.get("material.useDisplacementTexture"));
 		if (material.isUseTexture(TextureType.DIFFUSE)) {
 			loadInt(0, uniforms.get("material.diffuseTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE0);
@@ -79,6 +82,11 @@ public class StaticShader extends BaseShader {
 			loadInt(2, uniforms.get("material.specularTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE2);
 			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.SPECULAR).getId());
+		}
+		if (material.isUseTexture(TextureType.DISPLACEMENT)) {
+			loadInt(3, uniforms.get("material.displacementTex"));
+			GL30.glActiveTexture(GL30.GL_TEXTURE3);
+			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.DISPLACEMENT).getId());
 		}
 		
 	}

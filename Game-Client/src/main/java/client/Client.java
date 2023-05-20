@@ -38,7 +38,7 @@ public class Client extends BaseGameLoop {
 		m.getTransform().setScale(1f, 1, 1);
 		m.getTransform().move(0, 0, -5f);
 		m.getTransform().resetRotation();
-		m.getTransform().turn(20, 0, 0);
+		//m.getTransform().turn(20, 0, 0);
 		
 		Material mat = m.getMeshes().get(0).getMaterial();
 		//mat.setDiffuseColour(1, 0, 0, 1);
@@ -46,9 +46,11 @@ public class Client extends BaseGameLoop {
 		mat.addTexture(TextureType.DIFFUSE, "brick_diff.jpg");
 		mat.addTexture(TextureType.NORMAL, "brick_normal.jpg");
 		mat.addTexture(TextureType.SPECULAR, "brick_spec.jpg");
-		
+		mat.addTexture(TextureType.DISPLACEMENT, "brick_disp.png");
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().setScale(0.5f, 0.5f, 1f);
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().move(0, 0, 5f);
+		
+		Registries.Lights.getAmbientLight().setIntensity(0.5f);
 	}
 
 	@Override
