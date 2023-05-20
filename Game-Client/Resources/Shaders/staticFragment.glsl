@@ -1,7 +1,7 @@
 #version 330
 
 in vec3 passNormal;
-in vec2 texCoord;
+in vec2 passTexCoord;
 in vec3 toCamera;
 in mat3 toTangentSpace;
 
@@ -21,36 +21,43 @@ struct Material {
 	vec4 colour;
 	int useDiffuseTexture;
 	int useNormalTexture;
+	int useSpecularTexture;
 	sampler2D diffuseTex;
 	sampler2D normalTex;
+	sampler2D specularTex;
 };
 
 uniform DirectionalLight sun;
 uniform AmbientLight ambient;
 uniform Material material;
 
-float calculateSpecularFactor(vec3 toCam, vec3 lightDir, vec3 normal) {
+float calculateSpecularFactor(vec3 toCam, vec3 lightDir, vec3 normal, vec2 texCoord) {
 	vec3 halfDir = normalize(lightDir + toCam);
 	if (material.useNormalTexture == 1) {
 		halfDir = normalize(toTangentSpace * halfDir);
 	}
 	float angle = max(dot(halfDir, normal), 0);
-	return pow(angle, 8);
+	float factor = pow(angle, 8);
+	if (material.useSpecularTexture == 1) {
+		vec3 st = vec3(1,1,1) - texture(material.specularTex, texCoord).xyz;
+		factor = factor * length(st);
+	}
+	return factor;
 }
-vec4 calculateDirectionalLightColour(DirectionalLight light, vec3 normal, vec3 toCam) {
+vec4 calculateDirectionalLightColour(DirectionalLight light, vec3 normal, vec3 toCam, vec2 texCoord) {
 	vec3 dir = normalize(light.direction);
 	if (material.useNormalTexture == 1) {
 		dir = normalize(toTangentSpace * dir);
 	}
 	float influence = max(dot(normal, dir), 0);
-	float specularFactor = calculateSpecularFactor(toCam, dir, normal);
+	float specularFactor = calculateSpecularFactor(toCam, dir, normal, texCoord);
 	return vec4(light.colour.xyz * ((influence + specularFactor)), 1);
 }
 vec4 calculateAmbientLightColour(AmbientLight light) {
 	return vec4(light.colour.xyz * light.intensity, 1);
 }
 
-vec4 calculateDiffuseColour() {
+vec4 calculateDiffuseColour(vec2 texCoord) {
 	vec4 col = vec4(1,1,1,1);
 	if (material.useDiffuseTexture == 0) {
 		return material.colour;
@@ -59,7 +66,7 @@ vec4 calculateDiffuseColour() {
 	}
 	return col;
 }
-vec3 getNormal() {
+vec3 getNormal(vec2 texCoord) {
 	if (material.useNormalTexture == 0) {
 		return normalize(passNormal);
 	}
@@ -68,13 +75,14 @@ vec3 getNormal() {
 }
 
 void main() {
-	vec3 normal = getNormal();
+	vec2 texCoord = passTexCoord;
+	vec3 normal = getNormal(texCoord);
 	vec3 toCam = normalize(toCamera);
 
 
-	vec4 diffuseColour = calculateDiffuseColour();
+	vec4 diffuseColour = calculateDiffuseColour(texCoord);
 
-	vec4 totalLightColour = calculateDirectionalLightColour(sun, normal, toCam);// + calculateAmbientLightColour(ambient);
+	vec4 totalLightColour = calculateDirectionalLightColour(sun, normal, toCam, texCoord);// + calculateAmbientLightColour(ambient);
 
 
 	colour = diffuseColour * totalLightColour;

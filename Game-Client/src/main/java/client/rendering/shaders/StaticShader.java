@@ -31,6 +31,8 @@ public class StaticShader extends BaseShader {
 		addUniform("material.diffuseTex");
 		addUniform("material.useNormalTexture");
 		addUniform("material.normalTex");
+		addUniform("material.useSpecularTexture");
+		addUniform("material.specularTex");
 		
 		addUniform("cameraPosition");
 	}
@@ -62,6 +64,7 @@ public class StaticShader extends BaseShader {
 		loadVec4f(material.getDiffuseColour(), uniforms.get("material.colour"));
 		loadBoolean(material.isUseTexture(TextureType.DIFFUSE), uniforms.get("material.useDiffuseTexture"));
 		loadBoolean(material.isUseTexture(TextureType.NORMAL), uniforms.get("material.useNormalTexture"));
+		loadBoolean(material.isUseTexture(TextureType.SPECULAR), uniforms.get("material.useSpecularTexture"));
 		if (material.isUseTexture(TextureType.DIFFUSE)) {
 			loadInt(0, uniforms.get("material.diffuseTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE0);
@@ -71,6 +74,11 @@ public class StaticShader extends BaseShader {
 			loadInt(1, uniforms.get("material.normalTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE1);
 			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.NORMAL).getId());
+		}
+		if (material.isUseTexture(TextureType.SPECULAR)) {
+			loadInt(2, uniforms.get("material.specularTex"));
+			GL30.glActiveTexture(GL30.GL_TEXTURE2);
+			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.SPECULAR).getId());
 		}
 		
 	}

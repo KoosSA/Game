@@ -7,7 +7,7 @@ layout(location = 3) in vec3 tangent;
 layout(location = 4) in vec3 bitangent;
 
 out vec3 passNormal;
-out vec2 texCoord;
+out vec2 passTexCoord;
 out vec3 toCamera;
 out mat3 toTangentSpace;
 
@@ -27,6 +27,6 @@ void main() {
 	vec3 ttangent = (transformationMatrix * vec4(tangent, 0)).xyz;
 	vec3 tbitangent = (transformationMatrix * vec4(bitangent, 0)).xyz;
 	toTangentSpace = mat3(ttangent, tbitangent, passNormal);
-	texCoord = textureCoord;
+	passTexCoord = textureCoord;
 	toCamera = ((inverse(viewMatrix) * vec4(0,0,0,1)).xyz - worldposition.xyz);
 }

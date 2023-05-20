@@ -43,8 +43,8 @@ public class Client extends BaseGameLoop {
 		Material mat = m.getMeshes().get(0).getMaterial();
 		//mat.setDiffuseColour(1, 0, 0, 1);
 		//mat.setUseTexture(false);
-		//mat.addTexture(TextureType.DIFFUSE, "brick_diff.jpg");
-		//mat.addTexture(TextureType.NORMAL, "brick_normal.jpg");
+		mat.addTexture(TextureType.DIFFUSE, "brick_diff.jpg");
+		mat.addTexture(TextureType.NORMAL, "brick_normal.jpg");
 		mat.addTexture(TextureType.SPECULAR, "brick_spec.jpg");
 		
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().setScale(0.5f, 0.5f, 1f);
