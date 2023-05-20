@@ -75,5 +75,6 @@ application {
 
 applicationDistribution.from('.') {
 	include 'Resources/'
+	into 'bin'
 }
 
