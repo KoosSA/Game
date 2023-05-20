@@ -1,10 +1,11 @@
 package client;
 
-import org.joml.Vector3f;
-
 import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
 import client.rendering.cameras.FirstPersonCamera;
+import client.rendering.materials.Material;
+import client.rendering.materials.TextureType;
+import client.rendering.objects.Model;
 import client.rendering.renderers.StaticRenderer;
 import client.utils.registries.Registries;
 
@@ -33,9 +34,19 @@ public class Client extends BaseGameLoop {
 		
 		renderer = new StaticRenderer(new FirstPersonCamera());
 		
-		Registries.Models.getStaticModel("t.fbx");
-		Registries.Models.getStaticModel("t.fbx").getTransform().setScale(1f, 1, 1);
-		Registries.Models.getStaticModel("t.fbx").getTransform().move(0, 0, -5f);
+		Model m = Registries.Models.getStaticModel("p.fbx");
+		m.getTransform().setScale(1f, 1, 1);
+		m.getTransform().move(0, 0, -5f);
+		m.getTransform().resetRotation();
+		m.getTransform().turn(20, 0, 0);
+		
+		Material mat = m.getMeshes().get(0).getMaterial();
+		//mat.setDiffuseColour(1, 0, 0, 1);
+		//mat.setUseTexture(false);
+		//mat.addTexture(TextureType.DIFFUSE, "brick_diff.jpg");
+		//mat.addTexture(TextureType.NORMAL, "brick_normal.jpg");
+		mat.addTexture(TextureType.SPECULAR, "brick_spec.jpg");
+		
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().setScale(0.5f, 0.5f, 1f);
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().move(0, 0, 5f);
 	}

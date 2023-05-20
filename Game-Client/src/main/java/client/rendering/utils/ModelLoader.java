@@ -32,10 +32,12 @@ public class ModelLoader {
 	private static LinkedList<Float> normals = new LinkedList<>();
 	private static LinkedList<Float> texCoords = new LinkedList<>();
 	private static LinkedList<Integer> indices = new LinkedList<>();
+	private static LinkedList<Float> tangents = new LinkedList<>();
+	private static LinkedList<Float> bitangents = new LinkedList<>();
 	private static List<Mesh> meshes = new ArrayList<>();
 	private static List<Material> materials = new ArrayList<>();
 
-	private static int flags =  Assimp.aiProcess_Triangulate | Assimp.aiProcess_FixInfacingNormals;
+	private static int flags =  Assimp.aiProcess_Triangulate | Assimp.aiProcess_FixInfacingNormals | Assimp.aiProcess_CalcTangentSpace;
 
 	public static Model loadModel(String name) {
 		clearData();
@@ -78,6 +80,8 @@ public class ModelLoader {
 		normals.clear();
 		texCoords.clear();
 		indices.clear();
+		tangents.clear();
+		bitangents.clear();
 	}
 
 	private static Material processMaterial(AIMaterial material) {
@@ -142,6 +146,16 @@ public class ModelLoader {
 			normals.add(normal.z());
 			//vertex.free();
 			//normal.free();
+			
+			AIVector3D tangent = mesh.mTangents().get(i);
+			tangents.add(tangent.x());
+			tangents.add(tangent.y());
+			tangents.add(tangent.z());
+			
+			AIVector3D bitangent = mesh.mTangents().get(i);
+			bitangents.add(bitangent.x());
+			bitangents.add(bitangent.y());
+			bitangents.add(bitangent.z());
 		}
 
 		AIVector3D.Buffer aiT = mesh.mTextureCoords(0);
@@ -163,7 +177,7 @@ public class ModelLoader {
 		}
 		//faces.free();
 
-		return new Mesh(Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices)), mats.get(mesh.mMaterialIndex()), indices.size());
+		return new Mesh(Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents)), mats.get(mesh.mMaterialIndex()), indices.size());
 	}
 
 }

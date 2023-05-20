@@ -25,9 +25,13 @@ public class StaticShader extends BaseShader {
 		addUniform("sun.intensity");
 		addUniform("ambient.colour");
 		addUniform("ambient.intensity");
+		
 		addUniform("material.colour");
-		addUniform("material.useTexture");
+		addUniform("material.useDiffuseTexture");
 		addUniform("material.diffuseTex");
+		addUniform("material.useNormalTexture");
+		addUniform("material.normalTex");
+		
 		addUniform("cameraPosition");
 	}
 	
@@ -56,12 +60,19 @@ public class StaticShader extends BaseShader {
 	
 	public void loadMaterial(Material material) {
 		loadVec4f(material.getDiffuseColour(), uniforms.get("material.colour"));
-		loadBoolean(material.isUseTexture(), uniforms.get("material.useTexture"));
-		if (material.isUseTexture()) {
+		loadBoolean(material.isUseTexture(TextureType.DIFFUSE), uniforms.get("material.useDiffuseTexture"));
+		loadBoolean(material.isUseTexture(TextureType.NORMAL), uniforms.get("material.useNormalTexture"));
+		if (material.isUseTexture(TextureType.DIFFUSE)) {
 			loadInt(0, uniforms.get("material.diffuseTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE0);
 			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.DIFFUSE).getId());
 		}
+		if (material.isUseTexture(TextureType.NORMAL)) {
+			loadInt(1, uniforms.get("material.normalTex"));
+			GL30.glActiveTexture(GL30.GL_TEXTURE1);
+			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.NORMAL).getId());
+		}
+		
 	}
 	
 	public void loadCameraPosition(Camera cam) {

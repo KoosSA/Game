@@ -15,6 +15,7 @@ import com.koossa.logger.Log;
 
 import client.rendering.cameras.Camera;
 import client.utils.FileUtils;
+import client.utils.Globals;
 import client.utils.MathUtil;
 
 public abstract class BaseShader {
@@ -46,11 +47,13 @@ public abstract class BaseShader {
 		if (GL30.glGetProgrami(id, GL30.GL_LINK_STATUS) == GL30.GL_FALSE) {
 			Log.error(this, "Shader program link failed: " + vertPath + " & " + fragPath);
 			Log.error(this, GL30.glGetProgramInfoLog(id));
+			Globals.window.exit();
 		}
 		GL30.glValidateProgram(id);
 		if (GL30.glGetProgrami(id, GL30.GL_VALIDATE_STATUS) == GL30.GL_FALSE) {
 			Log.error(this, "Shader program validation failed: " + vertPath + " & " + fragPath);
 			Log.error(this, GL30.glGetProgramInfoLog(id));
+			Globals.window.exit();
 		}
 		getUniformLocationsBase();
 		return id;
@@ -109,7 +112,7 @@ public abstract class BaseShader {
 	}
 	
 	protected void loadBoolean(boolean bool, int location) {
-		loadFloat(bool ? 1 : 0, location);
+		loadInt(bool ? 1 : 0, location);
 	}
 	
 	protected void loadInt(int value, int location) {

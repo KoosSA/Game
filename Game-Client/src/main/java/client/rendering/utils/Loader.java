@@ -55,4 +55,23 @@ public class Loader {
 		});
 	}
 
+	public static int loadModelData(float[] vertices, float[] texCoords, float[] normals, int[] indices, float[] tangents, float[] bitangents) {
+		int vao = GL46.glGenVertexArrays();
+		GL46.glBindVertexArray(vao);
+		storeFloatData(0, 3, vertices);
+		storeFloatData(1, 2, texCoords);
+		storeFloatData(2, 3, normals);
+		storeFloatData(3, 3, tangents);
+		storeFloatData(4, 3, bitangents);
+		storeIndices(indices);
+		GL46.glEnableVertexAttribArray(0);
+		GL46.glEnableVertexAttribArray(1);
+		GL46.glEnableVertexAttribArray(2);
+		GL46.glEnableVertexAttribArray(3);
+		GL46.glEnableVertexAttribArray(4);
+		GL46.glBindVertexArray(0);
+		vaos.add(vao);
+		return vao;
+	}
+
 }
