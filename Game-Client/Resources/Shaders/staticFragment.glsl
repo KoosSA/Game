@@ -4,8 +4,6 @@ in vec3 passNormal;
 in vec2 passTexCoord;
 in vec3 toCamera;
 in mat3 toTangentSpace;
-in vec3 camPos;
-in vec3 crntPos;
 
 out vec4 colour;
 
@@ -37,9 +35,6 @@ uniform Material material;
 
 float calculateSpecularFactor(vec3 toCam, vec3 lightDir, vec3 normal, vec2 texCoord) {
 	vec3 halfDir = normalize(lightDir + toCam);
-	if (material.useNormalTexture == 1 || material.useDisplacementTexture == 1 || material.useSpecularTexture == 1) {
-		halfDir = normalize(toTangentSpace * halfDir);
-	}
 	float angle = max(dot(halfDir, normal), 0);
 	float factor = pow(angle, 8);
 	if (material.useSpecularTexture == 1 ) {
@@ -49,14 +44,12 @@ float calculateSpecularFactor(vec3 toCam, vec3 lightDir, vec3 normal, vec2 texCo
 	return factor;
 }
 vec4 calculateDirectionalLightColour(DirectionalLight light, vec3 normal, vec3 toCam, vec2 texCoord) {
-	vec3 dir = normalize(light.direction);
-	if (material.useNormalTexture == 1 || material.useDisplacementTexture == 1 || material.useSpecularTexture == 1) {
-		dir = normalize(toTangentSpace * dir);
-	}
-	float influence = max(dot(normal, dir), 0);
-	float specularFactor = calculateSpecularFactor(toCam, dir, normal, texCoord);
+	vec3 toLight = normalize(light.direction);
+	float influence = max(dot(normal, toLight), 0);
+	float specularFactor = calculateSpecularFactor(toCam, toLight, normal, texCoord);
 	return vec4(light.colour.xyz * ((influence + specularFactor)), 1);
 }
+
 vec4 calculateAmbientLightColour(AmbientLight light) {
 	return vec4(light.colour.xyz * light.intensity, 1);
 }
@@ -70,26 +63,24 @@ vec4 calculateDiffuseColour(vec2 texCoord) {
 	}
 	return col;
 }
+
 vec3 getNormal(vec2 texCoord) {
-	if ((material.useDisplacementTexture == 1 || material.useSpecularTexture == 1) && material.useNormalTexture == 0) {
-			return normalize(toTangentSpace * passNormal);
-	} else if (material.useNormalTexture == 0) {
-		return normalize(passNormal);
+	vec3 newNormal = passNormal;
+	if (material.useNormalTexture == 1) {
+		newNormal = texture(material.normalTex, texCoord).rgb * 2.0f - 1.0f;
+		newNormal = toTangentSpace * newNormal;
 	}
-	vec3 newNormal = texture(material.normalTex, texCoord).rgb;
 	return normalize(newNormal);
 }
-vec2 getTextureCoordinates(vec3 toCam) {
-	vec2 UVs = passTexCoord;
-	if (material.useDisplacementTexture == 1) {
 
-	}
+vec2 getTextureCoordinates() {
+	vec2 UVs = passTexCoord;
 	return UVs;
 }
 
 void main() {
 	vec3 toCam = normalize(toCamera);
-	vec2 texCoord = getTextureCoordinates(toCam);
+	vec2 texCoord = getTextureCoordinates();
 	vec3 normal = getNormal(texCoord);
 
 	vec4 diffuseColour = calculateDiffuseColour(texCoord);

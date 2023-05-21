@@ -9,12 +9,13 @@ import client.utils.registries.Registries;
 
 public class Material {
 	
+	public static final Material DEFAULT = new Material();
 	private Map<TextureType, Texture2D> textures;
 	private Vector4f diffuseColour;
 	
 	public Material() {
 		textures = new HashMap<>();
-		diffuseColour = new Vector4f(0,0,0,1);
+		diffuseColour = new Vector4f(0,1,0,1);
 	}
 	
 	public Texture2D getTexture(TextureType type) {
@@ -43,6 +44,11 @@ public class Material {
 	 */
 	public Texture2D setTexture(TextureType type, Texture2D texture) {
 		return textures.put(type, texture);
+	}
+	
+	public Material removeTexture(TextureType type) {
+		textures.remove(type);
+		return this;
 	}
 	
 	public boolean isUseTexture(TextureType type) {

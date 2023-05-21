@@ -31,7 +31,7 @@ public class ModelLoader {
 	private static List<Mesh> meshes = new ArrayList<>();
 //	private static List<Material> materials = new ArrayList<>();
 
-	private static int flags =  Assimp.aiProcess_Triangulate | Assimp.aiProcess_FixInfacingNormals | Assimp.aiProcess_CalcTangentSpace;
+	private static int flags =  Assimp.aiProcess_Triangulate | Assimp.aiProcess_CalcTangentSpace;
 
 	public static Model loadModel(String name) {
 		clearData();

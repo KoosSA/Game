@@ -24,35 +24,43 @@ public class Client extends BaseGameLoop {
 
 	@Override
 	protected void init() {
-		//input.setInputReceiver(InputStates.NONE);
+		input.setInputReceiver(InputStates.GAME);
 //		gui.loadXML("test.xml");
 //		gui.loadXML("hud.xml");
 //		gui.loadXML("inv.xml");
 		
 		
-		input.setInputReceiver(InputStates.GAME);
+		//input.setInputReceiver(InputStates.GAME);
 		
 		renderer = new StaticRenderer(new FirstPersonCamera());
 		
-		Model m = Registries.Models.getStaticModel("box.fbx");
+		Model m = Registries.Models.getStaticModel("barrels_fbx.fbx");
 		m.getTransform().setScale(1f, 1, 1);
 		m.getTransform().move(0, 0, -5f);
 		m.getTransform().resetRotation();
 		//m.getTransform().turn(20, 0, 0);
 		
 		Material mat = m.getMeshes().get(0).getMaterial();
-		//mat.setDiffuseColour(1, 0, 0, 1);
-		//mat.setUseTexture(false);
-		mat.addTexture(TextureType.DIFFUSE, "brick_diff.jpg");
-		mat.addTexture(TextureType.NORMAL, "brick_normal.jpg");
-		mat.addTexture(TextureType.SPECULAR, "brick_spec.jpg");
+		//mat.setDiffuseColour(1, 1, 1, 1);
+		//mat.removeTexture(TextureType.DIFFUSE);
+		mat.addTexture(TextureType.DIFFUSE, "drum3_base_color.png");
+		mat.addTexture(TextureType.NORMAL, "drum3_normal.png");
+		mat.addTexture(TextureType.SPECULAR, "drum3_roughness.png");
 		//mat.addTexture(TextureType.DISPLACEMENT, "brick_disp.png");
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().setScale(0.5f, 0.5f, 1f);
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().move(0, 0, 5f);
 		
-		Registries.Lights.getAmbientLight().setIntensity(0.5f);
+		//mat.addTexture(TextureType.DIFFUSE, "brick_diff.jpg");
+		//mat.addTexture(TextureType.NORMAL, "brick_normal.jpg");
+		
+		Registries.Lights.getAmbientLight().setIntensity(0.1f);
+		Registries.Lights.getDirectionalLight().setDirection(-0.5f, -0.5f, 0);
+		
+		
+		//GLFW.glfwSetInputMode(Globals.window.getId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
 	}
 
+	float angle = -1;
 	@Override
 	protected void update(float delta) {
 		//HUDScreenController.update(delta);
@@ -60,6 +68,10 @@ public class Client extends BaseGameLoop {
 		//Registries.Models.getStaticModel("t.fbx").getTransform().move(-0.1f, 0, -0);
 		//Registries.Models.getStaticModel("t.fbx").getTransform().getRotation().identity();
 //		Registries.Models.getStaticModel("tsc.fbx").getTransform().setScale(1f, 1f, 1f);
+		//Registries.Models.getStaticModel("barrels_fbx.fbx").getTransform().turn(0, 1, 0);
+		angle = angle + 0.0001f * delta;
+		Registries.Lights.getDirectionalLight().setDirection(0, 0, angle);
+		
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class StaticShader extends BaseShader {
 		addUniform("transformationMatrix");
 		addUniform("viewMatrix");
 		addUniform("projectionMatrix");
-		addUniform("sun.direction");
+		addUniform("sun.direction"); //Actually represents the to light vector
 		addUniform("sun.colour");
 		addUniform("sun.intensity");
 		addUniform("ambient.colour");
@@ -68,6 +68,7 @@ public class StaticShader extends BaseShader {
 		loadBoolean(material.isUseTexture(TextureType.NORMAL), uniforms.get("material.useNormalTexture"));
 		loadBoolean(material.isUseTexture(TextureType.SPECULAR), uniforms.get("material.useSpecularTexture"));
 		loadBoolean(material.isUseTexture(TextureType.DISPLACEMENT), uniforms.get("material.useDisplacementTexture"));
+		
 		if (material.isUseTexture(TextureType.DIFFUSE)) {
 			loadInt(0, uniforms.get("material.diffuseTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE0);
