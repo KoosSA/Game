@@ -28,6 +28,7 @@ public class Texture2D {
 		int[] h = new int[1];
 		int[] c = new int[1];
 		
+		STBImage.stbi_set_flip_vertically_on_load(true);
 		ByteBuffer data = STBImage.stbi_load(path, w, h, c, STBImage.STBI_rgb_alpha);
 		if (data == null) {
 			Log.error(this, "Failed to load image: " + path);
