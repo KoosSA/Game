@@ -5,26 +5,20 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.lwjgl.assimp.AIColor4D;
 import org.lwjgl.assimp.AIFace;
-import org.lwjgl.assimp.AIMaterial;
 import org.lwjgl.assimp.AIMesh;
 import org.lwjgl.assimp.AIScene;
-import org.lwjgl.assimp.AIString;
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.assimp.Assimp;
-import org.lwjgl.opengl.GL30;
 
 import com.koossa.filesystem.CommonFolders;
 import com.koossa.filesystem.Files;
 import com.koossa.logger.Log;
 
 import client.rendering.materials.Material;
-import client.rendering.materials.TextureType;
 import client.rendering.objects.Mesh;
 import client.rendering.objects.Model;
 import client.utils.MathUtil;
-import client.utils.registries.Registries;
 
 public class ModelLoader {
 
@@ -35,13 +29,13 @@ public class ModelLoader {
 	private static LinkedList<Float> tangents = new LinkedList<>();
 	private static LinkedList<Float> bitangents = new LinkedList<>();
 	private static List<Mesh> meshes = new ArrayList<>();
-	private static List<Material> materials = new ArrayList<>();
+//	private static List<Material> materials = new ArrayList<>();
 
 	private static int flags =  Assimp.aiProcess_Triangulate | Assimp.aiProcess_FixInfacingNormals | Assimp.aiProcess_CalcTangentSpace;
 
 	public static Model loadModel(String name) {
 		clearData();
-		materials.clear();
+//		materials.clear();
 		meshes.clear();
 		String path = Files.getCommonFolderPath(CommonFolders.Models) + "/" + name;
 		Log.debug(ModelLoader.class, "Starting model loading for: " + name);
@@ -52,25 +46,26 @@ public class ModelLoader {
 			Log.error(ModelLoader.class, Assimp.aiGetErrorString());
 		}
 
-		for (int i = 0; i < scene.mNumMaterials(); i++) {
-			AIMaterial material = AIMaterial.create(scene.mMaterials().get(i));
-			materials.add(processMaterial(material));
-			material.free();
-		}
+//		for (int i = 0; i < scene.mNumMaterials(); i++) {
+//			AIMaterial material = AIMaterial.create(scene.mMaterials().get(i));
+//			materials.add(processMaterial(material));
+//			material.free();
+//		}
 
 		for (int i = 0; i < scene.mNumMeshes(); i++) {
 			AIMesh mesh = AIMesh.create(scene.mMeshes().get(i));
-			meshes.add(processMesh(mesh, materials));
+//			meshes.add(processMesh(mesh, materials));
+			meshes.add(processMesh(mesh));
 			mesh.free();
 			clearData();
 		}
 
 		scene.free();
 
-		Log.debug(ModelLoader.class, "Model loaded: " + name);
+		Log.debug(ModelLoader.class, "Model loaded: " + name + " with a total of " + meshes.size() + " meshes.");
 		Model model = new Model(meshes);
 		if (name.endsWith(".fbx")) {
-			model.getTransform().turn(90, 0, 0);
+			//model.getTransform().turn(90, 0, 0);
 		}
 		return model;
 	}
@@ -84,56 +79,56 @@ public class ModelLoader {
 		bitangents.clear();
 	}
 
-	private static Material processMaterial(AIMaterial material) {
-		Material mat = new Material();
-		AIColor4D colour = AIColor4D.create();
-		AIString path = AIString.create();
-		
-		//Load diffuse texture
-		Assimp.aiGetMaterialTexture(material, Assimp.aiTextureType_DIFFUSE, 0, path, (IntBuffer) null, null, null, null, null, null);
-		if (path.length() > 0 && path != null) {
-			String[] str = path.dataString().split("\\\\");
-			String name = str[str.length-1];
-			mat.setTexture(TextureType.DIFFUSE, Registries.Textures.get2DTexture(name));
-		} 
-		Assimp.aiGetMaterialColor(material, Assimp.AI_MATKEY_COLOR_DIFFUSE, 0, 0, colour);
-		mat.setDiffuseColour(colour.r(), colour.g(), colour.b(), colour.a());
-		
-		//Loads normal texture
-		Assimp.aiGetMaterialTexture(material, Assimp.aiTextureType_NORMALS, 0, path, (IntBuffer) null, null, null, null, null, null);
-		if (path.length() > 0 && path != null) {
-			String[] str = path.dataString().split("\\\\");
-			String name = str[str.length-1];
-			mat.setTexture(TextureType.NORMAL, Registries.Textures.get2DTexture(name));
-		} 
-		
-		//Load displacement texture
-		Assimp.aiGetMaterialTexture(material, Assimp.aiTextureType_DISPLACEMENT, 0, path, (IntBuffer) null, null, null, null, null, null);
-		if (path.length() > 0 && path != null) {
-			String[] str = path.dataString().split("\\\\");
-			String name = str[str.length-1];
-			mat.setTexture(TextureType.DISPLACEMENT, Registries.Textures.get2DTexture(name));
-		} 
-		
-		//Load displacement texture
-		Assimp.aiGetMaterialTexture(material, Assimp.aiTextureType_SPECULAR, 0, path, (IntBuffer) null, null, null, null, null, null);
-		if (path.length() > 0 && path != null) {
-			String[] str = path.dataString().split("\\\\");
-			String name = str[str.length-1];
-			mat.setTexture(TextureType.SPECULAR, Registries.Textures.get2DTexture(name));
-		} 
-		
-		//path.free();
-		//colour.free();
-		
-		while (GL30.glGetError() != GL30.GL_NO_ERROR) {
-			Log.error(ModelLoader.class, "Opengl Error: " + GL30.glGetError());
-		}
-		
-		return mat;
-	}
+//	private static Material processMaterial(AIMaterial material) {
+//		Material mat = new Material();
+//		AIColor4D colour = AIColor4D.create();
+//		AIString path = AIString.create();
+//		
+//		//Load diffuse texture
+//		Assimp.aiGetMaterialTexture(material, Assimp.aiTextureType_DIFFUSE, 0, path, (IntBuffer) null, null, null, null, null, null);
+//		if (path.length() > 0 && path != null) {
+//			String[] str = path.dataString().split("\\\\");
+//			String name = str[str.length-1];
+//			mat.setTexture(TextureType.DIFFUSE, Registries.Textures.get2DTexture(name));
+//		} 
+//		Assimp.aiGetMaterialColor(material, Assimp.AI_MATKEY_COLOR_DIFFUSE, 0, 0, colour);
+//		mat.setDiffuseColour(colour.r(), colour.g(), colour.b(), colour.a());
+//		
+//		//Loads normal texture
+//		Assimp.aiGetMaterialTexture(material, Assimp.aiTextureType_NORMALS, 0, path, (IntBuffer) null, null, null, null, null, null);
+//		if (path.length() > 0 && path != null) {
+//			String[] str = path.dataString().split("\\\\");
+//			String name = str[str.length-1];
+//			mat.setTexture(TextureType.NORMAL, Registries.Textures.get2DTexture(name));
+//		} 
+//		
+//		//Load displacement texture
+//		Assimp.aiGetMaterialTexture(material, Assimp.aiTextureType_DISPLACEMENT, 0, path, (IntBuffer) null, null, null, null, null, null);
+//		if (path.length() > 0 && path != null) {
+//			String[] str = path.dataString().split("\\\\");
+//			String name = str[str.length-1];
+//			mat.setTexture(TextureType.DISPLACEMENT, Registries.Textures.get2DTexture(name));
+//		} 
+//		
+//		//Load displacement texture
+//		Assimp.aiGetMaterialTexture(material, Assimp.aiTextureType_SPECULAR, 0, path, (IntBuffer) null, null, null, null, null, null);
+//		if (path.length() > 0 && path != null) {
+//			String[] str = path.dataString().split("\\\\");
+//			String name = str[str.length-1];
+//			mat.setTexture(TextureType.SPECULAR, Registries.Textures.get2DTexture(name));
+//		} 
+//		
+//		//path.free();
+//		//colour.free();
+//		
+//		while (GL30.glGetError() != GL30.GL_NO_ERROR) {
+//			Log.error(ModelLoader.class, "Opengl Error: " + GL30.glGetError());
+//		}
+//		
+//		return mat;
+//	}
 
-	private static Mesh processMesh(AIMesh mesh, List<Material> mats) {
+	private static Mesh processMesh(AIMesh mesh/*, List<Material> mats*/) {
 		for (int i = 0; i < mesh.mNumVertices(); i++) {
 			AIVector3D vertex = mesh.mVertices().get(i);
 			vertices.add(vertex.x());
@@ -156,15 +151,19 @@ public class ModelLoader {
 			bitangents.add(bitangent.x());
 			bitangents.add(bitangent.y());
 			bitangents.add(bitangent.z());
+			
+			AIVector3D tc = mesh.mTextureCoords(0).get(i);
+			texCoords.add(tc.x());
+			texCoords.add(tc.y());
 		}
 
-		AIVector3D.Buffer aiT = mesh.mTextureCoords(0);
-		while (aiT.hasRemaining()) {
-			AIVector3D v = aiT.get();
-			texCoords.add(v.x());
-			texCoords.add(v.y());
-			//v.free();
-		}
+//		AIVector3D.Buffer aiT = mesh.mTextureCoords(0);
+//		while (aiT.hasRemaining()) {
+//			AIVector3D v = aiT.get();
+//			texCoords.add(v.x());
+//			texCoords.add(v.y());
+//			//v.free();
+//		}
 		//aiT.free();
 		
 		
@@ -177,7 +176,7 @@ public class ModelLoader {
 		}
 		//faces.free();
 
-		return new Mesh(Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents)), mats.get(mesh.mMaterialIndex()), indices.size());
+		return new Mesh(Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents)), Material.DEFAULT, indices.size());
 	}
 
 }
