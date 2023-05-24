@@ -3,6 +3,8 @@ package client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL30;
+
 import com.koossa.filesystem.Files;
 import com.koossa.logger.Log;
 
@@ -67,7 +69,9 @@ public class Gui {
 	}
 	
 	public void render() {
+		GL30.glDisable(GL30.GL_DEPTH_TEST);
 		nifty.render(false);
+		GL30.glEnable(GL30.GL_DEPTH_TEST);
 	}
 	
 	public void dispose() {
@@ -100,6 +104,7 @@ public class Gui {
 		Log.debug(this, "Restarting GUI system.");
 		input_system.shutdown();
 		nifty.exit();
+		Globals.input.getInputReceiver(InputStates.GUI).dispose();
 		
 		input_system = new Lwjgl3InputSystem(Globals.window.getId());
 		render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendCoreProfileFactory.create(Globals.window.getId()));
@@ -112,6 +117,7 @@ public class Gui {
 		}
 		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
 		render_device.setDisplayFPS(true);
+		Globals.gui.input_system = input_system;
 		Globals.input.getInputReceiver(InputStates.GUI).reset();
 		
 		filePaths.forEach(path -> {
