@@ -25,16 +25,17 @@ public class Client extends BaseGameLoop {
 	@Override
 	protected void init() {
 		input.setInputReceiver(InputStates.GAME);
-//		gui.loadXML("test.xml");
+		gui.loadXML("renderDemoUI.xml");
 //		gui.loadXML("hud.xml");
 //		gui.loadXML("inv.xml");
 		
-		
-		//input.setInputReceiver(InputStates.GAME);
+		gui.show("renderDemoMainUI");
+//		gui.show("hud");
+		input.setInputReceiver(InputStates.GUI);
 		
 		renderer = new StaticRenderer(new FirstPersonCamera());
 		
-		Model m = Registries.Models.getStaticModel("barrels_fbx.fbx");
+		Model m = Registries.Models.getStaticModel("t.obj");
 		m.getTransform().setScale(1f, 1, 1);
 		m.getTransform().move(0, 0, -5f);
 		m.getTransform().resetRotation();
@@ -60,17 +61,15 @@ public class Client extends BaseGameLoop {
 		//GLFW.glfwSetInputMode(Globals.window.getId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
 	}
 
-	float angle = -1;
+	
 	@Override
 	protected void update(float delta) {
 		//HUDScreenController.update(delta);
 		//Registries.Models.getStaticModel("monkey_ut.fbx").getTransform().turn(0,1,0);
 		//Registries.Models.getStaticModel("t.fbx").getTransform().move(-0.1f, 0, -0);
 		//Registries.Models.getStaticModel("t.fbx").getTransform().getRotation().identity();
-//		Registries.Models.getStaticModel("tsc.fbx").getTransform().setScale(1f, 1f, 1f);
+		//Registries.Models.getStaticModel("t.obj").getTransform().setScale(1f, 1f, 1f);
 		//Registries.Models.getStaticModel("barrels_fbx.fbx").getTransform().turn(0, 1, 0);
-		angle = angle + 0.0001f * delta;
-		Registries.Lights.getDirectionalLight().setDirection(0, 0, angle);
 		
 	}
 

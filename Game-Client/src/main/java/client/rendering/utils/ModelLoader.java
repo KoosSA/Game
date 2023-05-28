@@ -176,7 +176,7 @@ public class ModelLoader {
 		}
 		//faces.free();
 
-		return new Mesh(Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents)), Material.DEFAULT, indices.size());
+		return new Mesh(Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents)), Material.DEFAULT, indices.size(), mesh.mName().dataString());
 	}
 
 }

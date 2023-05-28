@@ -42,6 +42,10 @@ public class InternalRegistries {
 			handler.update(delta);
 		});
 	}
+
+	public static void removeUpdatable(IUpdatable iUpdatable) {
+		updateHandlers.remove(iUpdatable);
+	}
 	
 	
 

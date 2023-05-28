@@ -73,4 +73,9 @@ public class Transform {
 		return forward.mul(distance, dest);
 	}
 
+	public void setRotation(float x, float y, float z) {
+		resetRotation();
+		turn(x, y, z);
+	}
+
 }

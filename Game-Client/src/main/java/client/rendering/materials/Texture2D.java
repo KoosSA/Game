@@ -63,5 +63,9 @@ public class Texture2D {
 	public int getId() {
 		return id;
 	}
+	
+	public String getName() {
+		return name;
+	}
 
 }

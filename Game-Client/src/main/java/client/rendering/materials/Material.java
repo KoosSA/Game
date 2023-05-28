@@ -23,6 +23,10 @@ public class Material {
 	}
 	
 	public Material addTexture(TextureType type, String texName) {
+		if (texName.toLowerCase().equals("none") || texName == null) {
+			removeTexture(type);
+			return this;
+		}
 		textures.put(type, Registries.Textures.get2DTexture(texName));
 		return this;
 	}
@@ -43,6 +47,10 @@ public class Material {
 	 * @return
 	 */
 	public Texture2D setTexture(TextureType type, Texture2D texture) {
+		if (texture == null) {
+			removeTexture(type);
+			return null;
+		}
 		return textures.put(type, texture);
 	}
 	

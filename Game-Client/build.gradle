@@ -9,6 +9,7 @@ project.ext {
 	lwjglNatives = "natives-windows"
 }
 
+
 dependencies {
 
 	implementation library.slf4j_api

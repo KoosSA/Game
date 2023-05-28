@@ -55,9 +55,10 @@ public class MathUtil {
 	
 	public static Matrix4f getViewMatrix(Vector3f position, float pitch, float yaw, Vector3f scale) {
 		tempMat4.identity();
+		tempMat4.scale(scale);
 		tempMat4.setRotationXYZ(pitch, yaw , 0);
 		tempMat4.translate(position.negate(tempVec3));
-		tempMat4.scale(scale);
+		
 		return tempMat4;
 	}
 

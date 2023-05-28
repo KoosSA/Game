@@ -1,5 +1,6 @@
 package client.utils.registries;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,10 +19,17 @@ public class Registries {
 		public static Texture2D get2DTexture(String name) {
 			Texture2D t = textures2D.getOrDefault(name, null);
 			if (t == null) {
+				if (name.equalsIgnoreCase("none")) {
+					return null;
+				}
 				t = new Texture2D(name);
 				textures2D.put(name, t);
 			}
 			return t;
+		}
+
+		public static Collection<String> getTexture2DNameList() {
+			return textures2D.keySet();
 		}
 	}
 
@@ -34,6 +42,10 @@ public class Registries {
 				staticModels.put(name, m);
 			}
 			return m;
+		}
+		
+		public static Collection<String> getModelNameList() {
+			return staticModels.keySet();
 		}
 	}
 	

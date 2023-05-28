@@ -8,6 +8,10 @@ public interface IUpdatable {
 		InternalRegistries.addUpdatable(this);
 	}
 	
+	default void unRegisterUpdatable() {
+		InternalRegistries.removeUpdatable(this);
+	}
+	
 	void update(float delta);
 
 }
