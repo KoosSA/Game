@@ -2,11 +2,9 @@ package client;
 
 import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
-import client.rendering.cameras.FirstPersonCamera;
 import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
 import client.rendering.objects.Model;
-import client.rendering.renderers.StaticRenderer;
 import client.utils.registries.Registries;
 
 public class Client extends BaseGameLoop {
@@ -18,9 +16,6 @@ public class Client extends BaseGameLoop {
 		//c.disconnect();
 		new Client().start();
 	}
-	
-	
-	private StaticRenderer renderer;
 
 	@Override
 	protected void init() {
@@ -33,7 +28,7 @@ public class Client extends BaseGameLoop {
 //		gui.show("hud");
 		input.setInputReceiver(InputStates.GUI);
 		
-		renderer = new StaticRenderer(new FirstPersonCamera());
+		//renderer = new StaticRenderer(new FirstPersonCamera());
 		
 		Model m = Registries.Models.getStaticModel("t.obj");
 		m.getTransform().setScale(1f, 1, 1);
@@ -54,8 +49,8 @@ public class Client extends BaseGameLoop {
 		//mat.addTexture(TextureType.DIFFUSE, "brick_diff.jpg");
 		//mat.addTexture(TextureType.NORMAL, "brick_normal.jpg");
 		
-		Registries.Lights.getAmbientLight().setIntensity(0.1f);
-		Registries.Lights.getDirectionalLight().setDirection(-0.5f, -0.5f, 0);
+		//Registries.Lights.getAmbientLight().setIntensity(0.1f);
+		//Registries.Lights.getDirectionalLight().setDirection(-0.5f, -0.5f, 0);
 		
 		
 		//GLFW.glfwSetInputMode(Globals.window.getId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
@@ -75,7 +70,7 @@ public class Client extends BaseGameLoop {
 
 	@Override
 	protected void render() {
-		renderer.baseRender();
+		//renderer.baseRender();
 	}
 
 }

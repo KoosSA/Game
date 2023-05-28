@@ -13,9 +13,10 @@ import client.io.input.receivers.handlers.IInputHandler;
 import client.io.input.receivers.handlers.IKeyInputHandler;
 import client.io.input.receivers.handlers.IMouseButtonInputHandler;
 import client.io.input.receivers.handlers.IMouseMovementInputHandler;
+import client.logic.internalEvents.IDisposable;
 import client.utils.Globals;
 
-public class Input {
+public class Input implements IDisposable {
 	
 	private Map<InputStates, InputReceiver> receivers = new HashMap<InputStates, InputReceiver>();
 	private InputReceiver currentReceiver;
@@ -23,6 +24,7 @@ public class Input {
 	
 	public Input() {
 		Log.debug(this, "Initialising input system.");
+		registerDisposeHandler();
 		Globals.input = this;
 		registerInputReceiver(InputStates.NONE, defaultReceiver);
 		registerInputReceiver(InputStates.GUI, new GuiInputReceiver());
@@ -47,6 +49,7 @@ public class Input {
 		return receivers.getOrDefault(state, defaultReceiver);
 	}
 
+	@Override
 	public void dispose() {
 		Log.debug(this, "Starting diaposal of input system");
 		receivers.values().forEach(rec -> {

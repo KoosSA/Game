@@ -8,12 +8,17 @@ import com.koossa.logger.Log;
 import client.gui.Gui;
 import client.io.Window;
 import client.io.input.Input;
+import client.rendering.cameras.Camera;
+import client.rendering.cameras.FirstPersonCamera;
+import client.rendering.renderers.StaticRenderer;
 import client.utils.registries.Registries;
 
 public abstract class BaseGameLoop extends Thread {
 	
 	protected Input input;
 	protected Gui gui;
+	protected StaticRenderer staticRenderer;
+	protected Camera camera;
 	
 	public BaseGameLoop() {
 		setName("client_main");
@@ -35,27 +40,27 @@ public abstract class BaseGameLoop extends Thread {
 		Log.debug(this, "Starting initialisation process.");
 		if (gui == null) gui = new Gui();
 		if (input == null) input = new Input();
+		if (camera == null) camera = new FirstPersonCamera();
+		if (staticRenderer == null) staticRenderer = new StaticRenderer(camera);
 		
 		init();
 		Log.debug(this, "Initialisation of programm complete.");
 	}
 	
 	public void baseUpdate(float delta) {
-		gui.update();
 		InternalRegistries.update(delta);
 		update(delta);
 	}
 	
 	public void baseRender() {
 		render();
+		staticRenderer.baseRender();
 		gui.render();
 	}
 	
 	
 	public void dispose() {
 		Log.debug(this, "Starting base loop disposal.");
-		gui.dispose();
-		input.dispose();
 		Registries.dispose();
 		InternalRegistries.dispose();
 		Log.debug(this, "Disposal of base loop finished. Saving log files....");
@@ -63,7 +68,6 @@ public abstract class BaseGameLoop extends Thread {
 	}
 
 	public void baseResize(int width, int height) {
-		if (gui != null) gui.resize(width, height);
 		InternalRegistries.onResize(width, height);
 	}
 

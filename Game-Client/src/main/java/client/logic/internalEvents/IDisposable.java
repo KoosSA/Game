@@ -2,7 +2,7 @@ package client.logic.internalEvents;
 
 import client.logic.InternalRegistries;
 
-public interface IDisposeHandler {
+public interface IDisposable {
 	
 	default void registerDisposeHandler() {
 		InternalRegistries.addDisposeHandler(this);

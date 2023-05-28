@@ -9,6 +9,9 @@ import com.koossa.filesystem.Files;
 import com.koossa.logger.Log;
 
 import client.io.input.InputStates;
+import client.logic.internalEvents.IDisposable;
+import client.logic.internalEvents.IResizable;
+import client.logic.internalEvents.IUpdatable;
 import client.utils.Globals;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.render.batch.BatchRenderDevice;
@@ -17,7 +20,7 @@ import de.lessvoid.nifty.renderer.lwjgl3.render.Lwjgl3BatchRenderBackendCoreProf
 import de.lessvoid.nifty.renderer.lwjgl3.time.Lwjgl3TimeProvider;
 import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
 
-public class Gui {
+public class Gui implements IDisposable, IUpdatable, IResizable {
 	
 	public Nifty nifty;
 	public Lwjgl3InputSystem input_system;
@@ -30,6 +33,9 @@ public class Gui {
 	
 	public Gui() {
 		Log.debug(this, "Starting nifty gui initialisation.");
+		registerUpdatable();
+		registerDisposeHandler();
+		registerResizeHandler();
 		Globals.gui = this;
 		input_system = new Lwjgl3InputSystem(Globals.window.getId());
 		sound_device = new OpenALSoundDevice();
@@ -64,7 +70,9 @@ public class Gui {
 		currentScreen = defaultScreen;
 	}
 
-	public void update() {
+	
+	@Override
+	public void update(float delta) {
 		nifty.update();
 	}
 	
@@ -78,6 +86,7 @@ public class Gui {
 		Log.debug(this, "Starting Gui disposal");
 		input_system.shutdown();
 		nifty.exit();
+		unRegisterUpdatable();
 		Log.debug(this, "Gui disposal finished.");
 	}
 	
@@ -95,13 +104,16 @@ public class Gui {
 		Log.debug(this, "Loading Gui finished: " + fileName);
 	}
 	
-	public void resize(int width, int height) {
+	
+	@Override
+	public void onResize(int width, int height) {
 		Log.debug(this, "Initialising restart of GUI systems due to window resize event.");
 		restart();
 	}
 	
 	private void restart() {
 		Log.debug(this, "Restarting GUI system.");
+		unRegisterUpdatable();
 		input_system.shutdown();
 		nifty.exit();
 		Globals.input.getInputReceiver(InputStates.GUI).dispose();
@@ -124,7 +136,12 @@ public class Gui {
 			nifty.addXml(path);
 		});
 		if (currentScreen != null) show(currentScreen);
+		registerUpdatable();
 		Log.debug(this, "GUI sucsesfully restarted.");
 	}
+
+	
+
+	
 
 }

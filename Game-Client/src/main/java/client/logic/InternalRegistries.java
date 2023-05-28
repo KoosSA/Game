@@ -3,17 +3,17 @@ package client.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import client.logic.internalEvents.IDisposeHandler;
-import client.logic.internalEvents.IResizeHandler;
+import client.logic.internalEvents.IDisposable;
+import client.logic.internalEvents.IResizable;
 import client.logic.internalEvents.IUpdatable;
 
 public class InternalRegistries {
 	
-	private static List<IResizeHandler> resizeHandlers = new ArrayList<>();
-	private static List<IDisposeHandler> disposalHandlers = new ArrayList<>();
+	private static List<IResizable> resizeHandlers = new ArrayList<>();
+	private static List<IDisposable> disposalHandlers = new ArrayList<>();
 	private static List<IUpdatable> updateHandlers = new ArrayList<>();
 
-	public static void addResizeHandler(IResizeHandler iResizeHandler) {
+	public static void addResizeHandler(IResizable iResizeHandler) {
 		resizeHandlers.add(iResizeHandler);
 	}
 	
@@ -29,7 +29,7 @@ public class InternalRegistries {
 		});
 	}
 
-	public static void addDisposeHandler(IDisposeHandler iDisposeHandler) {
+	public static void addDisposeHandler(IDisposable iDisposeHandler) {
 		disposalHandlers.add(iDisposeHandler);
 	}
 

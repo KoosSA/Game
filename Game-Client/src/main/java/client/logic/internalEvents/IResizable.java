@@ -2,7 +2,7 @@ package client.logic.internalEvents;
 
 import client.logic.InternalRegistries;
 
-public interface IResizeHandler {
+public interface IResizable {
 	
 	default void registerResizeHandler() {
 		InternalRegistries.addResizeHandler(this);

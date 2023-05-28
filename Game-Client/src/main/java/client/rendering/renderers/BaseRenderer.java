@@ -1,11 +1,11 @@
 package client.rendering.renderers;
 
-import client.logic.internalEvents.IDisposeHandler;
-import client.logic.internalEvents.IResizeHandler;
+import client.logic.internalEvents.IDisposable;
+import client.logic.internalEvents.IResizable;
 import client.rendering.cameras.Camera;
 import client.rendering.shaders.BaseShader;
 
-public abstract class BaseRenderer implements IResizeHandler, IDisposeHandler {
+public abstract class BaseRenderer implements IResizable, IDisposable {
 	
 	protected Camera cam;
 	protected BaseShader shader;

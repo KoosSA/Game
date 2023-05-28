@@ -50,8 +50,8 @@ public class Registries {
 	}
 	
 	public static class Lights {
-		private static DirectionalLight<?> dirLight = (DirectionalLight<?>) new DirectionalLight<Object>(0, -1, 0);
-		private static AmbientLight<?> ambientLight = new AmbientLight<>(1, 1, 1, 0.005f);
+		private static DirectionalLight<?> dirLight = (DirectionalLight<?>) new DirectionalLight<Object>(-0.5f, -0.5f, 0);
+		private static AmbientLight<?> ambientLight = new AmbientLight<>(1, 1, 1, 0.05f);
 		
 		public static DirectionalLight<?> getDirectionalLight() {
 			return dirLight;
