@@ -5,7 +5,7 @@ apply plugin: 'application'
 
 
 project.ext {
-	lwjglVersion = "3.3.2-SNAPSHOT"
+	lwjglVersion = "3.3.2"
 	lwjglNatives = "natives-windows"
 }
 
@@ -67,7 +67,7 @@ dependencies {
 	implementation 'com.github.KoosSA:NiftyGui-renderer-lwjgl3:master-SNAPSHOT'
 	implementation 'com.github.KoosSA:NiftyGui-SoundSystem-OpenAL:master-SNAPSHOT'
 	
-	implementation project(':Game-Common')
+	implementation project(':Common')
 }
 
 application {

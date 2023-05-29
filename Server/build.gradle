@@ -12,7 +12,7 @@ dependencies {
 	
 	implementation fileTree(dir: 'libs', include:'*.jar')
 	
-	implementation project(":Game-Common")
+	implementation project(":Common")
 
 }
 

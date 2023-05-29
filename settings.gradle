@@ -1,6 +1,6 @@
 rootProject.name = 'Game'
 
-include 'Game-Client',
-'Game-Common',
-'Game-Server'
-		
+include 'Client'
+include 'Common'
+include 'MaterialEditor'
+include 'Server'
