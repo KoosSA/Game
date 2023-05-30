@@ -1,4 +1,4 @@
-package client.gui.controllers;
+package app.gui.controllers;
 
 import org.joml.Math;
 import org.joml.Vector3f;

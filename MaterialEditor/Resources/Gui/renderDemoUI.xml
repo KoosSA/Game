@@ -7,7 +7,7 @@
 	<useControls filename="nifty-default-controls.xml" />
 
 	<screen id="renderDemoMainUI"
-		controller="client.gui.controllers.RenderingDemoController">
+		controller="app.gui.controllers.RenderingDemoController">
 		<layer id="layer" backgroundColor="#0000" childLayout="center">
 		
 		

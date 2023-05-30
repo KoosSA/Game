@@ -1,4 +1,4 @@
-package client;
+package app;
 
 import client.io.input.InputStates;
 import client.logic.BaseGameLoop;

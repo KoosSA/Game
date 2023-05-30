@@ -1,0 +1,17 @@
+
+apply plugin: 'application'
+
+dependencies {
+    implementation project(':Client')
+}
+
+application {
+	applicationName = 'Material Editor'
+    mainClassName = 'app.MaterialEditor'
+    executableDir = 'MatEditor'
+}
+
+applicationDistribution.from('.') {
+	include 'Resources/'
+	into 'bin'
+}
