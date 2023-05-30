@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.lessvoid.com/nifty-gui"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://nifty-gui.lessvoid.com/nifty-gui https://raw.githubusercontent.com/nifty-gui/nifty-gui/1.4/nifty-core/src/main/resources/nifty.xsd">
+
+	<useStyles filename="nifty-default-styles.xml" />
+	<useControls filename="nifty-default-controls.xml" />
+
+	<screen id="renderDemoMainUI"
+		controller="app.gui.controllers.RenderingDemoController">
+		<layer id="layer" backgroundColor="#0000" childLayout="center">
+		
+		
+			<panel id="panel" height="90%" width="20%" align="right" valign="top" backgroundColor="#000f" childLayout="vertical" visibleToMouse="true">
+					
+				<text id="text" font="aurulent-sans-16.fnt" color="#ffff" text="Material properties." align="center" valign="center" />
+				
+				<panel height="10px"></panel>
+				
+				<control id="refreshTextures" name="button" align="center" label="Refresh Textures">
+					<interact onClick="refreshTextures()"/>
+				</control>
+				
+				<panel height="10px"></panel>
+				<text font="aurulent-sans-16.fnt" color="#ffff" text="Diffuse Map: " align="left" valign="center" />
+				<control id="diffusePicker" name="dropDown"></control>
+				<panel height="10px"></panel>
+				
+				<panel height="10px"></panel>
+				<text font="aurulent-sans-16.fnt" color="#ffff" text="Normal Map: " align="left" valign="center" />
+				<control id="normalPicker" name="dropDown"></control>
+				<panel height="10px"></panel>
+					
+				<panel height="10px"></panel>
+				<text font="aurulent-sans-16.fnt" color="#ffff" text="Specular Map: " align="left" valign="center" />
+				<control id="specularPicker" name="dropDown"></control>
+				<panel height="10px"></panel>
+				
+				
+				<control id="applyMaterial" name="button" align="center" label="Apply"> 
+					<interact onClick="applyMaterial()"/>
+				</control>
+			</panel>
+			
+			
+			
+			
+			
+			
+			<panel id="modelPanel" height="90%" width="20%" align="left" valign="top" backgroundColor="#000f" childLayout="vertical" visibleToMouse="true">
+					
+				<text id="text" font="aurulent-sans-16.fnt" color="#ffff" text="Model properties." align="center" valign="center" />
+				
+				<panel height="10px"></panel>
+				<control id="refreshModels" name="button" align="center" label="Refresh Models">
+					<interact onClick="refreshModels()"/>
+				</control>
+				
+				<panel height="10px"></panel>
+				<text font="aurulent-sans-16.fnt" color="#ffff" text="Model: " align="left" valign="center" />
+				<control id="modelPicker" name="dropDown">
+					<interact onRelease="refreshModels()"/>
+				</control>
+				<panel height="10px"></panel>
+				<control id="applyModel" name="button" align="center" label="Apply"> 
+					<interact onClick="applyModel()"/>
+				</control>
+				
+				<panel height="10px"></panel>
+				<control id="meshPicker" name="dropDown"></control>
+				<control id="applyMesh" name="button" align="center" label="Apply"> 
+					<interact onClick="applyMesh()"/>
+				</control>
+				
+				<panel height="20px" />
+				<panel childLayout="horizontal" align="left">
+					<text font="aurulent-sans-16.fnt" color="#ffff" text="Pos: " align="left" valign="center" />
+					<control id="posX" name="textfield" text="0.0"></control>
+					<control id="posY" name="textfield" text="0.0"></control>
+					<control id="posZ" name="textfield" text="0.0"></control>
+				</panel>
+				<panel childLayout="horizontal" align="left">
+					<text font="aurulent-sans-16.fnt" color="#ffff" text="Rot: " align="left" valign="center" />
+					<control id="rotX" name="textfield" text="0.0"></control>
+					<control id="rotY" name="textfield" text="0.0"></control>
+					<control id="rotZ" name="textfield" text="0.0"></control>
+				</panel>
+				<panel childLayout="horizontal" align="left">
+					<text font="aurulent-sans-16.fnt" color="#ffff" text="Sca: " align="left" valign="center" />
+					<control id="scaleX" name="textfield" text="1.0"></control>
+					<control id="scaleY" name="textfield" text="1.0"></control>
+					<control id="scaleZ" name="textfield" text="1.0"></control>
+				</panel>
+				
+			</panel>
+			
+			
+		</layer>
+	</screen>
+
+</nifty>

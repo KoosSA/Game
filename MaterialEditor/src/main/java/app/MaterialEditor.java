@@ -2,6 +2,7 @@ package app;
 
 import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
+import client.utils.ResourceLoader;
 
 public class MaterialEditor extends BaseGameLoop {
 
@@ -11,6 +12,9 @@ public class MaterialEditor extends BaseGameLoop {
 
 	@Override
 	protected void init() {
+		ResourceLoader.loadAllModels();
+		ResourceLoader.loadAllTextures();
+		
 		gui.loadXML("renderDemoUI.xml");
 		gui.show("renderDemoMainUI");
 		input.setInputReceiver(InputStates.GUI);

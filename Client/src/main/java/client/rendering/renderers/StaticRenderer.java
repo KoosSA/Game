@@ -41,7 +41,7 @@ public class StaticRenderer extends BaseRenderer {
 		shader.loadDirectionalLight(Registries.Lights.getDirectionalLight());
 		shader.loadCameraPosition(cam);
 		
-		Model model = Registries.Models.getStaticModel("t.obj");
+		Model model = Registries.Models.getStaticModel("barrels_fbx.fbx");
 		//Model model = Registries.Models.getStaticModel("uc_uv_sphere.fbx");
 		shader.loadTransformationMatrix(model.getTransform());
 		model.getMeshes().forEach(mesh -> {
