@@ -1,5 +1,6 @@
 package app;
 
+import app.renderers.MaterialRenderer;
 import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
 import client.utils.ResourceLoader;
@@ -12,12 +13,14 @@ public class MaterialEditor extends BaseGameLoop {
 
 	@Override
 	protected void init() {
-		ResourceLoader.loadAllModels();
 		ResourceLoader.loadAllTextures();
+		ResourceLoader.loadAllModels();
 		
 		gui.loadXML("renderDemoUI.xml");
 		gui.show("renderDemoMainUI");
 		input.setInputReceiver(InputStates.GUI);
+		
+		renderer = new MaterialRenderer(camera);
 	}
 
 	@Override

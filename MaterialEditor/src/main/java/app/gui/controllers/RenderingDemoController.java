@@ -5,6 +5,7 @@ import org.joml.Vector3f;
 
 import com.koossa.logger.Log;
 
+import app.renderers.MaterialRenderer;
 import client.logic.internalEvents.IUpdatable;
 import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
@@ -128,6 +129,7 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 		scaleY.setText(String.valueOf(t.getScale().y()));
 		scaleZ.setText(String.valueOf(t.getScale().z()));
 		applyMesh();
+		MaterialRenderer.instance.model = currentModel;
 	}
 	
 	public void applyMesh() {

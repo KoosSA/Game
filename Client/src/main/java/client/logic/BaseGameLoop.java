@@ -10,6 +10,7 @@ import client.io.Window;
 import client.io.input.Input;
 import client.rendering.cameras.Camera;
 import client.rendering.cameras.FirstPersonCamera;
+import client.rendering.renderers.BaseRenderer;
 import client.rendering.renderers.StaticRenderer;
 import client.utils.registries.Registries;
 
@@ -17,7 +18,7 @@ public abstract class BaseGameLoop extends Thread {
 	
 	protected Input input;
 	protected Gui gui;
-	protected StaticRenderer staticRenderer;
+	protected BaseRenderer renderer;
 	protected Camera camera;
 	
 	public BaseGameLoop() {
@@ -41,7 +42,7 @@ public abstract class BaseGameLoop extends Thread {
 		if (gui == null) gui = new Gui();
 		if (input == null) input = new Input();
 		if (camera == null) camera = new FirstPersonCamera();
-		if (staticRenderer == null) staticRenderer = new StaticRenderer(camera);
+		if (renderer == null) renderer = new StaticRenderer(camera);
 		
 		init();
 		Log.debug(this, "Initialisation of programm complete.");
@@ -54,7 +55,7 @@ public abstract class BaseGameLoop extends Thread {
 	
 	public void baseRender() {
 		render();
-		staticRenderer.baseRender();
+		renderer.baseRender();
 		gui.render();
 	}
 	

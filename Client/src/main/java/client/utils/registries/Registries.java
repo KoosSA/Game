@@ -4,9 +4,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.koossa.logger.Log;
+
 import client.rendering.lights.AmbientLight;
 import client.rendering.lights.DirectionalLight;
 import client.rendering.materials.Texture2D;
+import client.rendering.materials.TextureLoader;
 import client.rendering.objects.Model;
 import client.rendering.utils.Loader;
 import client.rendering.utils.ModelLoader;
@@ -22,8 +25,13 @@ public class Registries {
 				if (name.equalsIgnoreCase("none")) {
 					return null;
 				}
-				t = new Texture2D(name);
-				textures2D.put(name, t);
+//				t = new Texture2D(name);
+//				textures2D.put(name, t);
+				t = TextureLoader.createTexture(name);
+				if (t != null) {
+					textures2D.put(name, t);
+					Log.debug(Registries.Textures.class, "Texture stored in registry: " + name);
+				}
 			}
 			return t;
 		}
