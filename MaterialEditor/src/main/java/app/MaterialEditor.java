@@ -5,6 +5,7 @@ import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
 import client.rendering.cameras.FirstPersonCamera;
 import client.utils.ResourceLoader;
+import client.utils.registries.Registries;
 
 public class MaterialEditor extends BaseGameLoop {
 
@@ -26,6 +27,7 @@ public class MaterialEditor extends BaseGameLoop {
 		
 		camera.getPosition().set(0, 2, 5);
 		FirstPersonCamera.class.cast(camera).pitch(-20);
+		
 	}
 
 	@Override

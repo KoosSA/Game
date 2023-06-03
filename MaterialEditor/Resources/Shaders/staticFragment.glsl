@@ -38,8 +38,9 @@ float calculateSpecularFactor(vec3 toCam, vec3 lightDir, vec3 normal, vec2 texCo
 	float angle = max(dot(halfDir, normal), 0);
 	float factor = pow(angle, 8);
 	if (material.useSpecularTexture == 1 ) {
-		vec3 st = vec3(1,1,1) - texture(material.specularTex, texCoord).xyz;
-		factor = factor * length(st);
+		//vec3 st = vec3(1,1,1) - texture(material.specularTex, texCoord).xyz;
+		float tex = 1 - texture(material.specularTex, texCoord).r;
+		factor = factor * tex; //* length(st);
 	}
 	return factor;
 }

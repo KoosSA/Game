@@ -24,7 +24,7 @@ public class TextureLoader {
 		IntBuffer c = BufferUtils.createIntBuffer(1);;
 		
 		STBImage.stbi_set_flip_vertically_on_load(true);
-		ByteBuffer data = STBImage.stbi_load(path, w, h, c, 0);
+		ByteBuffer data = STBImage.stbi_load(path, w, h, c, STBImage.STBI_default);
 		if (data == null || data.limit() <= 0) {
 			Log.error(TextureLoader.class, "Failed to load image: " + path + " with error: " + STBImage.stbi_failure_reason());
 			return null;
