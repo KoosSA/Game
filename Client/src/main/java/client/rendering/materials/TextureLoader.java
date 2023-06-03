@@ -60,6 +60,7 @@ public class TextureLoader {
 		while ((result = GL30.glGetError()) != GL30.GL_NO_ERROR) {
 			Log.error(TextureLoader.class, "Opengl Error while loading textures: " + result);
 			hasErr = true;
+			Log.error(TextureLoader.class, "Texture file has channel num of: " + c.get(0));
 		}
 		
 		STBImage.stbi_image_free(data);
@@ -74,7 +75,7 @@ public class TextureLoader {
 
 	private static int getGlTexType(int ch) {
 		switch (ch) {
-		case 1: return GL30.GL_R;
+		case 1: return GL30.GL_ALPHA;
 		case 2:	return GL30.GL_RG;
 		case 3: return GL30.GL_RGB;
 		case 4: return GL30.GL_RGBA;
