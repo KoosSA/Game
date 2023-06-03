@@ -16,6 +16,10 @@ import client.rendering.utils.ModelLoader;
 
 public class Registries {
 
+	
+	
+	
+	
 	public static class Textures {
 		private static Map<String, Texture2D> textures2D = new HashMap<>();
 
@@ -41,6 +45,10 @@ public class Registries {
 		}
 	}
 
+	
+	
+	
+	
 	public static class Models {
 		private static Map<String, Model> staticModels = new HashMap<>();
 		public static Model getStaticModel(String name) {
@@ -48,6 +56,7 @@ public class Registries {
 			if (m == null) {
 				m = ModelLoader.loadModel(name);
 				staticModels.put(name, m);
+				Log.debug(Registries.Models.class, "Model added to registry: " + name);
 			}
 			return m;
 		}
@@ -56,6 +65,12 @@ public class Registries {
 			return staticModels.keySet();
 		}
 	}
+	
+	
+	
+	
+	
+	
 	
 	public static class Lights {
 		private static DirectionalLight<?> dirLight = (DirectionalLight<?>) new DirectionalLight<Object>(-0.5f, -0.5f, 0);
@@ -69,6 +84,12 @@ public class Registries {
 			return ambientLight;
 		}
 	}
+	
+	
+	
+	
+	
+	
 	
 	public static void dispose() {
 		Loader.dispose();

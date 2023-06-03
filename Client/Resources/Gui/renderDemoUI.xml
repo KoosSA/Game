@@ -13,7 +13,7 @@
 		
 			<panel id="panel" height="90%" width="20%" align="right" valign="top" backgroundColor="#000f" childLayout="vertical" visibleToMouse="true">
 					
-				<text id="text" font="aurulent-sans-16.fnt" color="#ffff" text="Material properties." align="center" valign="center" />
+				<text font="aurulent-sans-16.fnt" color="#ffff" text="Material properties." align="center" valign="center" />
 				
 				<panel height="10px"></panel>
 				
@@ -49,7 +49,7 @@
 			
 			<panel id="modelPanel" height="90%" width="20%" align="left" valign="top" backgroundColor="#000f" childLayout="vertical" visibleToMouse="true">
 					
-				<text id="text" font="aurulent-sans-16.fnt" color="#ffff" text="Model properties." align="center" valign="center" />
+				<text font="aurulent-sans-16.fnt" color="#ffff" text="Model properties." align="center" valign="center" />
 				
 				<panel height="10px"></panel>
 				<control id="refreshModels" name="button" align="center" label="Refresh Models">

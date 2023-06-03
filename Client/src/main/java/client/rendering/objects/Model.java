@@ -8,10 +8,12 @@ public class Model {
 	
 	private List<Mesh> meshes;
 	private Transform transform;
+	private String name;
 	
-	public Model(List<Mesh> meshes) {
+	public Model(String name, List<Mesh> meshes) {
 		this.meshes = meshes;
 		transform = new Transform();
+		this.name = name;
 	}
 
 	public List<Mesh> getMeshes() {
@@ -20,6 +22,10 @@ public class Model {
 	
 	public Transform getTransform() {
 		return transform;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 }

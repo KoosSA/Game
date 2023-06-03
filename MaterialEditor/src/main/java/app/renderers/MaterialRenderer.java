@@ -5,6 +5,10 @@ import org.lwjgl.opengl.GL30;
 
 import com.koossa.logger.Log;
 
+import client.io.input.InputStates;
+import client.io.input.receivers.GameInputReceiver;
+import client.io.input.receivers.handlers.IGeneralInputHandler;
+import client.io.input.receivers.handlers.IInputHandler;
 import client.rendering.cameras.Camera;
 import client.rendering.objects.Model;
 import client.rendering.renderers.BaseRenderer;
@@ -47,7 +51,6 @@ public class MaterialRenderer extends BaseRenderer {
 		GL30.glEnable(GL30.GL_CULL_FACE);
 		GL30.glCullFace(GL30.GL_BACK);
 		
-		
 		shader.start();
 		((StaticShader) shader).loadViewMatrix(cam);
 		
@@ -58,15 +61,16 @@ public class MaterialRenderer extends BaseRenderer {
 		((StaticShader) shader).loadTransformationMatrix(model.getTransform());
 		
 		model.getMeshes().forEach(mesh -> {
-				((StaticShader) shader).loadMaterial(mesh.getMaterial());
 			
-				GL30.glBindVertexArray(mesh.getVaoId());
+			((StaticShader) shader).loadMaterial(mesh.getMaterial());
+			
+			GL30.glBindVertexArray(mesh.getVaoId());
+			
+			GL30.glDrawElements(GL11.GL_TRIANGLES, mesh.getNumberOfIndices(), GL11.GL_UNSIGNED_INT, 0);
+			
+			GL30.glBindVertexArray(0);
 				
-				GL30.glDrawElements(GL11.GL_TRIANGLES, mesh.getNumberOfIndices(), GL11.GL_UNSIGNED_INT, 0);
-				
-				GL30.glBindVertexArray(0);
-				
-			});
+		});
 		
 		shader.stop();
 		
@@ -74,6 +78,11 @@ public class MaterialRenderer extends BaseRenderer {
 		while ((err = GL30.glGetError()) != GL30.GL_NO_ERROR) {
 			Log.error(this, "OpenGL error: " + err);
 		}
+	}
+
+	public void setModel(Model model) {
+		if (model != null) Log.debug(this, "Set model to: " + model.getName());
+		this.model = model;
 	}
 
 }

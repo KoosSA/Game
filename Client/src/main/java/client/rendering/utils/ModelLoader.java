@@ -28,7 +28,6 @@ public class ModelLoader {
 	private static LinkedList<Integer> indices = new LinkedList<>();
 	private static LinkedList<Float> tangents = new LinkedList<>();
 	private static LinkedList<Float> bitangents = new LinkedList<>();
-	private static List<Mesh> meshes = new ArrayList<>();
 //	private static List<Material> materials = new ArrayList<>();
 
 	private static int flags =  Assimp.aiProcess_Triangulate | Assimp.aiProcess_CalcTangentSpace;
@@ -36,7 +35,6 @@ public class ModelLoader {
 	public static Model loadModel(String name) {
 		clearData();
 //		materials.clear();
-		meshes.clear();
 		String path = Files.getCommonFolderPath(CommonFolders.Models) + "/" + name;
 		Log.debug(ModelLoader.class, "Starting model loading for: " + name);
 
@@ -52,6 +50,7 @@ public class ModelLoader {
 //			material.free();
 //		}
 
+		List<Mesh> meshes = new ArrayList<>();
 		for (int i = 0; i < scene.mNumMeshes(); i++) {
 			AIMesh mesh = AIMesh.create(scene.mMeshes().get(i));
 //			meshes.add(processMesh(mesh, materials));
@@ -63,10 +62,7 @@ public class ModelLoader {
 		scene.free();
 
 		Log.debug(ModelLoader.class, "Model loaded: " + name + " with a total of " + meshes.size() + " meshes.");
-		Model model = new Model(meshes);
-		if (name.endsWith(".fbx")) {
-			//model.getTransform().turn(90, 0, 0);
-		}
+		Model model = new Model(name, meshes);
 		return model;
 	}
 
@@ -174,9 +170,11 @@ public class ModelLoader {
 				indices.add(b.get());
 			}
 		}
-		//faces.free();
+		faces.free();
 
-		return new Mesh(Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents)), Material.DEFAULT, indices.size(), mesh.mName().dataString());
+		int vaoId = Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents));
+		
+		return new Mesh(vaoId, Material.DEFAULT, indices.size(), mesh.mName().dataString());
 	}
 
 }

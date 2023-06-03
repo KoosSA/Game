@@ -25,7 +25,7 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 	DropDown<String> diffuseDD;
 	DropDown<String> speccularDD;
 	DropDown<String> modelDD;
-	DropDown<Mesh> meshDD;
+	DropDown<String> meshDD;
 	
 	TextField posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ;
 	
@@ -112,9 +112,13 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 	
 	public void applyModel() {
 		currentModel = Registries.Models.getStaticModel(modelDD.getSelection());
+		MaterialRenderer.instance.setModel(currentModel);
 		if (currentModel == null) return;
 		meshDD.clear();
-		meshDD.addAllItems(currentModel.getMeshes());
+//		meshDD.addAllItems(currentModel.getMeshes());
+		currentModel.getMeshes().forEach(mesh -> {
+			meshDD.addItem(mesh.getName());
+		});
 		meshDD.selectItemByIndex(0);
 		Transform t = currentModel.getTransform();
 		Vector3f r = new Vector3f();
@@ -129,12 +133,11 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 		scaleY.setText(String.valueOf(t.getScale().y()));
 		scaleZ.setText(String.valueOf(t.getScale().z()));
 		applyMesh();
-		MaterialRenderer.instance.model = currentModel;
 	}
 	
 	public void applyMesh() {
 		if (currentModel == null) return;
-		currentMesh = meshDD.getSelection();
+		currentMesh = currentModel.getMeshes().get(meshDD.getSelectedIndex());
 		getTexFromMesh();
 	}
 
