@@ -50,9 +50,13 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 		}
 		nifty = new Nifty(render_device, sound_device, input_system, time_provider);
 		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
-		render_device.setDisplayFPS(true);
+		//render_device.setDisplayFPS(true);
 		filePaths = new ArrayList<>();
 		Log.debug(this, "Gui system initialised.");
+	}
+	
+	public void renderDebugFPS(boolean shouldRender) {
+		render_device.setDisplayFPS(shouldRender);
 	}
 	
 	public void show(String id) {
@@ -128,7 +132,6 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 			e.printStackTrace();
 		}
 		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
-		render_device.setDisplayFPS(true);
 		Globals.gui.input_system = input_system;
 		Globals.input.getInputReceiver(InputStates.GUI).reset();
 		
