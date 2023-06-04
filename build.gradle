@@ -5,6 +5,10 @@ allprojects{
 	apply plugin: 'java-library'
 	apply plugin: 'eclipse'
 	
+	targetCompatibility = '11'
+	sourceCompatibility = '11'
+
+	
 	project.ext {
 		jomlVersion = "1.10.5"
 	}
