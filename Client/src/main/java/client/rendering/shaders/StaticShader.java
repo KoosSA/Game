@@ -27,14 +27,19 @@ public class StaticShader extends BaseShader {
 		addUniform("ambient.intensity");
 		
 		addUniform("material.colour");
-		addUniform("material.useDiffuseTexture");
-		addUniform("material.diffuseTex");
+		addUniform("material.useBaseColourTexture");
+		addUniform("material.baseColourTex");
 		addUniform("material.useNormalTexture");
 		addUniform("material.normalTex");
-		addUniform("material.useSpecularTexture");
-		addUniform("material.specularTex");
+		addUniform("material.useRoughnessTexture");
+		addUniform("material.roughnessTex");
 		addUniform("material.useDisplacementTexture");
+		addUniform("material.metallicTex");
+		addUniform("material.useMetallicTexture");
 		addUniform("material.displacementTex");
+		addUniform("material.shineDampener");
+		addUniform("material.metalness");
+		addUniform("material.roughness");
 		
 		addUniform("cameraPosition");
 	}
@@ -64,30 +69,38 @@ public class StaticShader extends BaseShader {
 	
 	public void loadMaterial(Material material) {
 		loadVec4f(material.getDiffuseColour(), uniforms.get("material.colour"));
-		loadBoolean(material.isUseTexture(TextureType.DIFFUSE), uniforms.get("material.useDiffuseTexture"));
+		loadBoolean(material.isUseTexture(TextureType.BASE_COLOUR), uniforms.get("material.useBaseColourTexture"));
 		loadBoolean(material.isUseTexture(TextureType.NORMAL), uniforms.get("material.useNormalTexture"));
-		loadBoolean(material.isUseTexture(TextureType.SPECULAR), uniforms.get("material.useSpecularTexture"));
+		loadBoolean(material.isUseTexture(TextureType.ROUGHNESS), uniforms.get("material.useRoughnessTexture"));
 		loadBoolean(material.isUseTexture(TextureType.DISPLACEMENT), uniforms.get("material.useDisplacementTexture"));
-		
-		if (material.isUseTexture(TextureType.DIFFUSE)) {
-			loadInt(0, uniforms.get("material.diffuseTex"));
+		loadBoolean(material.isUseTexture(TextureType.METALLIC), uniforms.get("material.useMetallicTexture"));
+		loadFloat(material.getMetallic(), uniforms.get("material.metalness"));
+		loadFloat(material.getShineDampener(), uniforms.get("material.shineDampener"));
+		loadFloat(material.getRoughness(), uniforms.get("material.roughness"));
+		if (material.isUseTexture(TextureType.BASE_COLOUR)) {
+			loadInt(0, uniforms.get("material.baseColourTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE0);
-			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.DIFFUSE).getId());
+			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.BASE_COLOUR).getId());
 		}
 		if (material.isUseTexture(TextureType.NORMAL)) {
 			loadInt(1, uniforms.get("material.normalTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE1);
 			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.NORMAL).getId());
 		}
-		if (material.isUseTexture(TextureType.SPECULAR)) {
-			loadInt(2, uniforms.get("material.specularTex"));
+		if (material.isUseTexture(TextureType.ROUGHNESS)) {
+			loadInt(2, uniforms.get("material.roughnessTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE2);
-			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.SPECULAR).getId());
+			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.ROUGHNESS).getId());
 		}
 		if (material.isUseTexture(TextureType.DISPLACEMENT)) {
 			loadInt(3, uniforms.get("material.displacementTex"));
 			GL30.glActiveTexture(GL30.GL_TEXTURE3);
 			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.DISPLACEMENT).getId());
+		}
+		if (material.isUseTexture(TextureType.METALLIC)) {
+			loadInt(4, uniforms.get("material.metallicTex"));
+			GL30.glActiveTexture(GL30.GL_TEXTURE4);
+			GL30.glBindTexture(GL30.GL_TEXTURE_2D, material.getTexture(TextureType.METALLIC).getId());
 		}
 		
 	}

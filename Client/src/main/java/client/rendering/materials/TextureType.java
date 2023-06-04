@@ -2,9 +2,10 @@ package client.rendering.materials;
 
 public enum TextureType {
 	
-	DIFFUSE,
-	SPECULAR,
+	BASE_COLOUR,
+	ROUGHNESS,
 	NORMAL,
-	DISPLACEMENT
+	DISPLACEMENT, 
+	METALLIC
 
 }
