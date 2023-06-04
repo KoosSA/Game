@@ -2,32 +2,42 @@ package app.gui.controllers;
 
 import org.joml.Math;
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 import com.koossa.logger.Log;
 
 import app.renderers.MaterialRenderer;
+import client.io.input.InputStates;
+import client.io.input.receivers.GameInputReceiver;
+import client.io.input.receivers.handlers.IGeneralInputHandler;
+import client.io.input.receivers.handlers.IKeyInputHandler;
 import client.logic.internalEvents.IUpdatable;
 import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
 import client.rendering.objects.Mesh;
 import client.rendering.objects.Model;
 import client.rendering.utils.Transform;
+import client.utils.Globals;
 import client.utils.registries.Registries;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.DropDown;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
-public class RenderingDemoController implements ScreenController, IUpdatable {
+public class RenderingDemoController implements ScreenController, IUpdatable, IGeneralInputHandler {
 
 	DropDown<String> normalDD;
 	DropDown<String> diffuseDD;
 	DropDown<String> speccularDD;
+	DropDown<String> metallicDD;
 	DropDown<String> modelDD;
 	DropDown<String> meshDD;
 	
 	TextField posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ;
+	
+	Label inputState;
 	
 	Model currentModel;
 	Mesh currentMesh;
@@ -39,6 +49,7 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 		normalDD = screen.findNiftyControl("normalPicker", DropDown.class);
 		diffuseDD = screen.findNiftyControl("diffusePicker", DropDown.class);
 		speccularDD = screen.findNiftyControl("specularPicker", DropDown.class);
+		metallicDD = screen.findNiftyControl("metallicPicker", DropDown.class);
 		modelDD = screen.findNiftyControl("modelPicker", DropDown.class);
 		meshDD = screen.findNiftyControl("meshPicker", DropDown.class);
 		posX = screen.findNiftyControl("posX", TextField.class);
@@ -50,16 +61,20 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 		scaleX = screen.findNiftyControl("scaleX", TextField.class);
 		scaleY = screen.findNiftyControl("scaleY", TextField.class);
 		scaleZ = screen.findNiftyControl("scaleZ", TextField.class);
+		inputState = screen.findNiftyControl("inputState", Label.class);
+		inputState.setText(Globals.input.getCurrentInputState().name());
 	}
 
 	@Override
 	public void onStartScreen() {
 		registerUpdatable();
+		registerInputHandler(InputStates.GAME);
 	}
 
 	@Override
 	public void onEndScreen() {
 		unRegisterUpdatable();
+		unregisterInputHandler(InputStates.GAME);
 	}
 
 	public void refreshTextures() {
@@ -73,6 +88,9 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 		speccularDD.clear();
 		speccularDD.addItem("NONE");
 		speccularDD.addAllItems(Registries.Textures.getTexture2DNameList());
+		metallicDD.clear();
+		metallicDD.addItem("NONE");
+		metallicDD.addAllItems(Registries.Textures.getTexture2DNameList());
 		if (currentMesh != null) {
 			getTexFromMesh();
 		} else {
@@ -89,17 +107,21 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 			normalDD.selectItem(currentMaterial.getTexture(TextureType.NORMAL).getName());
 		}catch (Exception e) {};
 		try {
-			diffuseDD.selectItem(currentMaterial.getTexture(TextureType.DIFFUSE).getName());
+			diffuseDD.selectItem(currentMaterial.getTexture(TextureType.BASE_COLOUR).getName());
 		}catch (Exception e) {};
 		try {
-			speccularDD.selectItem(currentMaterial.getTexture(TextureType.SPECULAR).getName());
+			speccularDD.selectItem(currentMaterial.getTexture(TextureType.ROUGHNESS).getName());
+		}catch (Exception e) {};
+		try {
+			metallicDD.selectItem(currentMaterial.getTexture(TextureType.METALLIC).getName());
 		}catch (Exception e) {};
 	}
 
 	public void applyMaterial() {
-		currentMaterial.setTexture(TextureType.DIFFUSE, Registries.Textures.get2DTexture(diffuseDD.getSelection()));
+		currentMaterial.setTexture(TextureType.BASE_COLOUR, Registries.Textures.get2DTexture(diffuseDD.getSelection()));
 		currentMaterial.setTexture(TextureType.NORMAL, Registries.Textures.get2DTexture(normalDD.getSelection()));
-		currentMaterial.setTexture(TextureType.SPECULAR, Registries.Textures.get2DTexture(speccularDD.getSelection()));
+		currentMaterial.setTexture(TextureType.ROUGHNESS, Registries.Textures.get2DTexture(speccularDD.getSelection()));
+		currentMaterial.setTexture(TextureType.METALLIC, Registries.Textures.get2DTexture(metallicDD.getSelection()));
 	}
 	
 	public void refreshModels() {
@@ -153,6 +175,19 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 			currentModel.getTransform().setRotation(Float.parseFloat(rotX.getRealText()), Float.parseFloat(rotY.getRealText()), Float.parseFloat(rotZ.getRealText()));
 			currentModel.getTransform().setScale(Float.parseFloat(scaleX.getRealText()), Float.parseFloat(scaleY.getRealText()), Float.parseFloat(scaleZ.getRealText()));
 		} catch (Exception e) {};
+	}
+
+	@Override
+	public void handleInputs(GameInputReceiver input, float delta) {
+		if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+			Globals.input.setInputReceiver(InputStates.GUI);
+			inputState.setText(Globals.input.getCurrentInputState().name());
+		}
+	}
+	
+	public void switchToGameState() {
+		Globals.input.setInputReceiver(InputStates.GAME);
+		inputState.setText(Globals.input.getCurrentInputState().name());
 	}
 
 }
