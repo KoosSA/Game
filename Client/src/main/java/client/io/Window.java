@@ -19,8 +19,8 @@ import client.utils.Globals;
  */
 public class Window {
 	
-	private int width = 600;
-	private int height = 400;
+	private int width = 900;
+	private int height = 700;
 	private boolean FULLSCREEN = false;
 	private boolean VSYNC = false;
 	private String TITLE = "Engine";
