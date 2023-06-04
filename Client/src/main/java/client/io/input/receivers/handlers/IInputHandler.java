@@ -8,9 +8,16 @@ import client.utils.Globals;
 public interface IInputHandler {
 	
 	default void registerInputHandler(InputStates inputState) {
-		Log.debug(this, "Registering this class as a input handler.");
+		Log.debug(this, "Registering this class as a input handler for state: " + inputState.name());
 		Globals.input.registerInputHandler(this, inputState);
 	}
+	
+	default void unregisterInputHandler(InputStates inputState) {
+		Log.debug(this, "Unregistering this class as a input handler for state: " + inputState.name());
+		Globals.input.deregisterInputHandler(this, inputState);
+	}
+	
+	
 	
 	
 

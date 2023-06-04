@@ -121,8 +121,11 @@ public class GameInputReceiver extends InputReceiver implements IUpdatable {
 
 	@Override
 	protected void onActivate() {
-		GLFW.glfwSetCursorPos(Globals.window.getId(), Globals.window.getWidth() / 2, Globals.window.getHeight() / 2);
+		GLFW.glfwSetCursorPos(Globals.window.getId(), 0, 0);
 		GLFW.glfwSetInputMode(Globals.window.getId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+		currentMouse.set(0,0);
+		deltaMouse.set(0, 0);
+		prevMouse.set(0,0);
 	}
 
 }
