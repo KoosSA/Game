@@ -69,7 +69,7 @@ dependencies {
 application {
 	applicationName = 'Material Editor'
     mainClassName = 'app.MaterialEditor'
-    executableDir = 'MatEditor'
+    executableDir = 'bin'
 }
 
 applicationDistribution.from('.') {
