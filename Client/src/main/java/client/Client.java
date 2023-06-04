@@ -20,17 +20,17 @@ public class Client extends BaseGameLoop {
 	@Override
 	protected void init() {
 		input.setInputReceiver(InputStates.GAME);
-		gui.loadXML("renderDemoUI.xml");
+//		gui.loadXML("renderDemoUI.xml");
 //		gui.loadXML("hud.xml");
 //		gui.loadXML("inv.xml");
 		
-		gui.show("renderDemoMainUI");
+//		gui.show("renderDemoMainUI");
 //		gui.show("hud");
-		input.setInputReceiver(InputStates.GUI);
+//		input.setInputReceiver(InputStates.GUI);
 		
 		//renderer = new StaticRenderer(new FirstPersonCamera());
 		
-		Model m = Registries.Models.getStaticModel("t.obj");
+		Model m = Registries.Models.getStaticModel("barrels_fbx.fbx");
 		m.getTransform().setScale(1f, 1, 1);
 		m.getTransform().move(0, 0, -5f);
 		m.getTransform().resetRotation();
@@ -38,15 +38,15 @@ public class Client extends BaseGameLoop {
 		
 		Material mat = m.getMeshes().get(0).getMaterial();
 		//mat.setDiffuseColour(1, 1, 1, 1);
-		//mat.removeTexture(TextureType.DIFFUSE);
-		mat.addTexture(TextureType.DIFFUSE, "drum3_base_color.png");
+		//mat.removeTexture(TextureType.BASE_COLOUR);
+		mat.addTexture(TextureType.BASE_COLOUR, "drum3_base_color.png");
 		mat.addTexture(TextureType.NORMAL, "drum3_normal.png");
-		mat.addTexture(TextureType.SPECULAR, "drum3_roughness.png");
+		//mat.addTexture(TextureType.ROUGHNESS, "drum3_roughness.png");
 		//mat.addTexture(TextureType.DISPLACEMENT, "brick_disp.png");
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().setScale(0.5f, 0.5f, 1f);
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().move(0, 0, 5f);
 		
-		//mat.addTexture(TextureType.DIFFUSE, "brick_diff.jpg");
+		//mat.addTexture(TextureType.BASE_COLOUR, "brick_diff.jpg");
 		//mat.addTexture(TextureType.NORMAL, "brick_normal.jpg");
 		
 		//Registries.Lights.getAmbientLight().setIntensity(0.1f);
