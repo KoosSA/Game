@@ -12,6 +12,9 @@ public class Material {
 	public static final Material DEFAULT = new Material();
 	private Map<TextureType, Texture2D> textures;
 	private Vector4f diffuseColour;
+	private float metallic = 1;
+	private float shineDampener = 10;
+	private float roughness = 0;
 	
 	public Material() {
 		textures = new HashMap<>();
@@ -61,6 +64,33 @@ public class Material {
 	
 	public boolean isUseTexture(TextureType type) {
 		return textures.containsKey(type);
+	}
+	
+	public float getMetallic() {
+		return metallic;
+	}
+	
+	public float getShineDampener() {
+		return shineDampener;
+	}
+	
+	public Material setMetallic(float reflectivity) {
+		this.metallic = reflectivity;
+		return this;
+	}
+	
+	public Material setShineDampener(float shineDampener) {
+		this.shineDampener = shineDampener;
+		return this;
+	}
+	
+	public float getRoughness() {
+		return roughness;
+	}
+	
+	public Material setRoughness(float roughness) {
+		this.roughness = roughness;
+		return this;
 	}
 
 }
