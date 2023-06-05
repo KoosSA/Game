@@ -28,5 +28,5 @@ void main() {
 	//vec3 tbitangent = normalize(( vec4(bitangent, 0)).xyz);
 	toTangentSpace = mat3(ttangent, cross(ttangent, passNormal), passNormal);
 	passTexCoord = textureCoord;
-	toCamera = ((viewMatrix * vec4(0,0,0,1)).xyz - worldposition.xyz);
+	toCamera = (inverse(viewMatrix) * vec4(0,0,0,1)).xyz - worldposition.xyz;
 }
