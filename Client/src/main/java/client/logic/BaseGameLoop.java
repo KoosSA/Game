@@ -13,6 +13,7 @@ import client.rendering.cameras.FirstPersonCamera;
 import client.rendering.renderers.BaseRenderer;
 import client.rendering.renderers.StaticRenderer;
 import client.utils.registries.Registries;
+import common.utils.timer.Timer;
 
 public abstract class BaseGameLoop extends Thread {
 	
@@ -29,6 +30,7 @@ public abstract class BaseGameLoop extends Thread {
 	public void run() {
 		Files.init("Resources", RootFileLocation.LOCAL);
 		Log.init(Files.getCommonFolder(CommonFolders.Logs), true);
+		new Timer().start();
 		new Window(this);
 	}
 	
@@ -62,6 +64,7 @@ public abstract class BaseGameLoop extends Thread {
 	
 	public void dispose() {
 		Log.debug(this, "Starting base loop disposal.");
+		Timer.stopTimer();
 		Registries.dispose();
 		InternalRegistries.dispose();
 		Log.debug(this, "Disposal of base loop finished. Saving log files....");

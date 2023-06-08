@@ -1,11 +1,15 @@
 package client;
 
+import org.joml.Math;
+
 import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
 import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
 import client.rendering.objects.Model;
 import client.utils.registries.Registries;
+import common.utils.timer.ITimedEvent;
+import common.utils.timer.Timer;
 
 public class Client extends BaseGameLoop {
 	
@@ -39,9 +43,9 @@ public class Client extends BaseGameLoop {
 		Material mat = m.getMeshes().get(0).getMaterial();
 		//mat.setDiffuseColour(1, 1, 1, 1);
 		//mat.removeTexture(TextureType.BASE_COLOUR);
-		mat.addTexture(TextureType.BASE_COLOUR, "drum3_base_color.png");
+		//mat.addTexture(TextureType.BASE_COLOUR, "drum3_base_color.png");
 		mat.addTexture(TextureType.NORMAL, "drum3_normal.png");
-		//mat.addTexture(TextureType.ROUGHNESS, "drum3_roughness.png");
+		mat.addTexture(TextureType.ROUGHNESS, "drum3_roughness.png");
 		//mat.addTexture(TextureType.DISPLACEMENT, "brick_disp.png");
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().setScale(0.5f, 0.5f, 1f);
 //		Registries.Models.getStaticModel("uc_uv_sphere.fbx").getTransform().move(0, 0, 5f);
@@ -54,6 +58,16 @@ public class Client extends BaseGameLoop {
 		
 		
 		//GLFW.glfwSetInputMode(Globals.window.getId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+		
+		
+		Timer.registerNewInfiniteRepeatEventMillis(5000, 5, new ITimedEvent() {
+			@Override
+			public void handle() {
+				mat.setDiffuseColour((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
+			}
+		});
+		
+		
 	}
 
 	
