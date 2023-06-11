@@ -109,13 +109,13 @@
 					<control id="inputState" name="label" align="left" valign="center" width="*"/>
 				</panel>
 				<control id="inputGameState" name="button" align="center" valign="center" label="Enable Game Controls" width="150px">
-					<interact onPrimaryClick="switchToGameState()"/>
+					<interact onPrimaryRelease="switchToGameState()"/>
 				</control>
 			</panel>
 			
 			
 			<panel valign="bottom" childLayout="vertical" backgroundColor="#000f" height="25px" width="55%">
-				<text font="aurulent-sans-16.fnt" text="To quit from game state press L_CTRL + L_ALT + ESC" color="#ffff" align="center" valign="center"></text>
+				<text font="aurulent-sans-16.fnt" text="To quit, press L_CTRL + L_ALT + Q" color="#ffff" align="center" valign="center"></text>
 			</panel>
 			
 			

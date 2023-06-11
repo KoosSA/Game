@@ -1,7 +1,12 @@
 package app;
 
+import org.lwjgl.glfw.GLFW;
+
+import app.gui.controllers.RenderingDemoController;
 import app.renderers.MaterialRenderer;
+import client.io.input.Input;
 import client.io.input.InputStates;
+import client.io.input.receivers.handlers.IInputHandler;
 import client.logic.BaseGameLoop;
 import client.rendering.cameras.FirstPersonCamera;
 import client.rendering.materials.Material;
@@ -10,16 +15,20 @@ import client.utils.Globals;
 import client.utils.ResourceLoader;
 import client.utils.registries.Registries;
 
-public class MaterialEditor extends BaseGameLoop {
+public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 
 	public static void main(String[] args) {
 		new MaterialEditor().start();
 	}
+	
+	public static RenderingDemoController controller;
 
 	@Override
 	protected void init() {
 		ResourceLoader.loadAllTextures();
 		ResourceLoader.loadAllModels();
+		registerInputHandler(InputStates.GAME);
+		registerInputHandler(InputStates.GUI);
 		
 		input.setInputReceiver(InputStates.GUI);
 		
@@ -49,6 +58,32 @@ public class MaterialEditor extends BaseGameLoop {
 	@Override
 	protected void render() {
 		
+	}
+
+//	@Override
+//	public void onKeyPress(int key, int mods) {
+//		if (key == GLFW.GLFW_KEY_RIGHT_SHIFT) {
+//			Globals.input.setInputReceiver(InputStates.GUI);
+//			controller.getInputState().setText(Globals.input.getCurrentInputState().name());
+//		}
+//	}
+//
+//	@Override
+//	public void onKeyDown(int key, int mods) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+	
+	@Override
+	public void handleInputs(Input input, float delta) {
+		if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+			if (Globals.input.getCurrentInputState().equals(InputStates.GAME)) {
+				Globals.input.setInputReceiver(InputStates.GUI);
+			} else {
+				Globals.input.setInputReceiver(InputStates.GAME);
+			}
+			controller.getInputState().setText(Globals.input.getCurrentInputState().name());
+		}
 	}
 
 }

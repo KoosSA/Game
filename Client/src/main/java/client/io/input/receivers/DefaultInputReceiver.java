@@ -5,10 +5,15 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 
 import com.koossa.logger.Log;
 
+import client.io.input.Input;
 import client.io.input.InputReceiver;
 import client.utils.Globals;
 
 public class DefaultInputReceiver extends InputReceiver {
+
+	public DefaultInputReceiver(Input input) {
+		super(input);
+	}
 
 	@Override
 	protected void setCallBacks() {
@@ -30,7 +35,6 @@ public class DefaultInputReceiver extends InputReceiver {
 
 	@Override
 	protected void onActivate() {
-		// TODO Auto-generated method stub
 		
 	}
 

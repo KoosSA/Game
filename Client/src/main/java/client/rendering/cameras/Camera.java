@@ -5,9 +5,9 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import client.io.input.InputStates;
-import client.io.input.receivers.handlers.IGeneralInputHandler;
+import client.io.input.receivers.handlers.IInputHandler;
 
-public abstract class Camera implements IGeneralInputHandler {
+public abstract class Camera implements IInputHandler {
 	
 	protected Vector3f position = new Vector3f();
 	protected Vector3f scale = new Vector3f(1);

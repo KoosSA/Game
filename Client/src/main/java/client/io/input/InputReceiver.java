@@ -9,19 +9,14 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
-import client.io.input.receivers.GameInputReceiver;
-import client.io.input.receivers.handlers.IGeneralInputHandler;
-import client.io.input.receivers.handlers.IKeyInputHandler;
-import client.io.input.receivers.handlers.IMouseButtonInputHandler;
-import client.io.input.receivers.handlers.IMouseMovementInputHandler;
+import com.koossa.logger.Log;
+
+import client.io.input.receivers.handlers.IInputHandler;
 import client.utils.Globals;
 
 public abstract class InputReceiver {
 	
-	protected List<IKeyInputHandler> keyInputHandlers = new ArrayList<>();
-	protected List<IMouseButtonInputHandler> mouseButtonHandlers = new ArrayList<>();
-	protected List<IMouseMovementInputHandler> mouseMovementInputHandlers = new ArrayList<>();
-	protected List<IGeneralInputHandler> generalInputHandlers = new ArrayList<>();
+	protected List<IInputHandler> inputHandlers = new ArrayList<>();
 	
 	protected GLFWKeyCallback keyCallback;
 	protected GLFWMouseButtonCallback mouseButtonCallback;
@@ -32,7 +27,10 @@ public abstract class InputReceiver {
 	protected abstract void freeCallbacks();
 	protected abstract void onActivate();
 	
-	public InputReceiver() {
+	protected Input input;
+	
+	public InputReceiver(Input input) {
+		this.input = input;
 		setCallBacks();
 	}
 
@@ -40,11 +38,12 @@ public abstract class InputReceiver {
 	 * Used to bind callbacks to the window instance.
 	 */
 	public void activate() {
-		onActivate();
+		Log.debug(this, "Activating this input receiver.");
 		GLFW.glfwSetCursorPosCallback(Globals.window.getId(), cursorPosCallback);
 		GLFW.glfwSetMouseButtonCallback(Globals.window.getId(), mouseButtonCallback);
 		GLFW.glfwSetKeyCallback(Globals.window.getId(), keyCallback);
 		GLFW.glfwSetScrollCallback(Globals.window.getId(), scrollCallback);
+		onActivate();
 	}
 	
 	public void reset() {
@@ -55,25 +54,13 @@ public abstract class InputReceiver {
 		freeCallbacks();
 	}
 	
-	public void addKeyHandler(IKeyInputHandler keyHandler) {
-		keyInputHandlers.add(keyHandler);
+	public void addInputHandler(IInputHandler generalInputHandler) {
+		inputHandlers.add(generalInputHandler);
 	}
 	
-	public void addMouseButtonHandler(IMouseButtonInputHandler mouseBtnHandler) {
-		mouseButtonHandlers.add(mouseBtnHandler);
-	}
-	
-	public void addMouseMovementHandler(IMouseMovementInputHandler mouseMovementHandler) {
-		mouseMovementInputHandlers.add(mouseMovementHandler);
-	}
-	
-	public void addGeneralInputHandler(IGeneralInputHandler generalInputHandler) {
-		generalInputHandlers.add(generalInputHandler);
-	}
-	
-	public void handleInput(GameInputReceiver gameInputReceiver, float delta) {
-		generalInputHandlers.forEach(handler -> {
-			handler.handleInputs(gameInputReceiver, delta);
+	public void handleInput(float delta) {
+		inputHandlers.forEach(handler -> {
+			handler.handleInputs(input, delta);
 		});
 	}
 	

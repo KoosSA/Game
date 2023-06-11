@@ -5,10 +5,6 @@ import org.lwjgl.opengl.GL30;
 
 import com.koossa.logger.Log;
 
-import client.io.input.InputStates;
-import client.io.input.receivers.GameInputReceiver;
-import client.io.input.receivers.handlers.IGeneralInputHandler;
-import client.io.input.receivers.handlers.IInputHandler;
 import client.rendering.cameras.Camera;
 import client.rendering.objects.Model;
 import client.rendering.renderers.BaseRenderer;

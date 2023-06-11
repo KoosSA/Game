@@ -2,6 +2,7 @@ package client.io.input.receivers.handlers;
 
 import com.koossa.logger.Log;
 
+import client.io.input.Input;
 import client.io.input.InputStates;
 import client.utils.Globals;
 
@@ -17,7 +18,7 @@ public interface IInputHandler {
 		Globals.input.deregisterInputHandler(this, inputState);
 	}
 	
-	
+	void handleInputs(Input input, float delta);
 	
 	
 

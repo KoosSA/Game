@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 import com.koossa.logger.Log;
 
 import client.io.KeyBinds;
-import client.io.input.receivers.GameInputReceiver;
+import client.io.input.Input;
 import client.utils.MathUtil;
 
 public class FirstPersonCamera extends Camera {
@@ -40,7 +40,7 @@ public class FirstPersonCamera extends Camera {
 	}
 
 	@Override
-	public void handleInputs(GameInputReceiver input, float delta) {
+	public void handleInputs(Input input, float delta) {
 		turn(input.getMouseDeltaX() * delta * turnSpeed);
 		pitch(input.getMouseDeltaY() * delta * turnSpeed);
 		if (input.isKeyDown(KeyBinds.WALK_FORWARD))

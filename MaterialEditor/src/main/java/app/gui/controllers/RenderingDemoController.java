@@ -2,15 +2,12 @@ package app.gui.controllers;
 
 import org.joml.Math;
 import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
 
 import com.koossa.logger.Log;
 
+import app.MaterialEditor;
 import app.renderers.MaterialRenderer;
 import client.io.input.InputStates;
-import client.io.input.receivers.GameInputReceiver;
-import client.io.input.receivers.handlers.IGeneralInputHandler;
-import client.io.input.receivers.handlers.IKeyInputHandler;
 import client.logic.internalEvents.IUpdatable;
 import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
@@ -26,7 +23,7 @@ import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
-public class RenderingDemoController implements ScreenController, IUpdatable, IGeneralInputHandler {
+public class RenderingDemoController implements ScreenController, IUpdatable {
 
 	DropDown<String> normalDD;
 	DropDown<String> diffuseDD;
@@ -63,18 +60,17 @@ public class RenderingDemoController implements ScreenController, IUpdatable, IG
 		scaleZ = screen.findNiftyControl("scaleZ", TextField.class);
 		inputState = screen.findNiftyControl("inputState", Label.class);
 		inputState.setText(Globals.input.getCurrentInputState().name());
+		MaterialEditor.controller = this;
 	}
 
 	@Override
 	public void onStartScreen() {
 		registerUpdatable();
-		registerInputHandler(InputStates.GAME);
 	}
 
 	@Override
 	public void onEndScreen() {
 		unRegisterUpdatable();
-		unregisterInputHandler(InputStates.GAME);
 	}
 
 	public void refreshTextures() {
@@ -177,17 +173,15 @@ public class RenderingDemoController implements ScreenController, IUpdatable, IG
 		} catch (Exception e) {};
 	}
 
-	@Override
-	public void handleInputs(GameInputReceiver input, float delta) {
-		if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
-			Globals.input.setInputReceiver(InputStates.GUI);
-			inputState.setText(Globals.input.getCurrentInputState().name());
-		}
-	}
+
 	
 	public void switchToGameState() {
 		Globals.input.setInputReceiver(InputStates.GAME);
 		inputState.setText(Globals.input.getCurrentInputState().name());
+	}
+	
+	public Label getInputState() {
+		return inputState;
 	}
 
 }
