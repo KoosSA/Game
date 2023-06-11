@@ -39,11 +39,11 @@ uniform AmbientLight ambient;
 uniform Material material;
 
 vec4 calculateSpecularColor(vec3 toCam, vec3 toLight, vec3 normal, vec2 texCoord, vec3 lightColor, vec3 baseColor) {
-	//vec3 lightDir = normalize(-toLight);
-	//vec3 reflectedDir = reflect(lightDir, normal);
-	//float result = max(dot(reflectedDir, toCam), 0.0);
-	vec3 halfvec = normalize(toLight + toCam);
-	float result = max(dot(halfvec, normal), 0.0);
+	vec3 lightDir = normalize(-toLight);
+	vec3 reflectedDir = reflect(lightDir, normal);
+	float result = max(dot(reflectedDir, toCam), 0.0);
+	//vec3 halfvec = normalize(lightDir + toCam);
+	//float result = max(dot(halfvec, normal), 0.0);
 	float dampedResult = pow(result, material.shineDampener);
 	float roug = 1 - clamp(material.roughness, 0, 1);
 	if (material.useRoughnessTexture == 1) {
