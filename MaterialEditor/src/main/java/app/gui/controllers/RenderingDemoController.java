@@ -17,9 +17,14 @@ import client.rendering.utils.Transform;
 import client.utils.Globals;
 import client.utils.registries.Registries;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.NiftyMethodInvoker;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.Label;
+import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.controls.TextField;
+import de.lessvoid.nifty.controls.dropdown.DropDownPopup;
+import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
+import de.lessvoid.nifty.elements.PrimaryClickMouseMethods;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -32,7 +37,7 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 	DropDown<String> modelDD;
 	DropDown<String> meshDD;
 	
-	TextField posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ;
+	TextField posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, bcr, bcb, bcg;
 	
 	Label inputState;
 	
@@ -60,6 +65,9 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 		scaleZ = screen.findNiftyControl("scaleZ", TextField.class);
 		inputState = screen.findNiftyControl("inputState", Label.class);
 		inputState.setText(Globals.input.getCurrentInputState().name());
+		bcr = screen.findNiftyControl("bcr", TextField.class);
+		bcb = screen.findNiftyControl("bcb", TextField.class);
+		bcg = screen.findNiftyControl("bcg", TextField.class);
 		MaterialEditor.controller = this;
 	}
 

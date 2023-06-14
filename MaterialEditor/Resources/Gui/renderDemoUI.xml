@@ -18,13 +18,21 @@
 				<panel height="10px"></panel>
 				
 				<control id="refreshTextures" name="button" align="center" label="Refresh Textures">
-					<interact onClick="refreshTextures()"/>
+					<interact onPrimaryRelease="refreshTextures()"/>
 				</control>
 				
 				<panel height="10px"></panel>
 				<text font="aurulent-sans-16.fnt" color="#ffff" text="Base Colour Map: " align="left" valign="center" />
 				<control id="diffusePicker" name="dropDown"></control>
 				<panel height="10px"></panel>
+				
+				<panel height="2px"></panel>
+				<text font="aurulent-sans-16.fnt" color="#ffff" text="Base colour:" align="left" valign="center" />
+				<panel childLayout="horizontal">
+					<control id="bcr" name="textfield" text="1.0"></control>
+					<control id="bcb" name="textfield" text="1.0"></control>
+					<control id="bcg" name="textfield" text="1.0"></control>
+				</panel>
 				
 				<panel height="10px"></panel>
 				<text font="aurulent-sans-16.fnt" color="#ffff" text="Normal Map: " align="left" valign="center" />
@@ -38,12 +46,12 @@
 				
 				<panel height="10px"></panel>
 				<text font="aurulent-sans-16.fnt" color="#ffff" text="Metallic Map: " align="left" valign="center" />
-				<control id="metallicPicker" name="dropDown"></control>
+				<control id="metallicPicker" name="dropDownC"></control>
 				<panel height="10px"></panel>
 				
 				
 				<control id="applyMaterial" name="button" align="center" label="Apply"> 
-					<interact onClick="applyMaterial()"/>
+					<interact onPrimaryRelease="applyMaterial()"/>
 				</control>
 			</panel>
 			
@@ -58,23 +66,23 @@
 				
 				<panel height="10px"></panel>
 				<control id="refreshModels" name="button" align="center" label="Refresh Models">
-					<interact onClick="refreshModels()"/>
+					<interact onPrimaryRelease="refreshModels()"/>
 				</control>
 				
 				<panel height="10px"></panel>
 				<text font="aurulent-sans-16.fnt" color="#ffff" text="Model: " align="left" valign="center" />
 				<control id="modelPicker" name="dropDown">
-					<interact onRelease="refreshModels()"/>
+					<interact onPrimaryRelease="refreshModels()"/>
 				</control>
 				<panel height="10px"></panel>
 				<control id="applyModel" name="button" align="center" label="Apply"> 
-					<interact onClick="applyModel()"/>
+					<interact onPrimaryRelease="applyModel()"/>
 				</control>
 				
 				<panel height="10px"></panel>
 				<control id="meshPicker" name="dropDown"></control>
 				<control id="applyMesh" name="button" align="center" label="Apply"> 
-					<interact onClick="applyMesh()"/>
+					<interact onPrimaryRelease="applyMesh()"/>
 				</control>
 				
 				<panel height="20px" />
@@ -103,19 +111,16 @@
 			
 			
 			<panel valign="top" childLayout="vertical" backgroundColor="#000f" height="50px" width="50%">
-				<panel valign="top" align="center" width="*" childLayout="horizontal">
-					<panel width="5%"></panel>
-					<text font="aurulent-sans-16.fnt" text="Input state (Press R_SHIFT to switch to gui): " color="#ffff" align="center" valign="center"></text>
+				
+					<panel height="10%"></panel>
+					<text font="aurulent-sans-16.fnt" text="Input state (Press R_SHIFT to toggle) : " color="#ffff" align="center" valign="center" ></text>
 					<control id="inputState" name="label" align="left" valign="center" width="*"/>
-				</panel>
-				<control id="inputGameState" name="button" align="center" valign="center" label="Enable Game Controls" width="150px">
-					<interact onPrimaryRelease="switchToGameState()"/>
-				</control>
+				
 			</panel>
 			
 			
 			<panel valign="bottom" childLayout="vertical" backgroundColor="#000f" height="25px" width="55%">
-				<text font="aurulent-sans-16.fnt" text="To quit, press L_CTRL + L_ALT + Q" color="#ffff" align="center" valign="center"></text>
+				<text font="aurulent-sans-16.fnt" text="To quit, press LEFT_CTRL + LEFT_ALT + Q" color="#ffff" align="center" valign="center"></text>
 			</panel>
 			
 			
