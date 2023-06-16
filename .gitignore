@@ -26,6 +26,7 @@ build/
 *.jar
 *.log
 *.bak
+!libs/*.jar
 
 # JRebel parts - are generated
 rebel.xml
