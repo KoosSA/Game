@@ -54,7 +54,7 @@ public class Layers {
 		
 		@Override
 		public void create() {
-			begin("Model settings", ImGuiWindowFlags.AlwaysUseWindowPadding | ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoMove);
+			begin("Model settings", ImGuiWindowFlags.AlwaysUseWindowPadding | ImGuiWindowFlags.NoDocking);
 				
 				if (combo("Model", modelIndex, Registries.Models.getModelNameArray())) {
 					currentmodel = Registries.Models.getStaticModel(Registries.Models.getModelNameArray()[modelIndex.get()]);
