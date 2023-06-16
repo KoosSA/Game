@@ -2,7 +2,6 @@ package client;
 
 import org.joml.Math;
 
-import client.gui.IGuiLayer;
 import client.io.input.InputStates;
 import client.logic.BaseGameLoop;
 import client.rendering.materials.Material;
@@ -11,9 +10,6 @@ import client.rendering.objects.Model;
 import client.utils.registries.Registries;
 import common.utils.timer.ITimedEvent;
 import common.utils.timer.Timer;
-import imgui.ImGui;
-import imgui.type.ImInt;
-import imgui.type.ImString;
 
 public class Client extends BaseGameLoop {
 	

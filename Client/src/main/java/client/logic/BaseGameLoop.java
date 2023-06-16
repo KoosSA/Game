@@ -5,7 +5,6 @@ import com.koossa.filesystem.Files;
 import com.koossa.filesystem.RootFileLocation;
 import com.koossa.logger.Log;
 
-import client.gui.Gui;
 import client.gui.GuiTest;
 import client.io.Window;
 import client.io.input.Input;
