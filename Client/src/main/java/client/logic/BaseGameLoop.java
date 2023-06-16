@@ -6,6 +6,7 @@ import com.koossa.filesystem.RootFileLocation;
 import com.koossa.logger.Log;
 
 import client.gui.Gui;
+import client.gui.GuiTest;
 import client.io.Window;
 import client.io.input.Input;
 import client.rendering.cameras.Camera;
@@ -18,9 +19,10 @@ import common.utils.timer.Timer;
 public abstract class BaseGameLoop extends Thread {
 	
 	protected Input input;
-	protected Gui gui;
+	//protected Gui gui;
 	protected BaseRenderer renderer;
 	protected Camera camera;
+	protected GuiTest gui;
 	
 	public BaseGameLoop() {
 		setName("client_main");
@@ -41,7 +43,8 @@ public abstract class BaseGameLoop extends Thread {
 	
 	public void baseInit() {
 		Log.debug(this, "Starting initialisation process.");
-		if (gui == null) gui = new Gui();
+		//if (gui == null) gui = new Gui();
+		if (gui == null) gui = new GuiTest();
 		if (input == null) input = new Input();
 		if (camera == null) camera = new FirstPersonCamera();
 		if (renderer == null) renderer = new StaticRenderer(camera);

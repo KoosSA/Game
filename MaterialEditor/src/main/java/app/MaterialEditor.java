@@ -2,8 +2,10 @@ package app;
 
 import org.lwjgl.glfw.GLFW;
 
+import app.gui.Layers;
 import app.gui.controllers.RenderingDemoController;
 import app.renderers.MaterialRenderer;
+import client.gui.IGuiLayer;
 import client.io.input.Input;
 import client.io.input.InputStates;
 import client.io.input.receivers.handlers.IInputHandler;
@@ -14,6 +16,7 @@ import client.rendering.materials.TextureType;
 import client.utils.Globals;
 import client.utils.ResourceLoader;
 import client.utils.registries.Registries;
+import imgui.ImGui;
 
 public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 
@@ -25,15 +28,15 @@ public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 
 	@Override
 	protected void init() {
-		ResourceLoader.loadAllTextures();
+		//ResourceLoader.loadAllTextures();
 		ResourceLoader.loadAllModels();
 		registerInputHandler(InputStates.GAME);
 		registerInputHandler(InputStates.GUI);
 		
 		input.setInputReceiver(InputStates.GUI);
 		
-		gui.loadXML("renderDemoUI.xml");
-		gui.show("renderDemoMainUI");
+//		gui.loadXML("renderDemoUI.xml");
+//		gui.show("renderDemoMainUI");
 		
 		renderer = new MaterialRenderer(camera);
 		
@@ -41,12 +44,15 @@ public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 		FirstPersonCamera.class.cast(camera).pitch(-20);
 		
 		Material mat = Registries.Models.getStaticModel("barrels_fbx.fbx").getMeshes().get(0).getMaterial();
-		mat.addTexture(TextureType.BASE_COLOUR, "drum3_base_color.png");
-		mat.addTexture(TextureType.NORMAL, "drum3_normal.png");
-		mat.addTexture(TextureType.ROUGHNESS, "drum3_roughness.png");
-		mat.addTexture(TextureType.METALLIC, "drum3_metallic.png");
+//		mat.addTexture(TextureType.BASE_COLOUR, "drum3_base_color.png");
+//		mat.addTexture(TextureType.NORMAL, "drum3_normal.png");
+//		mat.addTexture(TextureType.ROUGHNESS, "drum3_roughness.png");
+//		mat.addTexture(TextureType.METALLIC, "drum3_metallic.png");
 		
 		MaterialRenderer.class.cast(renderer).setModel(Registries.Models.getStaticModel("barrels_fbx.fbx"));
+		
+		
+		gui.addGuiLayer(Layers.modelSettings);
 		
 	}
 
@@ -59,20 +65,6 @@ public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 	protected void render() {
 		
 	}
-
-//	@Override
-//	public void onKeyPress(int key, int mods) {
-//		if (key == GLFW.GLFW_KEY_RIGHT_SHIFT) {
-//			Globals.input.setInputReceiver(InputStates.GUI);
-//			controller.getInputState().setText(Globals.input.getCurrentInputState().name());
-//		}
-//	}
-//
-//	@Override
-//	public void onKeyDown(int key, int mods) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 	
 	@Override
 	public void handleInputs(Input input, float delta) {
@@ -82,7 +74,7 @@ public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 			} else {
 				Globals.input.setInputReceiver(InputStates.GAME);
 			}
-			controller.getInputState().setText(Globals.input.getCurrentInputState().name());
+			//controller.getInputState().setText(Globals.input.getCurrentInputState().name());
 		}
 	}
 
