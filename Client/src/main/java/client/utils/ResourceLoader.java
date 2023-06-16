@@ -29,22 +29,22 @@ public class ResourceLoader {
 		Log.info(ResourceLoader.class, "Model loading complete.");
 	}
 	
-	public static void loadAllTextures() {
-		Log.info(ResourceLoader.class, "Starting texture loading.");
-		File folder = Files.getCommonFolder(CommonFolders.Textures);
-		String[] files = folder.list(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				if (name.endsWith(".jpg") || name.endsWith(".png")) {
-					return true;
-				}
-				return false;
-			}
-		});
-		for (int i = 0; i < files.length; i++) {
-			Registries.Textures.get2DTexture(files[i]);
-		}
-		Log.info(ResourceLoader.class, "Texture loading complete.");
-	}
+//	public static void loadAllTextures() {
+//		Log.info(ResourceLoader.class, "Starting texture loading.");
+//		File folder = Files.getCommonFolder(CommonFolders.Textures);
+//		String[] files = folder.list(new FilenameFilter() {
+//			@Override
+//			public boolean accept(File dir, String name) {
+//				if (name.endsWith(".jpg") || name.endsWith(".png")) {
+//					return true;
+//				}
+//				return false;
+//			}
+//		});
+//		for (int i = 0; i < files.length; i++) {
+//			Registries.Textures.get2DTexture(files[i]);
+//		}
+//		Log.info(ResourceLoader.class, "Texture loading complete.");
+//	}
 
 }

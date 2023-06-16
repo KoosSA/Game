@@ -9,7 +9,7 @@ import client.utils.registries.Registries;
 
 public class Material {
 	
-	public static final Material DEFAULT = new Material();
+	//public static final Material DEFAULT = new Material();
 	private Map<TextureType, Texture2D> textures;
 	private Vector4f diffuseColour;
 	private float metallic = 1;
@@ -30,7 +30,7 @@ public class Material {
 			removeTexture(type);
 			return this;
 		}
-		textures.put(type, Registries.Textures.get2DTexture(texName));
+		textures.put(type, Registries.Textures.get2DTexture(texName, type));
 		return this;
 	}
 	
