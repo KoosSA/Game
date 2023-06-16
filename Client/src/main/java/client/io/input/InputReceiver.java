@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
@@ -22,6 +23,7 @@ public abstract class InputReceiver {
 	protected GLFWMouseButtonCallback mouseButtonCallback;
 	protected GLFWCursorPosCallback cursorPosCallback;
 	protected GLFWScrollCallback scrollCallback;
+	protected GLFWCharCallback charCallback;
 	
 	protected abstract void setCallBacks();
 	protected abstract void freeCallbacks();
@@ -43,6 +45,7 @@ public abstract class InputReceiver {
 		GLFW.glfwSetMouseButtonCallback(Globals.window.getId(), mouseButtonCallback);
 		GLFW.glfwSetKeyCallback(Globals.window.getId(), keyCallback);
 		GLFW.glfwSetScrollCallback(Globals.window.getId(), scrollCallback);
+		GLFW.glfwSetCharCallback(Globals.window.getId(), charCallback);
 		onActivate();
 	}
 	

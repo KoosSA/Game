@@ -174,7 +174,7 @@ public class ModelLoader {
 
 		int vaoId = Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents));
 		
-		return new Mesh(vaoId, Material.DEFAULT, indices.size(), mesh.mName().dataString());
+		return new Mesh(vaoId, new Material(), indices.size(), mesh.mName().dataString());
 	}
 
 }

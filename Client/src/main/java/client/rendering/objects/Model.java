@@ -7,6 +7,7 @@ import client.rendering.utils.Transform;
 public class Model {
 	
 	private List<Mesh> meshes;
+	private String[] meshNames;
 	private Transform transform;
 	private String name;
 	
@@ -14,6 +15,7 @@ public class Model {
 		this.meshes = meshes;
 		transform = new Transform();
 		this.name = name;
+		generateMeshNameList();
 	}
 
 	public List<Mesh> getMeshes() {
@@ -26,6 +28,18 @@ public class Model {
 	
 	public String getName() {
 		return name;
+	}
+	
+	private String[] generateMeshNameList() {
+		meshNames = new String[meshes.size()];
+		for (int i = 0; i < meshes.size(); i++) {
+			meshNames[i] = meshes.get(i).getName();
+		}
+		return meshNames;
+	}
+	
+	public String[] getMeshNames() {
+		return meshNames;
 	}
 
 }

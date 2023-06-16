@@ -5,7 +5,6 @@ import org.joml.Vector3f;
 
 import com.koossa.logger.Log;
 
-import app.MaterialEditor;
 import app.renderers.MaterialRenderer;
 import client.io.input.InputStates;
 import client.logic.internalEvents.IUpdatable;
@@ -17,17 +16,13 @@ import client.rendering.utils.Transform;
 import client.utils.Globals;
 import client.utils.registries.Registries;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.NiftyMethodInvoker;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.Label;
-import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.controls.TextField;
-import de.lessvoid.nifty.controls.dropdown.DropDownPopup;
-import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
-import de.lessvoid.nifty.elements.PrimaryClickMouseMethods;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
+@Deprecated
 public class RenderingDemoController implements ScreenController, IUpdatable {
 
 	DropDown<String> normalDD;
@@ -68,7 +63,7 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 		bcr = screen.findNiftyControl("bcr", TextField.class);
 		bcb = screen.findNiftyControl("bcb", TextField.class);
 		bcg = screen.findNiftyControl("bcg", TextField.class);
-		MaterialEditor.controller = this;
+//		MaterialEditor.controller = this;
 	}
 
 	@Override
@@ -85,16 +80,16 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 		Log.debug(this, "Refreshing texture list.");
 		normalDD.clear();
 		normalDD.addItem("NONE");
-		normalDD.addAllItems(Registries.Textures.getTexture2DNameList());
+		normalDD.addAllItems(Registries.Textures.getTexture2DNameList(TextureType.NORMAL));
 		diffuseDD.clear();
 		diffuseDD.addItem("NONE");
-		diffuseDD.addAllItems(Registries.Textures.getTexture2DNameList());
+		diffuseDD.addAllItems(Registries.Textures.getTexture2DNameList(TextureType.BASE_COLOUR));
 		speccularDD.clear();
 		speccularDD.addItem("NONE");
-		speccularDD.addAllItems(Registries.Textures.getTexture2DNameList());
+		speccularDD.addAllItems(Registries.Textures.getTexture2DNameList(TextureType.ROUGHNESS));
 		metallicDD.clear();
 		metallicDD.addItem("NONE");
-		metallicDD.addAllItems(Registries.Textures.getTexture2DNameList());
+		metallicDD.addAllItems(Registries.Textures.getTexture2DNameList(TextureType.METALLIC));
 		if (currentMesh != null) {
 			getTexFromMesh();
 		} else {
@@ -122,10 +117,10 @@ public class RenderingDemoController implements ScreenController, IUpdatable {
 	}
 
 	public void applyMaterial() {
-		currentMaterial.setTexture(TextureType.BASE_COLOUR, Registries.Textures.get2DTexture(diffuseDD.getSelection()));
-		currentMaterial.setTexture(TextureType.NORMAL, Registries.Textures.get2DTexture(normalDD.getSelection()));
-		currentMaterial.setTexture(TextureType.ROUGHNESS, Registries.Textures.get2DTexture(speccularDD.getSelection()));
-		currentMaterial.setTexture(TextureType.METALLIC, Registries.Textures.get2DTexture(metallicDD.getSelection()));
+		currentMaterial.setTexture(TextureType.BASE_COLOUR, Registries.Textures.get2DTexture(diffuseDD.getSelection(), TextureType.BASE_COLOUR));
+		currentMaterial.setTexture(TextureType.NORMAL, Registries.Textures.get2DTexture(normalDD.getSelection(), TextureType.NORMAL));
+		currentMaterial.setTexture(TextureType.ROUGHNESS, Registries.Textures.get2DTexture(speccularDD.getSelection(), TextureType.ROUGHNESS));
+		currentMaterial.setTexture(TextureType.METALLIC, Registries.Textures.get2DTexture(metallicDD.getSelection(), TextureType.METALLIC));
 	}
 	
 	public void refreshModels() {

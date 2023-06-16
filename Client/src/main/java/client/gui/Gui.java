@@ -36,7 +36,7 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 		registerUpdatable();
 		registerDisposeHandler();
 		registerResizeHandler();
-		Globals.gui = this;
+//		Globals.gui = this;
 		input_system = new Lwjgl3InputSystem(Globals.window.getId());
 		sound_device = new OpenALSoundDevice();
 		//render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendFactory.create(Globals.window.getId()));
@@ -132,7 +132,7 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 			e.printStackTrace();
 		}
 		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
-		Globals.gui.input_system = input_system;
+//		Globals.gui.input_system = input_system;
 		Globals.input.getInputReceiver(InputStates.GUI).reset();
 		
 		filePaths.forEach(path -> {

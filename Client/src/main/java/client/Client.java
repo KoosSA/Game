@@ -23,7 +23,7 @@ public class Client extends BaseGameLoop {
 
 	@Override
 	protected void init() {
-		input.setInputReceiver(InputStates.GAME);
+		input.setInputReceiver(InputStates.GUI);
 //		gui.loadXML("renderDemoUI.xml");
 //		gui.loadXML("hud.xml");
 //		gui.loadXML("inv.xml");
@@ -60,7 +60,7 @@ public class Client extends BaseGameLoop {
 		//GLFW.glfwSetInputMode(Globals.window.getId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
 		
 		
-		Timer.registerNewInfiniteRepeatEventMillis(5000, 5, new ITimedEvent() {
+		Timer.registerNewInfiniteRepeatEventMillis(1000, 5, new ITimedEvent() {
 			@Override
 			public void handle() {
 				mat.setDiffuseColour((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
