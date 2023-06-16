@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 
 import com.koossa.filesystem.CommonFolders;
 import com.koossa.filesystem.Files;
+import com.koossa.logger.Log;
 
 import app.renderers.MaterialRenderer;
 import client.gui.IGuiLayer;
@@ -155,6 +156,13 @@ public class Layers {
 			if (ImGuiFileDialog.display(texType.name() + "import", ImGuiWindowFlags.NoCollapse, 600, 400, 800, 600)) {
 				if (ImGuiFileDialog.isOk()) {
 					String filename = ImGuiFileDialog.getCurrentFileName();
+					String path = ImGuiFileDialog.getCurrentPath();
+					File newFile = new File(path, filename);
+					File targetFile = new File(Files.getCommonFolder(CommonFolders.Textures), filename);
+					if (!newFile.getAbsolutePath().equals(targetFile.getAbsolutePath())) {
+						Log.debug(this, "Importing texture to texture folder: " + filename);
+						newFile.renameTo(targetFile);
+					}
 					Texture2D tex = Registries.Textures.get2DTexture(filename, texType);
 					if (tex != null) {
 						currentmaterial.setTexture(texType, tex);
