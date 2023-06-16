@@ -30,6 +30,8 @@ build/
 !jgoodies-forms-1.8.0.jar
 !jgoodies-forms-1.8.0-sources.jar
 
+!LibBulletJoml.v1.0.0.jar
+
 # JRebel parts - are generated
 rebel.xml
 
