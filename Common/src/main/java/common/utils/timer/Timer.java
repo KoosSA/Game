@@ -90,8 +90,6 @@ public class Timer extends Thread {
 		Log.info(Timer.class, "Repeated event added to timer with infinite repeats: " + event);
 	}
 
-
-
 	
 
 }

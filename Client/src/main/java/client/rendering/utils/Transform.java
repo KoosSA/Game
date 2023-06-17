@@ -78,8 +78,10 @@ public class Transform {
 		turn(x, y, z);
 	}
 
-	public void linkPosition(Vector3f physicsLocation) {
-		position = physicsLocation;
+	public void setScale(Vector3f scale) {
+		this.scale = scale;
 	}
+	
+	
 
 }

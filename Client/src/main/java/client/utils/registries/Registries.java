@@ -87,7 +87,9 @@ public class Registries {
 	
 	
 	public static class Models {
+		
 		private static Map<String, Model> staticModels = new HashMap<>();
+		
 		public static Model getStaticModel(String name) {
 			Model m = staticModels.getOrDefault(name, null);
 			if (m == null) {

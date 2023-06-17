@@ -38,7 +38,8 @@ public class InternalRegistries {
 	}
 	
 	public static void update(float delta) {
-		updateHandlers.forEach(handler -> {
+		List<IUpdatable> toUpdate = new ArrayList<IUpdatable>(updateHandlers);
+		toUpdate.forEach(handler -> {
 			handler.update(delta);
 		});
 	}

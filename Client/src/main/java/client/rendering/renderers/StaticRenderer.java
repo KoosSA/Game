@@ -6,8 +6,8 @@ import org.lwjgl.opengl.GL30;
 import com.koossa.logger.Log;
 
 import client.rendering.cameras.Camera;
-import client.rendering.objects.Model;
 import client.rendering.shaders.StaticShader;
+import client.rendering.utils.ModelManager;
 import client.utils.registries.Registries;
 
 public class StaticRenderer extends BaseRenderer {
@@ -41,19 +41,22 @@ public class StaticRenderer extends BaseRenderer {
 		shader.loadDirectionalLight(Registries.Lights.getDirectionalLight());
 		shader.loadCameraPosition(cam);
 		
-		Model model = Registries.Models.getStaticModel("cylinder.fbx");
+		//Model model = Registries.Models.getStaticModel("cylinder.fbx");
 		//Model model = Registries.Models.getStaticModel("uc_uv_sphere.fbx");
-		shader.loadTransformationMatrix(model.getTransform());
-		model.getMeshes().forEach(mesh -> {
-				shader.loadMaterial(mesh.getMaterial());
-			
-				GL30.glBindVertexArray(mesh.getVaoId());
-				
-				GL30.glDrawElements(GL11.GL_TRIANGLES, mesh.getNumberOfIndices(), GL11.GL_UNSIGNED_INT, 0);
-				
-				GL30.glBindVertexArray(0);
-				
+		
+		ModelManager.getInstances().forEach((model, instanceList) -> {
+			instanceList.forEach(instance -> {
+				shader.loadTransformationMatrix(instance.getTransform());
+				model.getMeshes().forEach(mesh -> {
+					shader.loadMaterial(mesh.getMaterial());
+					GL30.glBindVertexArray(mesh.getVaoId());
+					
+					GL30.glDrawElements(GL11.GL_TRIANGLES, mesh.getNumberOfIndices(), GL11.GL_UNSIGNED_INT, 0);
+					
+					GL30.glBindVertexArray(0);
+				});
 			});
+		});
 		
 		shader.stop();
 		

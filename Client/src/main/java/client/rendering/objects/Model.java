@@ -8,6 +8,7 @@ public class Model {
 	
 	private List<Mesh> meshes;
 	private String[] meshNames;
+	@Deprecated
 	private Transform transform;
 	private String name;
 	
@@ -22,6 +23,7 @@ public class Model {
 		return meshes;
 	}
 	
+	@Deprecated
 	public Transform getTransform() {
 		return transform;
 	}

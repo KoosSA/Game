@@ -25,7 +25,7 @@ public class Window {
 	private boolean VSYNC = false;
 	private String TITLE = "Engine";
 	private long id;
-	private double TARGET_FPS = 60;
+	private double TARGET_FPS = 75;
 	private boolean initialised = false;
 	private GLFWVidMode videoMode;
 	private long primaryMonitor;

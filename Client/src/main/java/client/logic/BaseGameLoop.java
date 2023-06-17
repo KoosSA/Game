@@ -33,7 +33,7 @@ public abstract class BaseGameLoop extends Thread {
 	public void run() {
 		Files.init("Resources", RootFileLocation.LOCAL);
 		Log.init(Files.getCommonFolder(CommonFolders.Logs), true);
-		new Timer().start();
+		new Timer(100).start();
 		new Window(this);
 	}
 	
