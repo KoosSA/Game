@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.joml.Math;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
@@ -50,6 +51,14 @@ public class MathUtil {
 		tempMat4.translate(transform.getPosition());
 		tempMat4.rotate(transform.getRotation());
 		tempMat4.scale(transform.getScale());
+		return tempMat4;
+	}
+	
+	public static Matrix4f getTransformationMatrix(Vector3f position, Quaternionf rotation, Vector3f scale) {
+		tempMat4.identity();
+		tempMat4.translate(position);
+		tempMat4.rotate(rotation);
+		tempMat4.scale(scale);
 		return tempMat4;
 	}
 	

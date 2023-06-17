@@ -78,4 +78,8 @@ public class Transform {
 		turn(x, y, z);
 	}
 
+	public void linkPosition(Vector3f physicsLocation) {
+		position = physicsLocation;
+	}
+
 }

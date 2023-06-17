@@ -8,6 +8,7 @@ import com.koossa.logger.Log;
 import client.gui.GuiTest;
 import client.io.Window;
 import client.io.input.Input;
+import client.physics.Physics;
 import client.rendering.cameras.Camera;
 import client.rendering.cameras.FirstPersonCamera;
 import client.rendering.renderers.BaseRenderer;
@@ -22,6 +23,7 @@ public abstract class BaseGameLoop extends Thread {
 	protected BaseRenderer renderer;
 	protected Camera camera;
 	protected GuiTest gui;
+	protected Physics physics;
 	
 	public BaseGameLoop() {
 		setName("client_main");
@@ -46,6 +48,7 @@ public abstract class BaseGameLoop extends Thread {
 		if (gui == null) gui = new GuiTest();
 		if (input == null) input = new Input();
 		if (camera == null) camera = new FirstPersonCamera();
+		if (physics == null) physics = new Physics(camera);
 		if (renderer == null) renderer = new StaticRenderer(camera);
 		
 		init();
