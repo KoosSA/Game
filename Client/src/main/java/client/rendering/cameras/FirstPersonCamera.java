@@ -60,7 +60,6 @@ public class FirstPersonCamera extends Camera {
 		} else {
 			movementSpeed = 1;
 		}
-		
 	}
 
 	private void moveForward(float delta, float modifier) {
@@ -91,10 +90,12 @@ public class FirstPersonCamera extends Camera {
 		pitch = MathUtil.clamp(pitch + angle, -maxPitch, maxPitch);
 	}
 	
+	@Override
 	public Vector3f getPosition() {
 		return position;
 	}
 
+	@Override
 	public Vector3f getDirection() {
 		direction.set(0, 0, -1);
 		direction.rotateX(-pitch);
@@ -103,12 +104,20 @@ public class FirstPersonCamera extends Camera {
 		return direction;
 	}
 
-	private Vector3f getForward() {
+	@Override
+	public Vector3f getForward() {
 		return forward;
 	}
 
-	private Vector3f getRight() {
+	@Override
+	public Vector3f getRight() {
 		return right;
+	}
+	
+	@Override
+	public Vector3f getUp() {
+		forward.cross(right, up);
+		return up.negate();
 	}
 
 	public Vector3f getPointInFrontOfCam(float distance) {

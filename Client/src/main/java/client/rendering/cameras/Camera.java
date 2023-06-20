@@ -16,6 +16,7 @@ public abstract class Camera implements IInputHandler {
 	
 	protected Vector3f forward = new Vector3f(0, 0, -1);
 	protected Vector3f right = new Vector3f(1, 0, 0);
+	protected Vector3f up = new Vector3f(0,1,0);
 	protected Vector3f direction = new Vector3f(0, 0, -1);
 	protected Vector3f point = new Vector3f();
 	protected float maxPitch = Math.toRadians(99);
@@ -35,6 +36,22 @@ public abstract class Camera implements IInputHandler {
 	
 	public Vector3f getPosition() {
 		return position;
+	}
+	
+	public Vector3f getDirection() {
+		return direction;
+	}
+	
+	public Vector3f getForward() {
+		return forward;
+	}
+	
+	public Vector3f getRight() {
+		return right;
+	}
+	
+	public Vector3f getUp() {
+		return up;
 	}
 	
 
