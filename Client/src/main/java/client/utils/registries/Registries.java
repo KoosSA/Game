@@ -133,7 +133,6 @@ public class Registries {
 	
 	
 	
-	
 	public static void dispose() {
 		Loader.dispose();
 		Textures.texMaps.forEach((textype, map)-> {
@@ -141,7 +140,6 @@ public class Registries {
 				tex2d.dispose();
 			});
 		});
-		
 	}
 
 }

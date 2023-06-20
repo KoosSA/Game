@@ -1,26 +1,14 @@
 package client;
 
-import org.joml.Math;
-
-import com.jme3.bullet.collision.shapes.BoxCollisionShape;
-import com.jme3.bullet.collision.shapes.CylinderCollisionShape;
-import com.jme3.bullet.objects.PhysicsRigidBody;
-import com.koossa.logger.Log;
-
-import client.io.KeyBinds;
-import client.io.input.Input;
+import client.audio.Audio;
 import client.io.input.InputStates;
-import client.io.input.receivers.handlers.IInputHandler;
 import client.logic.BaseGameLoop;
 import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
 import client.rendering.objects.Model;
 import client.rendering.objects.ModelInstance;
 import client.rendering.utils.ModelManager;
-import client.utils.Globals;
 import client.utils.registries.Registries;
-import common.utils.timer.ITimedEvent;
-import common.utils.timer.Timer;
 
 public class Client extends BaseGameLoop {
 	
@@ -48,43 +36,50 @@ public class Client extends BaseGameLoop {
 		mat.addTexture(TextureType.BASE_COLOUR, "drum3_base_color.png");
 		mat.addTexture(TextureType.NORMAL, "drum3_normal.png");
 		mat.addTexture(TextureType.ROUGHNESS, "drum3_roughness.png");
+		ModelManager.addModelInstanceToWorld(new ModelInstance(m));
 		
-		Timer.registerNewInfiniteRepeatEventMillis(5000, 1, new ITimedEvent() {
-			@Override
-			public void handle() {
-				Log.info(this, avefps + " @ " + counter);
-			}
-		});
+		Audio audio = new Audio(camera.getPosition(), camera.getForward(), camera.getUp());
+		int soundId = audio.getSound("test.ogg");
+		audio.getPlayer("player").addSound(soundId).setLoop(true).play();
 		
 		
 		
-		Globals.input.registerInputHandler(new IInputHandler() {
-			
-			@Override
-			public void handleInputs(Input input, float delta) {
-				if (input.isKeyDown(KeyBinds.INTERACT)) {
-					ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m));
-					mi.getTransform().setPosition(0,100,0);
-					mi.addPhysicsToInstance(new CylinderCollisionShape(0.5f, 1.0f, 1), 1, true);
-					counter++;
-				}
-			}
-		}, InputStates.GAME);
-		
-		
-		physics.enableDebug();
-		physics.setGravity(0, -10, 0);
-		
-//		rb = new PhysicsRigidBody(new CylinderCollisionShape(0.5f, 1.0f, 1), 1);
-//		physics.addObjectToPhysicsWorld(rb);
-//		physics.addToDebugRenderer(rb);
+//		Timer.registerNewInfiniteRepeatEventMillis(5000, 1, new ITimedEvent() {
+//			@Override
+//			public void handle() {
+//				Log.info(this, avefps + " @ " + counter);
+//			}
+//		});
 //		
-//		m.getTransform().setPosition(rb.getTransform(null).getTranslation());
-		
-		
-		PhysicsRigidBody floor = new PhysicsRigidBody(new BoxCollisionShape(100, 1, 100), 0);
-		physics.addObjectToPhysicsWorld(floor);
-		physics.addToDebugRenderer(floor);
+//		
+//		
+//		Globals.input.registerInputHandler(new IInputHandler() {
+//			
+//			@Override
+//			public void handleInputs(Input input, float delta) {
+//				if (input.isKeyDown(KeyBinds.INTERACT)) {
+//					ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m));
+//					mi.getTransform().setPosition(0,100,0);
+//					mi.addPhysicsToInstance(new CylinderCollisionShape(0.5f, 1.0f, 1), 1, true);
+//					counter++;
+//				}
+//			}
+//		}, InputStates.GAME);
+//		
+//		
+//		physics.enableDebug();
+//		physics.setGravity(0, -10, 0);
+//		
+////		rb = new PhysicsRigidBody(new CylinderCollisionShape(0.5f, 1.0f, 1), 1);
+////		physics.addObjectToPhysicsWorld(rb);
+////		physics.addToDebugRenderer(rb);
+////		
+////		m.getTransform().setPosition(rb.getTransform(null).getTranslation());
+//		
+//		
+//		PhysicsRigidBody floor = new PhysicsRigidBody(new BoxCollisionShape(100, 1, 100), 0);
+//		physics.addObjectToPhysicsWorld(floor);
+//		physics.addToDebugRenderer(floor);
 	}
 
 	
