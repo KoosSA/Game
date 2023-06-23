@@ -1,6 +1,15 @@
 package app.gui;
 
-import static imgui.ImGui.*;
+import static imgui.ImGui.begin;
+import static imgui.ImGui.button;
+import static imgui.ImGui.checkbox;
+import static imgui.ImGui.colorEdit4;
+import static imgui.ImGui.combo;
+import static imgui.ImGui.end;
+import static imgui.ImGui.inputFloat;
+import static imgui.ImGui.text;
+import static imgui.ImGui.treeNode;
+import static imgui.ImGui.treePop;
 
 import java.io.File;
 
@@ -10,13 +19,14 @@ import com.koossa.filesystem.CommonFolders;
 import com.koossa.filesystem.Files;
 import com.koossa.logger.Log;
 
-import app.renderers.MaterialRenderer;
 import client.gui.IGuiLayer;
 import client.rendering.materials.Material;
 import client.rendering.materials.Texture2D;
 import client.rendering.materials.TextureType;
 import client.rendering.objects.Mesh;
 import client.rendering.objects.Model;
+import client.rendering.objects.ModelInstance;
+import client.rendering.utils.ModelManager;
 import client.utils.registries.Registries;
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
 import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags;
@@ -29,6 +39,7 @@ public class Layers {
 	public static final IGuiLayer modelSettings = new IGuiLayer() {
 		ImInt modelIndex = new ImInt(0);
 		ImInt meshIndex = new ImInt(0);
+		ImInt instanceIndex = new ImInt(0);
 		
 		ImInt baseColourIndex = new ImInt(0);
 		ImInt metallicIndex = new ImInt(0);
@@ -50,88 +61,171 @@ public class Layers {
 		Model currentmodel;
 		Mesh currentmesh;
 		Material currentmaterial;
+		ModelInstance currentModelInstance;
 		Vector3f tempVec3 = new Vector3f();
 		
 		@Override
 		public void create() {
 			begin("Model settings", ImGuiWindowFlags.AlwaysUseWindowPadding | ImGuiWindowFlags.NoDocking);
+				importModel();
+				if (Registries.Models.getModelNameList().size() <= 0) {
+					text("Mo models loaded as of yet.");
+					end();
+					return;
+				}
+				selectModel();
+				materialSettings();
+				if (treeNode("Instance")) {
+					addInstance();
+					selectInstance();
+					if (currentModelInstance != null) {
+						transformSettings();
+					}
+					treePop();
+				}
 				
-				if (combo("Model", modelIndex, Registries.Models.getModelNameArray())) {
-					currentmodel = Registries.Models.getStaticModel(Registries.Models.getModelNameArray()[modelIndex.get()]);
+			end();
+		}
+
+		private void addInstance() {
+			if (button("Add model instance")) {
+				ModelInstance i = ModelManager.addModelInstanceToWorld(new ModelInstance(currentmodel));
+				if (currentModelInstance == null) currentModelInstance = i;
+			}
+		}
+
+		private void selectModel() {
+			if (combo("Model", modelIndex, Registries.Models.getModelNameArray())) {
+				currentmodel = Registries.Models.getStaticModel(Registries.Models.getModelNameArray()[modelIndex.get()]);
+				meshIndex.set(0);
+				currentmesh = currentmodel.getMeshes().get(0);
+				loadMaterial();
+				currentModelInstance = null;
+			}
+		}
+
+		private void selectMesh() {
+			if (currentmodel != null) {
+				if (combo("Mesh", meshIndex, currentmodel.getMeshNames())) {
+					currentmesh = currentmodel.getMeshes().get(meshIndex.get());
+					loadMaterial();
+				}
+			}
+		}
+
+		private void selectInstance() {
+			if (ModelManager.getInstances().getOrDefault(currentmodel, null) == null) {
+				currentModelInstance = null;
+				return;
+			}
+			String[] inst = new String[ModelManager.getInstances().get(currentmodel).size()];
+			for (int i = 0; i < inst.length; i++) {
+				inst[i] = String.valueOf(i);
+			}
+			if (combo("Instance", instanceIndex, inst)) {
+				currentModelInstance = ModelManager.getInstances().get(currentmodel).get(instanceIndex.get());
+			}
+			getTransformFromInstance();
+		}
+		
+		private void getTransformFromInstance() {
+			if (currentModelInstance == null) return;
+			posX.set(currentModelInstance.getTransform().getPosition().x());
+			posY.set(currentModelInstance.getTransform().getPosition().y());
+			posZ.set(currentModelInstance.getTransform().getPosition().z());
+			rotX.set(currentModelInstance.getTransform().getRotation().getEulerAnglesXYZ(tempVec3).x());
+			rotY.set(currentModelInstance.getTransform().getRotation().getEulerAnglesXYZ(tempVec3).y());
+			rotZ.set(currentModelInstance.getTransform().getRotation().getEulerAnglesXYZ(tempVec3).z());
+			scaleX.set(currentModelInstance.getTransform().getScale().x());
+			scaleY.set(currentModelInstance.getTransform().getScale().y());
+			scaleZ.set(currentModelInstance.getTransform().getScale().z());
+		}
+		
+		private void materialSettings() {
+			if (currentmaterial != null) {
+				if (treeNode("Material")) {
+					selectMesh();
+					if (currentmesh == null) {
+						treePop();
+						return;
+					}
+					if (colorEdit4("Base Colour", baseColour)) {
+						currentmaterial.getDiffuseColour().set(baseColour);
+					}
+					textureInterface(TextureType.BASE_COLOUR, baseColourIndex);
+					textureInterface(TextureType.NORMAL, normalIndex);
+					textureInterface(TextureType.METALLIC, metallicIndex);
+					textureInterface(TextureType.ROUGHNESS, roughnessIndex);
+					treePop();
+				}
+			}
+		}
+
+		private void transformSettings() {
+			if (treeNode("Transform")) {
+				if (treeNode("Position")) {
+					if (inputFloat("X", posX)) {
+						currentModelInstance.getTransform().getPosition().x = posX.get();
+					}
+					if (inputFloat("Y", posY)) {
+						currentModelInstance.getTransform().getPosition().y = posY.get();
+					}
+					if (inputFloat("Z", posZ)) {
+						currentModelInstance.getTransform().getPosition().z = posZ.get();
+					}
+					treePop();
+				}
+				if (treeNode("Rotation")) {
+					if (inputFloat("X", rotX)) {
+						currentModelInstance.getTransform().setRotation(rotX.get(), rotY.get(), rotZ.get());
+					}                   
+					if (inputFloat("Y", rotY)) {
+						currentModelInstance.getTransform().setRotation(rotX.get(), rotY.get(), rotZ.get());
+					}                   
+					if (inputFloat("Z", rotZ)) {
+						currentModelInstance.getTransform().setRotation(rotX.get(), rotY.get(), rotZ.get());
+					}
+					treePop();
+				}
+				if (treeNode("Scale")) {
+					if (inputFloat("X", scaleX)) {
+						currentModelInstance.getTransform().setScale(scaleX.get(), scaleY.get(), scaleZ.get());
+					}                   
+					if (inputFloat("Y", scaleY)) {
+						currentModelInstance.getTransform().setScale(scaleX.get(), scaleY.get(), scaleZ.get());
+					}                   
+					if (inputFloat("Z", scaleZ)) {
+						currentModelInstance.getTransform().setScale(scaleX.get(), scaleY.get(), scaleZ.get());
+					}
+					treePop();
+				}
+				treePop();
+			}
+		}
+
+		private void importModel() {
+			if (button("Import New Model")) {
+				ImGuiFileDialog.openDialog("Import Models", "Import Model", ".fbx,.obj", Files.getCommonFolderPath(CommonFolders.Models), "", 1, 1, ImGuiFileDialogFlags.None);
+			}
+			if (ImGuiFileDialog.display("Import Models", ImGuiWindowFlags.NoCollapse, 600, 400, 800, 600)) {
+				if (ImGuiFileDialog.isOk()) {
+					String filename = ImGuiFileDialog.getCurrentFileName();
+					String path = ImGuiFileDialog.getCurrentPath();
+					File newFile = new File(path, filename);
+					File targetFile = new File(Files.getCommonFolder(CommonFolders.Models), filename);
+					if (!newFile.getAbsolutePath().equals(targetFile.getAbsolutePath())) {
+						Log.debug(this, "Importing model to models folder: " + filename);
+						newFile.renameTo(targetFile);
+					}
+					Model m = Registries.Models.getStaticModel(filename);
+					if (m == null) return;
+					if (currentmodel == null) currentmodel = m;
 					meshIndex.set(0);
 					currentmesh = currentmodel.getMeshes().get(0);
-					posX.set(currentmodel.getTransform().getPosition().x());
-					posY.set(currentmodel.getTransform().getPosition().y());
-					posZ.set(currentmodel.getTransform().getPosition().z());
-					rotX.set(currentmodel.getTransform().getRotation().getEulerAnglesXYZ(tempVec3).x());
-					rotY.set(currentmodel.getTransform().getRotation().getEulerAnglesXYZ(tempVec3).y());
-					rotZ.set(currentmodel.getTransform().getRotation().getEulerAnglesXYZ(tempVec3).z());
-					scaleX.set(currentmodel.getTransform().getScale().x());
-					scaleY.set(currentmodel.getTransform().getScale().y());
-					scaleZ.set(currentmodel.getTransform().getScale().z());
 					loadMaterial();
-					MaterialRenderer.instance.setModel(currentmodel);
 				}
-				if (currentmodel != null) {
-					if (combo("Mesh", meshIndex, currentmodel.getMeshNames())) {
-						currentmesh = currentmodel.getMeshes().get(meshIndex.get());
-						loadMaterial();
-					}
-				}
-				if (currentmesh != null) {
-					if (treeNode("Transform")) {
-						if (treeNode("Position")) {
-							if (inputFloat("X", posX)) {
-								currentmodel.getTransform().getPosition().x = posX.get();
-							}
-							if (inputFloat("Y", posY)) {
-								currentmodel.getTransform().getPosition().y = posY.get();
-							}
-							if (inputFloat("Z", posZ)) {
-								currentmodel.getTransform().getPosition().z = posZ.get();
-							}
-							treePop();
-						}
-						if (treeNode("Rotation")) {
-							if (inputFloat("X", rotX)) {
-								currentmodel.getTransform().setRotation(rotX.get(), rotY.get(), rotZ.get());
-							}                   
-							if (inputFloat("Y", rotY)) {
-								currentmodel.getTransform().setRotation(rotX.get(), rotY.get(), rotZ.get());
-							}                   
-							if (inputFloat("Z", rotZ)) {
-								currentmodel.getTransform().setRotation(rotX.get(), rotY.get(), rotZ.get());
-							}
-							treePop();
-						}
-						if (treeNode("Scale")) {
-							if (inputFloat("X", scaleX)) {
-								currentmodel.getTransform().setScale(scaleX.get(), scaleY.get(), scaleZ.get());
-							}                   
-							if (inputFloat("Y", scaleY)) {
-								currentmodel.getTransform().setScale(scaleX.get(), scaleY.get(), scaleZ.get());
-							}                   
-							if (inputFloat("Z", scaleZ)) {
-								currentmodel.getTransform().setScale(scaleX.get(), scaleY.get(), scaleZ.get());
-							}
-							treePop();
-						}
-						treePop();
-					}
-				}
-				if (currentmaterial != null) {
-					if (treeNode("Material")) {
-						if (colorEdit4("Base Colour", baseColour)) {
-							currentmaterial.getDiffuseColour().set(baseColour);
-						}
-						textureInterface(TextureType.BASE_COLOUR, baseColourIndex);
-						textureInterface(TextureType.NORMAL, normalIndex);
-						textureInterface(TextureType.METALLIC, metallicIndex);
-						textureInterface(TextureType.ROUGHNESS, roughnessIndex);
-						treePop();
-					}
-				}
-			end();
+				ImGuiFileDialog.close();
+			}
 		}
 
 		private void textureInterface(TextureType texType, ImInt index) {

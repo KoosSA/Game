@@ -16,7 +16,6 @@ import com.koossa.logger.Log;
 class AudioLoader {
 	
 	private static int sampleRate;
-	@SuppressWarnings("unused")
 	private static int channels;
 	private static IntBuffer err;
 	

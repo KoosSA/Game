@@ -53,12 +53,12 @@ public class Physics implements IUpdatable, IDisposable, IResizable {
 		gravity = new Vector3f(0, -10, 0);
 		world = new PhysicsSpace(BroadphaseType.DBVT);
 		world.setGravity(gravity);
-		Log.debug(this, "Physics initialisation finished.");
 		shader = new PhysicsDebugShader();
 		this.cam = cam;
 		shader.start();
 		shader.loadProjectionMatrix(cam.getProjectionMatrix());
 		shader.stop();
+		Log.debug(this, "Physics initialisation finished.");
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class Physics implements IUpdatable, IDisposable, IResizable {
 	@Override
 	public void update(float delta) {
 		if (!isInitialised) return;
-		world.update(delta, 2);
+		world.update(delta, 3);
 	}
 	
 	public void setGravity(float x, float y, float z) {
@@ -142,7 +142,7 @@ public class Physics implements IUpdatable, IDisposable, IResizable {
 		debug = false;
 	}
 
-	public void debugDraw(Camera cam) {
+	public void debugDraw() {
 		if (!canRender) return;
 		shader.start();
 		shader.loadViewMatrix(cam.getViewMatrix());

@@ -1,6 +1,8 @@
 package client.rendering.objects;
 
 import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
+import com.jme3.bullet.collision.shapes.HullCollisionShape;
 import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.koossa.logger.Log;
 
@@ -26,8 +28,16 @@ public class ModelInstance {
 		this.model = Registries.Models.getStaticModel(modelName);
 		this.transform = new Transform();
 	}
+	
+	public ModelInstance addPhysicsToInstance(float mass) {
+		CompoundCollisionShape cs = new CompoundCollisionShape();
+		model.getConvexHulls().forEach(hull -> {
+			cs.addChildShape(new HullCollisionShape(hull));
+		});
+		return addPhysicsToInstance(cs, mass);
+	}
 
-	public ModelInstance addPhysicsToInstance(CollisionShape collisionShape, float mass, boolean debugRender) {
+	public ModelInstance addPhysicsToInstance(CollisionShape collisionShape, float mass) {
 		if (Globals.physics == null) {
 			Log.error(this, "Physics not enabled in this world.");
 			return this;
@@ -35,7 +45,7 @@ public class ModelInstance {
 		rigidBody = new PhysicsRigidBody(collisionShape, mass);
 		Globals.physics.addObjectToPhysicsWorld(rigidBody);
 		rigidBody.setPhysicsLocation(transform.getPosition());
-		rigidBody.getTransform(null).setRotation(transform.getRotation());
+		rigidBody.getTransform(null).getRotation().set(transform.getRotation());
 		rigidBody.getTransform(null).setScale(transform.getScale().x());
 		if (mass > 0) {
 			physicsLink = new IUpdatable() {
@@ -50,7 +60,7 @@ public class ModelInstance {
 			};
 			InternalRegistries.addUpdatable(physicsLink);
 		}
-		if (debugRender) Globals.physics.addToDebugRenderer(rigidBody);
+		if (Globals.physics.isDebug()) Globals.physics.addToDebugRenderer(rigidBody);
 		return this;
 	}
 
@@ -61,6 +71,7 @@ public class ModelInstance {
 		}
 		InternalRegistries.removeUpdatable(physicsLink);
 		Globals.physics.removeObjectFromPhysicsWorld(rigidBody);
+		Globals.physics.removeFromDebugRenderer(rigidBody);
 		rigidBody = null;
 		return this;
 	}

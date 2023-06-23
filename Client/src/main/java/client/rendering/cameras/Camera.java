@@ -24,7 +24,7 @@ public abstract class Camera implements IInputHandler {
 
 	protected float movementSpeed = 1;
 	protected float turnSpeed = 10;
-	protected float sprintModifier = 5;
+	protected float sprintModifier = 10;
 	
 	public Camera() {
 		registerInputHandler(InputStates.GAME);

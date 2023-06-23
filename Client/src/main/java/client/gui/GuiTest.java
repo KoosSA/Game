@@ -1,7 +1,7 @@
 package client.gui;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -18,7 +18,8 @@ public class GuiTest implements IDisposable{
 	private ImGuiImplGlfw glfwImpl;
 	private ImGuiImplGl3 glImpl;
 	private ImGuiIO io;
-	private List<IGuiLayer> layers;
+	private Map<String, IGuiLayer> alllayers;
+	private Map<String, IGuiLayer> visibleLayers;
 	
 	public GuiTest() {
 		registerDisposeHandler();
@@ -31,7 +32,8 @@ public class GuiTest implements IDisposable{
 		glfwImpl.init(Globals.window.getId(), false);
 		glImpl.init("#version 130");
 		Globals.gui = this;
-		layers = new ArrayList<>();
+		alllayers = new HashMap<String, IGuiLayer>();
+		visibleLayers = new HashMap<String, IGuiLayer>();
 		
 	}
 	
@@ -50,7 +52,7 @@ public class GuiTest implements IDisposable{
 	}
 
 	private void processGui() {
-		layers.forEach(layer -> {
+		visibleLayers.forEach((id, layer) -> {
 			layer.create();
 		});
 	}
@@ -66,12 +68,28 @@ public class GuiTest implements IDisposable{
 		return glfwImpl;
 	}
 	
-	public void addGuiLayer(IGuiLayer layer) {
-		layers.add(layer);
+	public IGuiLayer addGuiLayer(String guiId, IGuiLayer layer) {
+		alllayers.putIfAbsent(guiId, layer);
+		return layer;
 	}
 	
-	public void removeGuiLayer(IGuiLayer layer) {
-		layers.remove(layer);
+	public void removeGuiLayer(String guiId) {
+		if (alllayers.containsKey(guiId)) {
+			hide(guiId);
+			alllayers.remove(guiId);
+		}
+	}
+	
+	public void show(String guiId) {
+		IGuiLayer layer = alllayers.getOrDefault(guiId, null);
+		if (layer == null) return;
+		visibleLayers.putIfAbsent(guiId, layer);
+	}
+	
+	public void hide(String guiId) {
+		if (visibleLayers.containsKey(guiId)) {
+			visibleLayers.remove(guiId);
+		}
 	}
 
 }

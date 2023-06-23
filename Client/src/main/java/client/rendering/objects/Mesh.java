@@ -8,12 +8,16 @@ public class Mesh {
 	private int vaoId;
 	private int numberOfIndices;
 	private String name;
+	private float[] vertices;
+	private int[] indices;
 
-	public Mesh(int vaoId, Material material, int numberOfIndices, String name) {
+	public Mesh(int vaoId, Material material, int numberOfIndices, String name, float[] vertices, int[] indices) {
 		this.material = material;
 		this.vaoId = vaoId;
 		this.numberOfIndices = numberOfIndices;
 		this.name = name;
+		this.vertices = vertices;
+		this.indices = indices;
 	}
 
 	public Material getMaterial() {
@@ -30,6 +34,14 @@ public class Mesh {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public float[] getVertices() {
+		return vertices;
+	}
+	
+	public int[] getIndices() {
+		return indices;
 	}
 
 }

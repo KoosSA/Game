@@ -63,6 +63,7 @@ public abstract class BaseGameLoop extends Thread {
 	public void baseRender() {
 		render();
 		renderer.baseRender();
+		physics.debugDraw();
 		gui.render();
 	}
 	

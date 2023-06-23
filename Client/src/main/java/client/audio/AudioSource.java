@@ -3,15 +3,19 @@ package client.audio;
 import org.joml.Vector3f;
 import org.lwjgl.openal.AL11;
 
-public class AudioSource {
+import client.logic.internalEvents.IUpdatable;
+
+public class AudioSource implements IUpdatable{
 	
 	private int id;
+	private Vector3f position;
 	
 	public AudioSource() {
 		id = AL11.alGenSources();
 		AL11.alSource3f(id, AL11.AL_POSITION, 0, 0, 0);
 		setPitch(1);
 		setVolume(1);
+		registerUpdatable();
 	}
 	
 	public AudioSource addSound(int audioFileId) {
@@ -59,5 +63,15 @@ public class AudioSource {
 	public AudioSource setLoop(boolean looping) {
 		AL11.alSourcei(id, AL11.AL_LOOPING, looping ? AL11.AL_TRUE : AL11.AL_FALSE);
 		return this;
+	}
+
+	public AudioSource linkPosition(Vector3f position) {
+		this.position = position;
+		return this;
+	}
+
+	@Override
+	public void update(float delta) {
+		if (position != null) AL11.alSource3f(id, AL11.AL_POSITION, position.x(), position.y(), position.z());
 	}
 }

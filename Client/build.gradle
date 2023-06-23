@@ -10,6 +10,11 @@ project.ext {
 	imguiVersion = "1.86.10"
 }
 
+repositories {
+    mavenLocal()
+}
+
+
 
 dependencies {
 
@@ -60,7 +65,8 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-yoga::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-zstd::$lwjglNatives"
 	
-	implementation fileTree(dir: 'libs', include:'*.jar')
+	//implementation fileTree(dir:'exlibs', include:'*.jar')
+	implementation group: 'com.github.koossa', name: 'Libbulletjoml', version:'1.1.0'
 
 	implementation group: 'com.github.nifty-gui', name: 'nifty-style-black', version: '1.4.3'
 	implementation group: 'com.github.nifty-gui', name: 'nifty-default-controls', version: '1.4.3'

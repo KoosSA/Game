@@ -55,5 +55,9 @@ public class Audio implements IDisposable {
 		sounds.put(name, id);
 		return id;
 	}
+	
+	public Listener getListener() {
+		return listener;
+	}
 
 }
