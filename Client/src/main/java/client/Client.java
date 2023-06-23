@@ -112,14 +112,27 @@ public class Client extends BaseGameLoop {
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
 					if (Globals.input.getCurrentInputState().equals(InputStates.GAME)) {
 						Globals.input.setInputReceiver(InputStates.GUI);
-						gui.show("materialSettings");
 					} else {
 						Globals.input.setInputReceiver(InputStates.GAME);
-						gui.hide("materialSettings");
 					}
 				}
 			}
 		}, InputStates.GAME);
+		
+		Globals.input.registerInputHandler(new IInputHandler() {
+			
+			@Override
+			public void handleInputs(Input input, float delta) {
+				
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+					if (Globals.input.getCurrentInputState().equals(InputStates.GAME)) {
+						Globals.input.setInputReceiver(InputStates.GUI);
+					} else {
+						Globals.input.setInputReceiver(InputStates.GAME);
+					}
+				}
+			}
+		}, InputStates.GUI);
 		
 		
 		
