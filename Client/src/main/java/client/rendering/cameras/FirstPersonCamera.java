@@ -43,8 +43,8 @@ public class FirstPersonCamera extends Camera {
 	public void handleInputs(Input input, float delta) {
 		turn(input.getMouseDeltaX() * delta * turnSpeed);
 		pitch(input.getMouseDeltaY() * delta * turnSpeed);
-		if (input.isKeyDown(KeyBinds.WALK_FORWARD))
-			moveForward(delta, 1);
+//		if (input.isKeyDown(KeyBinds.WALK_FORWARD))
+//			moveForward(delta, 1);
 		if (input.isKeyDown(KeyBinds.WALK_BACK))
 			moveForward(delta, -1);
 		if (input.isKeyDown(KeyBinds.WALK_RIGHT))

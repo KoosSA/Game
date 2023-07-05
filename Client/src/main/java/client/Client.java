@@ -18,6 +18,7 @@ import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
 import client.rendering.objects.Model;
 import client.rendering.objects.ModelInstance;
+import client.rendering.objects.Player;
 import client.rendering.utils.ModelManager;
 import client.utils.Globals;
 import client.utils.registries.Registries;
@@ -64,6 +65,9 @@ public class Client extends BaseGameLoop {
 		
 		physics.enableDebug();
 		physics.setGravity(0, -10, 0);
+		
+		Player player = new Player(camera, 1.8f, 0.3f, 1.0f);
+		physics.addToDebugRenderer(player.getPhysicsCharacter());
 
 		Globals.input.registerInputHandler(new IInputHandler() {
 			
