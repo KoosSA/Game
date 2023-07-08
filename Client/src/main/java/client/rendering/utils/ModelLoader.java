@@ -172,7 +172,7 @@ public class ModelLoader {
 		}
 		faces.free();
 
-		int vaoId = Loader.loadModelData(MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents));
+		int vaoId = Loader.loadModelData(true, MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents));
 		
 		return new Mesh(vaoId, new Material(), indices.size(), mesh.mName().dataString(), MathUtil.listToArrayFloat(vertices), MathUtil.ListToArrayInteger(indices));
 	}

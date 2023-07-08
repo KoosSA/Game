@@ -134,6 +134,9 @@ public class Physics implements IUpdatable, IDisposable, IResizable {
 		vbo = GL46.glGenBuffers();
 		canRender = true;
 		debug = true;
+		world.getPcoList().forEach(o -> {
+			addToDebugRenderer(o);
+		});
 	}
 
 	public void disableDebug() {

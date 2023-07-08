@@ -1,10 +1,9 @@
 package client;
 
+import java.util.Random;
+
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
-
-import com.jme3.bullet.collision.shapes.BoxCollisionShape;
-import com.jme3.bullet.objects.PhysicsRigidBody;
 
 import client.audio.Audio;
 import client.gui.IGuiLayer;
@@ -18,7 +17,6 @@ import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
 import client.rendering.objects.Model;
 import client.rendering.objects.ModelInstance;
-import client.rendering.objects.Player;
 import client.rendering.utils.ModelManager;
 import client.utils.Globals;
 import client.utils.registries.Registries;
@@ -39,8 +37,7 @@ public class Client extends BaseGameLoop {
 	//PhysicsRigidBody rb;
 	//Model m;
 	int counter = 0;
-	int fsc = 1;
-	int af = 75;
+	float af = 120;
 	
 	@Override
 	protected void init() {
@@ -66,14 +63,14 @@ public class Client extends BaseGameLoop {
 		physics.enableDebug();
 		physics.setGravity(0, -10, 0);
 		
-		Player player = new Player(camera, 1.8f, 0.3f, 1.0f);
-		physics.addToDebugRenderer(player.getPhysicsCharacter());
+		//Player player = new Player(camera, 1.8f, 0.3f, 1.0f);
+		//physics.addToDebugRenderer(player.getPhysicsCharacter());
 
 		Globals.input.registerInputHandler(new IInputHandler() {
-			
+			Random r = new Random();
 			@Override
 			public void handleInputs(Input input, float delta) {
-				if (input.isKeyDown(KeyBinds.INTERACT)) {
+				if (input.isKeyJustPressed(KeyBinds.INTERACT)) {
 					ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m));
 					mi.getTransform().setPosition(0,100,0);
 					mi.addPhysicsToInstance(1);
@@ -82,15 +79,19 @@ public class Client extends BaseGameLoop {
 				}
 				
 				if (input.isKeyDown(GLFW.GLFW_KEY_F)) {
-					
-								ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m1));
-								mi.getTransform().setPosition(0,10,0);
-								
-								mi.addPhysicsToInstance(1);
-								mi.getRigidBody().setRestitution(0);
-								counter++;
-							
-					
+						//for (int i = 0; i < 1000; i++) {
+							ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m1));
+							mi.getTransform().setPosition(r.nextFloat(50),r.nextFloat(50),r.nextFloat(50));
+							mi.getTransform().setPosition(0,r.nextFloat(50),0);
+							mi.addPhysicsToInstance(1);
+							mi.getRigidBody().setRestitution(0);
+							counter++;
+						//}
+				}
+				
+				if (input.isKeyDown(GLFW.GLFW_KEY_UP)) {
+					System.out.println("Moving");
+					System.out.println(terrian.getChunksToRender().get(0).getTransform().getPosition());
 				}
 				
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_KP_ENTER)) {
@@ -107,7 +108,7 @@ public class Client extends BaseGameLoop {
 					ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m1));
 					mi.getTransform().setPosition((( FirstPersonCamera )camera).getPointInFrontOfCam(5));
 					mi.addPhysicsToInstance(1);
-					mi.getRigidBody().setCcdMotionThreshold(0.015f);
+					mi.getRigidBody().setCcdMotionThreshold(0.005f);
 					mi.getRigidBody().applyCentralImpulse(camera.getDirection().mul(100, new Vector3f()));
 					mi.getRigidBody().setRestitution(1f);
 					counter++;
@@ -140,16 +141,16 @@ public class Client extends BaseGameLoop {
 		
 		
 		
-		Timer.registerNewInfiniteRepeatEventMillis(1000, 0, new ITimedEvent() {
+		Timer.registerNewInfiniteRepeatEventMillis(100, 0, new ITimedEvent() {
 			@Override
 			public void handle() {
-				af = fsc;
-				fsc = 0;
+				af = Globals.window.getFPS();
+				//fsc = 0;
 			}
 		});
 		
 		
-
+		
 		
 		gui.addGuiLayer("fps", new IGuiLayer() {
 			
@@ -165,18 +166,12 @@ public class Client extends BaseGameLoop {
 		
 		gui.show("fps");
 		
-		
-		
-		PhysicsRigidBody floor = new PhysicsRigidBody(new BoxCollisionShape(200, 0.5f, 200), 0);
-		physics.addObjectToPhysicsWorld(floor);
-		physics.addToDebugRenderer(floor);
-		floor.setRestitution(0);
 	}
 
 	
 	@Override
 	protected void update(float delta) {
-		fsc++;
+		//fsc++;
 	}
 
 	@Override

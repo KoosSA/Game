@@ -30,6 +30,10 @@ public class ModelInstance {
 	}
 	
 	public ModelInstance addPhysicsToInstance(float mass) {
+		if (Globals.physics == null) {
+			Log.error(this, "Physics not enabled in this world.");
+			return this;
+		}
 		CompoundCollisionShape cs = new CompoundCollisionShape();
 		model.getConvexHulls().forEach(hull -> {
 			cs.addChildShape(new HullCollisionShape(hull));

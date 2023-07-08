@@ -4,6 +4,7 @@ import com.koossa.filesystem.CommonFolders;
 import com.koossa.filesystem.Files;
 import com.koossa.filesystem.RootFileLocation;
 import com.koossa.logger.Log;
+import com.koossa.savelib.SaveSystem;
 
 import client.gui.GuiTest;
 import client.io.Window;
@@ -13,6 +14,8 @@ import client.rendering.cameras.Camera;
 import client.rendering.cameras.FirstPersonCamera;
 import client.rendering.renderers.BaseRenderer;
 import client.rendering.renderers.StaticRenderer;
+import client.rendering.renderers.TerrainRenderer;
+import client.rendering.terrain.Terrain;
 import client.utils.registries.Registries;
 import common.utils.timer.Timer;
 
@@ -21,9 +24,11 @@ public abstract class BaseGameLoop extends Thread {
 	protected Input input;
 	//protected Gui gui;
 	protected BaseRenderer renderer;
+	protected BaseRenderer terrianRenderer;
 	protected Camera camera;
 	protected GuiTest gui;
 	protected Physics physics;
+	protected Terrain terrian;
 	
 	public BaseGameLoop() {
 		setName("client_main");
@@ -33,6 +38,7 @@ public abstract class BaseGameLoop extends Thread {
 	public void run() {
 		Files.init("Resources", RootFileLocation.LOCAL);
 		Log.init(Files.getCommonFolder(CommonFolders.Logs), true);
+		SaveSystem.init(Files.getCommonFolder(CommonFolders.Saves), Files.getFolder("Data"));
 		new Timer(100).start();
 		new Window(this);
 	}
@@ -49,7 +55,9 @@ public abstract class BaseGameLoop extends Thread {
 		if (input == null) input = new Input();
 		if (camera == null) camera = new FirstPersonCamera();
 		if (physics == null) physics = new Physics(camera);
+		if (terrian == null) terrian = new Terrain();
 		if (renderer == null) renderer = new StaticRenderer(camera);
+		if (terrianRenderer == null) terrianRenderer = new TerrainRenderer(camera);
 		
 		init();
 		Log.debug(this, "Initialisation of programm complete.");
@@ -62,6 +70,7 @@ public abstract class BaseGameLoop extends Thread {
 	
 	public void baseRender() {
 		render();
+		terrianRenderer.baseRender();
 		renderer.baseRender();
 		physics.debugDraw();
 		gui.render();
