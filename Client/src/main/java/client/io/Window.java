@@ -25,13 +25,15 @@ public class Window {
 	private boolean VSYNC = false;
 	private String TITLE = "Engine";
 	private long id;
-	private double TARGET_FPS = 75;
+	private double TARGET_FPS = 120;
 	private boolean initialised = false;
 	private GLFWVidMode videoMode;
 	private long primaryMonitor;
 	private BaseGameLoop gameloop;
 	private boolean resizing = false;
 	private int previousWH;
+	private float aveFps;
+	private int numFrames = 0;
 	
 	public Window(BaseGameLoop gameLoop) {
 		Globals.window = this;
@@ -53,7 +55,7 @@ public class Window {
 		//GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 4);
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 6);
-		GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 8);
+		GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
 		
 		if (!GLFW.glfwInit()) {
 			Log.error(Window.class, "Failed to create GLFW context - Aborting...");
@@ -99,6 +101,8 @@ public class Window {
 	}
 	
 	private void update(float delta) {
+		aveFps += delta;
+		numFrames++;
 		if (resizing) {
 			if (previousWH == width + height) {
 				resizing = false;
@@ -169,6 +173,13 @@ public class Window {
 
 	public long getId() {
 		return id;
+	}
+	
+	public float getFPS() {
+		float res = 1.0f / (aveFps / (float) numFrames);
+		numFrames = 0;
+		aveFps = 0;
+		return res;
 	}
 	
 	
