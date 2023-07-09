@@ -17,6 +17,7 @@ import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
 import client.rendering.objects.Model;
 import client.rendering.objects.ModelInstance;
+import client.rendering.objects.Player;
 import client.rendering.utils.ModelManager;
 import client.utils.Globals;
 import client.utils.registries.Registries;
@@ -63,8 +64,9 @@ public class Client extends BaseGameLoop {
 		physics.enableDebug();
 		physics.setGravity(0, -10, 0);
 		
-		//Player player = new Player(camera, 1.8f, 0.3f, 1.0f);
-		//physics.addToDebugRenderer(player.getPhysicsCharacter());
+//		Player player = new Player(camera, 1.8f, 0.3f, 1.0f);
+//		player.getPhysicsCharacter().setPhysicsLocation(new Vector3f(0, 10, 0));
+//		physics.addToDebugRenderer(player.getPhysicsCharacter());
 
 		Globals.input.registerInputHandler(new IInputHandler() {
 			Random r = new Random();
@@ -79,20 +81,18 @@ public class Client extends BaseGameLoop {
 				}
 				
 				if (input.isKeyDown(GLFW.GLFW_KEY_F)) {
-						//for (int i = 0; i < 1000; i++) {
+					for (int x = -10; x < 10; x++ )	{
+						for (int i = -10; i < 10; i++) {
 							ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m1));
-							mi.getTransform().setPosition(r.nextFloat(50),r.nextFloat(50),r.nextFloat(50));
-							mi.getTransform().setPosition(0,r.nextFloat(50),0);
-							mi.addPhysicsToInstance(1);
-							mi.getRigidBody().setRestitution(0);
+							mi.getTransform().setPosition(x * 15, 0, i*15);
+							//mi.addPhysicsToInstance(1);
+							//mi.getRigidBody().setRestitution(0);
 							counter++;
-						//}
+						}
+					}
 				}
 				
-				if (input.isKeyDown(GLFW.GLFW_KEY_UP)) {
-					System.out.println("Moving");
-					System.out.println(terrian.getChunksToRender().get(0).getTransform().getPosition());
-				}
+				
 				
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_KP_ENTER)) {
 					if (physics.isDebug()) {

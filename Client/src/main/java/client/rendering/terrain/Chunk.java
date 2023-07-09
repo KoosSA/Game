@@ -1,96 +1,54 @@
 package client.rendering.terrain;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.joml.Vector3f;
+import org.lwjgl.opengl.GL30;
 
 import com.jme3.bullet.collision.shapes.HeightfieldCollisionShape;
 import com.jme3.bullet.objects.PhysicsRigidBody;
-import com.koossa.savelib.ISavable;
 
 import client.rendering.utils.Transform;
 import client.utils.Globals;
-import client.utils.MathUtil;
 
-public class Chunk implements ISavable {
+public class Chunk {
 	
-	private float[] vertices;
-	private float[] heightMap;
-	private int[] indices;
-	private float[] texCoords;
-	private float[] normals;
 	private Transform transform;
-	
-	public Chunk() {
-		transform = new Transform();
-		generateChunk();
+	private PhysicsRigidBody rb;
+	private int numIndices, vaoId, vboV, vboI, vboN;
+
+	public Chunk(int[] renderArr, float[] heights, Transform transform, int numIndices, int chunkLength) {
+		this.transform = transform;
+		this.numIndices	=	numIndices;
+		this.vaoId = renderArr[0];
+		vboV = renderArr[1];
+		vboN = renderArr[2];
+		vboI = renderArr[3];
 		if (Globals.physics != null) {
-			HeightfieldCollisionShape cs = new HeightfieldCollisionShape(heightMap);
+			HeightfieldCollisionShape cs = new HeightfieldCollisionShape(heights);
 			cs.setMargin(0.4f);
-			PhysicsRigidBody rb = new PhysicsRigidBody(cs, 0);
+			rb = new PhysicsRigidBody(cs, 0);
+			rb.setPhysicsLocation(new Vector3f(transform.getPosition().x() + (0.5f * (float) chunkLength), 0, transform.getPosition().z() + (0.5f * (float) chunkLength)));
 			Globals.physics.addObjectToPhysicsWorld(rb);
 			if (Globals.physics.isDebug()) Globals.physics.addToDebugRenderer(rb);
 		}
 	}
-
-	public Chunk generateChunk() {
-		List<Float> verts = new ArrayList<Float>();
-		List<Integer> inds = new ArrayList<Integer>();
-		List<Float> heights = new ArrayList<Float>();
-		List<Float> norms = new ArrayList<Float>();
-		
-		generateVertices(verts, inds, heights, norms);
-		
-		vertices = MathUtil.listToArrayFloat(verts);
-		indices = MathUtil.ListToArrayInteger(inds);
-		heightMap = MathUtil.listToArrayFloat(heights);
-		normals = MathUtil.listToArrayFloat(norms);
-		
-		return this;
-	}
-
-	private void generateVertices(List<Float> verts, List<Integer> inds, List<Float> heights, List<Float> norms) {
-		if (Globals.terrain.getMaxSubTiles() <= 0) Globals.terrain.setMaxSubTiles(2);
-		if ((Globals.terrain.getMaxSubTiles() % 2) != 0) Globals.terrain.setMaxSubTiles(Globals.terrain.getMaxSubTiles() + 1);
-		for (float z = 0; z <= Globals.terrain.getMaxSubTiles(); z++) {
-			for (float x = 0; x <= Globals.terrain.getMaxSubTiles(); x++) {
-				verts.add(x * Globals.terrain.getDefaultTileSize());
-				verts.add(0f);
-				heights.add(0f);
-				verts.add(z * Globals.terrain.getDefaultTileSize());
-				
-				norms.add(0f);
-				norms.add(1.0f);
-				norms.add(0f);
-				
-			}
-		}
-		
-		for (int z = 0; z < Globals.terrain.getMaxSubTiles(); z++) {
-			for (int x = 0; x < Globals.terrain.getMaxSubTiles(); x++) {
-				int topLeft = ((z * (Globals.terrain.getMaxSubTiles() + 1)) + x);
-				int topRight = topLeft + 1;
-				int bottomLeft = (((z + 1) * (Globals.terrain.getMaxSubTiles() + 1)) + x);
-				int bottomRight = bottomLeft + 1;
-				inds.add(topLeft);
-				inds.add(bottomLeft);
-				inds.add(topRight);
-				inds.add(topRight);
-				inds.add(bottomLeft);
-				inds.add(bottomRight);
-			}
+	
+	public void unloadChunk() {
+		GL30.glDeleteVertexArrays(vaoId);
+		GL30.glDeleteBuffers(vboI);
+		GL30.glDeleteBuffers(vboN);
+		GL30.glDeleteBuffers(vboV);
+		if (Globals.physics != null) {
+			Globals.physics.removeObjectFromPhysicsWorld(rb);
+			if (Globals.physics.isDebug()) Globals.physics.removeFromDebugRenderer(rb);
 		}
 	}
 	
-	public float[] getVertices() {
-		return vertices;
+	public int getVaoId() {
+		return vaoId;
 	}
 	
-	public int[] getIndices() {
-		return indices;
-	}
-	
-	public float[] getNormals() {
-		return normals;
+	public int getNumIndices() {
+		return numIndices;
 	}
 	
 	public Transform getTransform() {

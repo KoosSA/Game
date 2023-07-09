@@ -1,41 +1,65 @@
 package client.rendering.terrain;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.joml.Math;
 
 import com.koossa.logger.Log;
-import com.koossa.savelib.SaveSystem;
 
-import client.rendering.utils.Loader;
+import client.logic.internalEvents.IDisposable;
+import client.logic.internalEvents.IUpdatable;
 import client.utils.Globals;
-import client.utils.MathUtil;
 
-public class Terrain {
+public class Terrain implements IUpdatable, IDisposable {
 	
 	private int maxSubTiles = 15;
-	private float defaultTileSize = 1;
-	private List<Chunk> torender = new ArrayList<Chunk>();
-	private int vaoId, vboV, vboI, vboN;
-	private int renderDistance = 2;
+	private int defaultTileSize = 1;
+	private Map<String, Chunk> torender = new HashMap<String, Chunk>();
+	private int renderChunks = 2;
+	private int prevcx = -9999999, prevcz = -99999999;
 	
 	public Terrain() {
+		registerUpdatable();
+		registerDisposeHandler();
 		Globals.terrain = this;
-		int[] pointers = Loader.loadModelData(false, new float[3], new float[3], new int[3]);
-		vaoId = pointers[0];
-		vboV = pointers[1];
-		vboN = pointers[2];
-		vboI = pointers[3];
-		
-		
-		Chunk c = getChunk();
-		c.getTransform().setPosition(-maxSubTiles / 2, 0, -maxSubTiles / 2);
+		//updateChunksInRenderDistance();
 	}
 	
-	public Chunk getChunk() {
-		Chunk c = SaveSystem.load(Chunk.class, false, "world", "chunk_test.json");
-		torender.add(c);
-		updateTerrainRenderData();
-		return c;
+	@Override
+	public void update(float delta) {
+		updateChunksInRenderDistance();
+	}
+	
+	private void updateChunksInRenderDistance() {
+		float length = defaultTileSize * maxSubTiles;
+		int camx = (int) Math.floor(Globals.camera.getPosition().x() / length);
+		int camz = (int) Math.floor(Globals.camera.getPosition().z() / length);
+		if (prevcx != camx || prevcz != camz) {
+			List<String> toremove = new ArrayList<String>(torender.keySet());
+			for (int x = -renderChunks; x < renderChunks; x++) {
+				for (int z = -renderChunks; z < renderChunks; z++) {
+					int px = camx + x;
+					int pz = camz + z;
+					String name = px + "_" + pz;
+					if (!toremove.remove(name)) {
+						torender.put(name, ChunkGenerator.generateChunk(px, pz, (int) length));
+					}
+				}
+			}
+			toremove.forEach(rn -> {
+				Chunk c = torender.remove(rn);
+				if (c != null) {
+					Log.debug(this, "Chunk unloaded: " + rn);
+					c.unloadChunk();
+				}
+			});
+			prevcx = camx;
+			prevcz = camz;
+		}
 	}
 	
 	public float getDefaultTileSize() {
@@ -50,39 +74,16 @@ public class Terrain {
 		this.maxSubTiles = maxSubTiles;
 	}
 	
-	public List<Chunk> getChunksToRender() {
-		return torender;
-	}
-	
-	public int getVaoId() {
-		return vaoId;
-	}
-	
-	private void updateTerrainRenderData() {
-		Log.debug(this, "Updating terrian render buffers.");
-		List<Float> v = new ArrayList<Float>();
-		List<Float> n = new ArrayList<Float>();
-		List<Integer> i = new ArrayList<Integer>();
-		
-		getChunksToRender().forEach(c -> {
-			for (float val : c.getVertices()) {
-				v.add(val);
-			}
-			for (float val : c.getNormals()) {
-				n.add(val);
-			}
-			for (int val : c.getIndices()) {
-				i.add(val);
-			}
-		});
-		
-		//System.out.println(v);
-		Loader.loadFloatBufferData(vaoId, vboV, MathUtil.listToArrayFloat(v));
-		Loader.loadFloatBufferData(vaoId, vboN, MathUtil.listToArrayFloat(n));
-		Loader.loadIntBufferData(vaoId, vboI, MathUtil.ListToArrayInteger(i));
+	public Collection<Chunk> getChunksToRender() {
+		return torender.values();
 	}
 
-	
+	@Override
+	public void dispose() {
+		torender.values().forEach(c -> {
+			c.unloadChunk();
+		});
+	}
 	
 
 }

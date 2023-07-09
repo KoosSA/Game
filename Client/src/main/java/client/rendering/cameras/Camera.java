@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 import client.io.input.InputStates;
 import client.io.input.receivers.handlers.IInputHandler;
+import client.utils.Globals;
 
 public abstract class Camera implements IInputHandler {
 	
@@ -28,6 +29,7 @@ public abstract class Camera implements IInputHandler {
 	
 	public Camera() {
 		registerInputHandler(InputStates.GAME);
+		Globals.camera = this;
 	}
 	
 	public abstract Matrix4f getViewMatrix();
