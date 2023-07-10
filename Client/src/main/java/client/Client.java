@@ -92,8 +92,6 @@ public class Client extends BaseGameLoop {
 					}
 				}
 				
-				
-				
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_KP_ENTER)) {
 					if (physics.isDebug()) {
 						physics.disableDebug();
@@ -101,8 +99,6 @@ public class Client extends BaseGameLoop {
 						physics.enableDebug();
 					}
 				}
-				
-				
 				
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_P)) {
 					ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m1));

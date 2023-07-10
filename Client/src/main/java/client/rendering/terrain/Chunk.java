@@ -14,8 +14,9 @@ public class Chunk {
 	private Transform transform;
 	private PhysicsRigidBody rb;
 	private int numIndices, vaoId, vboV, vboI, vboN;
+	private Vector3f debugColour;
 
-	public Chunk(int[] renderArr, float[] heights, Transform transform, int numIndices, int chunkLength) {
+	public Chunk(int[] renderArr, float[] heights, Transform transform, int numIndices, float chunkLength) {
 		this.transform = transform;
 		this.numIndices	=	numIndices;
 		this.vaoId = renderArr[0];
@@ -24,12 +25,14 @@ public class Chunk {
 		vboI = renderArr[3];
 		if (Globals.physics != null) {
 			HeightfieldCollisionShape cs = new HeightfieldCollisionShape(heights);
-			cs.setMargin(0.4f);
+			cs.setMargin(0.5f);
 			rb = new PhysicsRigidBody(cs, 0);
-			rb.setPhysicsLocation(new Vector3f(transform.getPosition().x() + (0.5f * (float) chunkLength), 0, transform.getPosition().z() + (0.5f * (float) chunkLength)));
+			rb.setPhysicsLocation(new Vector3f(transform.getPosition().x() + (0.5f * chunkLength), 0, transform.getPosition().z() + (0.5f * chunkLength)));
 			Globals.physics.addObjectToPhysicsWorld(rb);
+			rb.setEnableSleep(false);
 			if (Globals.physics.isDebug()) Globals.physics.addToDebugRenderer(rb);
 		}
+		debugColour = new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random());
 	}
 	
 	public void unloadChunk() {
@@ -53,6 +56,10 @@ public class Chunk {
 	
 	public Transform getTransform() {
 		return transform;
+	}
+
+	public Vector3f getDebugColour() {
+		return debugColour;
 	}
 
 }

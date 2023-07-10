@@ -39,7 +39,9 @@ public class TerrainRenderer extends BaseRenderer {
 		shader.loadDirectionalLight(Registries.Lights.getDirectionalLight());
 		shader.loadCameraPosition(cam);
 		
+		
 		Globals.terrain.getChunksToRender().forEach(chunk -> {
+			shader.loadColour(chunk.getDebugColour());
 			GL30.glBindVertexArray(chunk.getVaoId());
 			shader.loadTransformationMatrix(chunk.getTransform());
 			GL30.glDrawElements(GL11.GL_TRIANGLES, chunk.getNumIndices(), GL11.GL_UNSIGNED_INT, 0);

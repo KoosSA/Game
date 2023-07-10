@@ -19,14 +19,15 @@ public class Terrain implements IUpdatable, IDisposable {
 	private int maxSubTiles = 15;
 	private int defaultTileSize = 1;
 	private Map<String, Chunk> torender = new HashMap<String, Chunk>();
-	private int renderChunks = 2;
+	private int renderChunks = 1;
 	private int prevcx = -9999999, prevcz = -99999999;
 	
 	public Terrain() {
 		registerUpdatable();
 		registerDisposeHandler();
 		Globals.terrain = this;
-		//updateChunksInRenderDistance();
+		if (maxSubTiles <= 0) Globals.terrain.setMaxSubTiles(2);
+		if ((maxSubTiles % 2) != 0) Globals.terrain.setMaxSubTiles(Globals.terrain.getMaxSubTiles() + 1);
 	}
 	
 	@Override
@@ -40,13 +41,13 @@ public class Terrain implements IUpdatable, IDisposable {
 		int camz = (int) Math.floor(Globals.camera.getPosition().z() / length);
 		if (prevcx != camx || prevcz != camz) {
 			List<String> toremove = new ArrayList<String>(torender.keySet());
-			for (int x = -renderChunks; x < renderChunks; x++) {
-				for (int z = -renderChunks; z < renderChunks; z++) {
+			for (int x = -renderChunks; x <= renderChunks; x++) {
+				for (int z = -renderChunks; z <= renderChunks; z++) {
 					int px = camx + x;
 					int pz = camz + z;
 					String name = px + "_" + pz;
 					if (!toremove.remove(name)) {
-						torender.put(name, ChunkGenerator.generateChunk(px, pz, (int) length));
+						torender.put(name, ChunkGenerator.generateChunk(px, pz, length));
 					}
 				}
 			}

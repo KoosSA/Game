@@ -1,5 +1,7 @@
 package client.rendering.shaders;
 
+import org.joml.Vector3f;
+
 import client.rendering.cameras.Camera;
 import client.rendering.lights.AmbientLight;
 import client.rendering.lights.DirectionalLight;
@@ -24,6 +26,8 @@ public class TerrainShader extends BaseShader {
 		addUniform("ambient.intensity");
 		
 		addUniform("cameraPosition");
+		
+		addUniform("col");
 	}
 	
 	public void loadTransformationMatrix(Transform transform) {
@@ -55,6 +59,10 @@ public class TerrainShader extends BaseShader {
 	
 	public void loadCameraPosition(Camera cam) {
 		loadVec3f(cam.getPosition(), uniforms.get("cameraPosition"));
+	}
+	
+	public void loadColour(Vector3f colour) {
+		loadVec3f(colour, uniforms.get("col"));
 	}
 
 }

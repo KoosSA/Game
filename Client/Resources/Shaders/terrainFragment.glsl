@@ -18,12 +18,12 @@ struct AmbientLight {
 
 uniform DirectionalLight sun;
 uniform AmbientLight ambient;
-
+uniform vec3 col;
 
 
 void main() {
 
-	colour = vec4(0,0,1,1) ;
+	colour = vec4(col ,1) ;
 
 }
 

@@ -99,6 +99,10 @@ public abstract class BaseShader {
 		GL30.glUniform3f(location, vec3.x, vec3.y, vec3.z);
 	}
 	
+	protected void loadVec3f(float x, float y, float z, int location) {
+		GL30.glUniform3f(location, x, y, z);
+	}
+	
 	protected void loadVec4f(Vector4f vec4, int location) {
 		GL30.glUniform4f(location, vec4.x, vec4.y, vec4.z, vec4.w);
 	}

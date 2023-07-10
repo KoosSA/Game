@@ -127,6 +127,7 @@ public class Physics implements IUpdatable, IDisposable, IResizable {
 		GL46.glDeleteBuffers(vbo);
 		GL30.glBindVertexArray(0);
 		GL46.glDeleteVertexArrays(vao);
+		renderBuffer.clear();
 	}
 
 	public void enableDebug() {
