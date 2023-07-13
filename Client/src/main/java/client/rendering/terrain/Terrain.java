@@ -19,8 +19,9 @@ public class Terrain implements IUpdatable, IDisposable {
 	private int maxSubTiles = 15;
 	private int defaultTileSize = 1;
 	private Map<String, Chunk> torender = new HashMap<String, Chunk>();
-	private int renderChunks = 1;
+	private int renderChunks = 10;
 	private int prevcx = -9999999, prevcz = -99999999;
+	private float amplitude = 70;
 	
 	public Terrain() {
 		registerUpdatable();
@@ -54,7 +55,7 @@ public class Terrain implements IUpdatable, IDisposable {
 			toremove.forEach(rn -> {
 				Chunk c = torender.remove(rn);
 				if (c != null) {
-					Log.debug(this, "Chunk unloaded: " + rn);
+					//Log.debug(this, "Chunk unloaded: " + rn);
 					c.unloadChunk();
 				}
 			});

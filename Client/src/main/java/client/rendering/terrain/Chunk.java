@@ -25,7 +25,7 @@ public class Chunk {
 		vboI = renderArr[3];
 		if (Globals.physics != null) {
 			HeightfieldCollisionShape cs = new HeightfieldCollisionShape(heights);
-			cs.setMargin(0.5f);
+			cs.setMargin(0.04f);
 			rb = new PhysicsRigidBody(cs, 0);
 			rb.setPhysicsLocation(new Vector3f(transform.getPosition().x() + (0.5f * chunkLength), 0, transform.getPosition().z() + (0.5f * chunkLength)));
 			Globals.physics.addObjectToPhysicsWorld(rb);

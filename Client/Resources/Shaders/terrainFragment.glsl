@@ -22,8 +22,12 @@ uniform vec3 col;
 
 
 void main() {
+	vec3 normal = normalize(passNormal);
 
-	colour = vec4(col ,1) ;
+	float sunFactor = max(dot(normal, sun.direction), 0);
+
+
+	colour = vec4(col* (sunFactor * sun.colour) + (ambient.colour * ambient.intensity) ,1)  ;
 
 }
 

@@ -64,15 +64,14 @@ public class Client extends BaseGameLoop {
 		physics.enableDebug();
 		physics.setGravity(0, -10, 0);
 		
-//		Player player = new Player(camera, 1.8f, 0.3f, 1.0f);
-//		player.getPhysicsCharacter().setPhysicsLocation(new Vector3f(0, 10, 0));
-//		physics.addToDebugRenderer(player.getPhysicsCharacter());
+		Player player = new Player(camera, 1.8f, 0.3f, 1.0f);
+		player.getPhysicsCharacter().setPhysicsLocation(new Vector3f(0, 10, 0));
 
 		Globals.input.registerInputHandler(new IInputHandler() {
 			Random r = new Random();
 			@Override
 			public void handleInputs(Input input, float delta) {
-				if (input.isKeyJustPressed(KeyBinds.INTERACT)) {
+				if (input.isKeyDown(KeyBinds.INTERACT)) {
 					ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m));
 					mi.getTransform().setPosition(0,100,0);
 					mi.addPhysicsToInstance(1);
@@ -80,7 +79,7 @@ public class Client extends BaseGameLoop {
 					counter++;
 				}
 				
-				if (input.isKeyDown(GLFW.GLFW_KEY_F)) {
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_F)) {
 					for (int x = -10; x < 10; x++ )	{
 						for (int i = -10; i < 10; i++) {
 							ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m1));

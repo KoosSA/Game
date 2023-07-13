@@ -21,11 +21,12 @@ public class Player implements IUpdatable, IInputHandler {
 	private FirstPersonCamera camera;
 	private float camXoffset = 0, camYoffset = 0, camZoffset = 0;
 	private PhysicsCharacter physicsCharacter;
-	private float stepHeight = 0.5f;
+	private float stepHeight = 1.0f;
 	private float jumpForce = 10.0f;
-	private float walkSpeed = 100.0f;
-	private float runSpeed = 1000.0f;
+	private float walkSpeed = 1000.0f;
+	private float runSpeed = 10000.0f;
 	private boolean sprinting = false;
+	private boolean jumping = false;
 	private Vector3f walkDir = new Vector3f(0);
 	
 	public Player(Camera cam) {
@@ -48,9 +49,9 @@ public class Player implements IUpdatable, IInputHandler {
 		capsuleCollisionShape = new CapsuleCollisionShape(radius, height);
 		physicsCharacter = new PhysicsCharacter(capsuleCollisionShape, stepHeight);
 		Globals.physics.addObjectToPhysicsWorld(physicsCharacter);
-		
+		physicsCharacter.setMaxPenetrationDepth(0.0f);
 		setCameraOffests(0, height - 0.01f, 0);
-		physicsCharacter.setJumpSpeed(100);
+		physicsCharacter.setJumpSpeed(jumpForce);
 		Log.debug(this, "Physics added to player object");
 	}
 	
@@ -68,6 +69,10 @@ public class Player implements IUpdatable, IInputHandler {
 		walkDir.mul(delta);
 		physicsCharacter.setWalkDirection(walkDir.mul(delta).mul(sprinting ? runSpeed : walkSpeed));
 		walkDir.zero();
+		if (jumping && physicsCharacter.onGround()) {
+			physicsCharacter.jump();
+			jumping = false;
+		}
 		sprinting = false;
 	}
 	
@@ -89,7 +94,9 @@ public class Player implements IUpdatable, IInputHandler {
 		if (input.isKeyDown(KeyBinds.SPRINT))
 			sprinting = true;
 		
-		if (input.isKeyJustPressed(KeyBinds.JUMP) && physicsCharacter.onGround()) physicsCharacter.jump();
+		if (input.isKeyJustPressed(KeyBinds.JUMP)) {
+			jumping = true;
+		};
 	}
 	
 	public PhysicsCharacter getPhysicsCharacter() {
