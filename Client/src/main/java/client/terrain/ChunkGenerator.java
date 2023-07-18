@@ -1,4 +1,4 @@
-package client.rendering.terrain;
+package client.terrain;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL46;
 
 import com.koossa.filesystem.CommonFolders;
 import com.koossa.filesystem.Files;
-import com.koossa.logger.Log;
 import com.koossa.savelib.SaveSystem;
 
 import client.rendering.utils.Transform;
@@ -17,63 +16,62 @@ import client.utils.Globals;
 import client.utils.MathUtil;
 
 public class ChunkGenerator {
-	
+
 	private static List<Float> verts = new ArrayList<Float>();
 	private static List<Integer> inds = new ArrayList<Integer>();
 	private static List<Float> heights = new ArrayList<Float>();
 	private static List<Float> norms = new ArrayList<Float>();
-	
+
 	public static Chunk generateChunk(int xpos, int zpos, float length) {
 		String name = xpos + "_" + zpos;
-		//Log.debug(ChunkGenerator.class, "Generating chunk: " + name);
 		File f = new File(Files.getCommonFolderPath(CommonFolders.Saves) + "/world", name);
 		if (f.exists()) {
 			return loadChunkFromFile(name, length);
 		}
 		return genNewChunk(xpos, zpos, name, length);
 	}
-	
+
 	private static Chunk loadChunkFromFile(String name, float length) {
-		//Log.debug(ChunkGenerator.class, "Chunk is being loaded from save file: " + name);
 		ChunkData cd = SaveSystem.load(ChunkData.class, false, "world", name);
 		int[] renderArr = loadModelData(true, cd.vertices, cd.normals, cd.indices);
 		return new Chunk(renderArr, cd.heights, cd.transform, cd.indices.length, length);
 	}
-	
+
 	private static Chunk genNewChunk(int xpos, int zpos, String name, float length) {
-		Log.debug(ChunkGenerator.class, "New chunk is being created: " + name);
 		verts.clear();
 		inds.clear();
 		heights.clear();
 		norms.clear();
 		Transform transform = new Transform();
 		transform.setPosition(xpos * length, 0, zpos * length);
-		//Log.debug(ChunkGenerator.class, "Transform set to: " + transform.getPosition() + " with length of: " + length);
 		generateVertices(verts, inds, heights, norms, xpos, zpos);
-		ChunkData cd = new ChunkData(name, MathUtil.listToArrayFloat(verts), MathUtil.listToArrayFloat(norms), MathUtil.ListToArrayInteger(inds), 
-				MathUtil.listToArrayFloat(heights), transform);
+		ChunkData cd = new ChunkData(name, MathUtil.listToArrayFloat(verts), MathUtil.listToArrayFloat(norms),
+				MathUtil.ListToArrayInteger(inds), MathUtil.listToArrayFloat(heights), transform);
 		cd.save(false, name, "world");
 		int[] renderArr = loadModelData(true, cd.vertices, cd.normals, cd.indices);
 		return new Chunk(renderArr, cd.heights, transform, inds.size(), length);
 	}
-	
-	private static void generateVertices(List<Float> verts, List<Integer> inds, List<Float> heights, List<Float> norms, int camX, int camZ) {
+
+	private static void generateVertices(List<Float> verts, List<Integer> inds, List<Float> heights, List<Float> norms,
+			int camX, int camZ) {
 		for (float z = 0; z <= Globals.terrain.getMaxSubTiles(); z++) {
 			for (float x = 0; x <= Globals.terrain.getMaxSubTiles(); x++) {
-				float height = generateHeight(x + (camX * Globals.terrain.getMaxSubTiles()), z + (camZ * Globals.terrain.getMaxSubTiles()));
+				float height = generateHeight(x + (camX * Globals.terrain.getMaxSubTiles()),
+						z + (camZ * Globals.terrain.getMaxSubTiles()));
 				verts.add(x * Globals.terrain.getDefaultTileSize());
 				verts.add(height);
 				heights.add(height);
 				verts.add(z * Globals.terrain.getDefaultTileSize());
-				
-				Vector3f normal = generateNormal(x + (camX * Globals.terrain.getMaxSubTiles()), z + (camZ * Globals.terrain.getMaxSubTiles()));
+
+				Vector3f normal = generateNormal(x + (camX * Globals.terrain.getMaxSubTiles()),
+						z + (camZ * Globals.terrain.getMaxSubTiles()));
 				norms.add(normal.x());
 				norms.add(normal.y());
 				norms.add(normal.z());
-				
+
 			}
 		}
-		
+
 		for (int z = 0; z < Globals.terrain.getMaxSubTiles(); z++) {
 			for (int x = 0; x < Globals.terrain.getMaxSubTiles(); x++) {
 				int topLeft = ((z * (Globals.terrain.getMaxSubTiles() + 1)) + x);
@@ -89,7 +87,7 @@ public class ChunkGenerator {
 			}
 		}
 	}
-	
+
 	public static int[] loadModelData(boolean staticDraw, float[] vertices, float[] normals, int[] indices) {
 		int[] arr = new int[4];
 		int vao = GL46.glGenVertexArrays();
@@ -103,11 +101,12 @@ public class ChunkGenerator {
 		GL46.glBindVertexArray(0);
 		return arr;
 	}
-	
+
 	private static int storeIndices(int[] indices, boolean staticDraw) {
 		int id = GL46.glGenBuffers();
 		GL46.glBindBuffer(GL46.GL_ELEMENT_ARRAY_BUFFER, id);
-		GL46.glBufferData(GL46.GL_ELEMENT_ARRAY_BUFFER, indices, staticDraw ? GL46.GL_STATIC_DRAW : GL46.GL_DYNAMIC_DRAW);
+		GL46.glBufferData(GL46.GL_ELEMENT_ARRAY_BUFFER, indices,
+				staticDraw ? GL46.GL_STATIC_DRAW : GL46.GL_DYNAMIC_DRAW);
 		return id;
 	}
 
@@ -119,18 +118,19 @@ public class ChunkGenerator {
 		GL46.glBindBuffer(GL46.GL_ARRAY_BUFFER, 0);
 		return vbo;
 	}
-	
+
 	private static float generateHeight(float x, float z) {
+
 		return 0;
 	}
-	
+
 	public static Vector3f generateNormal(float xpos, float zpos) {
 		Vector3f normal = new Vector3f();
 		float L = generateHeight(xpos - 1, zpos);
-		float R = generateHeight(xpos+ 1 , zpos);
+		float R = generateHeight(xpos + 1, zpos);
 		float D = generateHeight(xpos, zpos + 1);
 		float U = generateHeight(xpos, zpos - 1);
-		normal.set(L-R, 2.0f, D-U);
+		normal.set(L - R, 2.0f, D - U);
 		normal.normalize();
 		return normal;
 	}

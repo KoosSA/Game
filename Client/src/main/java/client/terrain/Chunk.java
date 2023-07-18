@@ -1,4 +1,4 @@
-package client.rendering.terrain;
+package client.terrain;
 
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL30;

@@ -1,4 +1,4 @@
-package client.rendering.terrain;
+package client.terrain;
 
 import com.koossa.savelib.ISavable;
 

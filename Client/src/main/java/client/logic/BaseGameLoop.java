@@ -15,7 +15,7 @@ import client.rendering.cameras.FirstPersonCamera;
 import client.rendering.renderers.BaseRenderer;
 import client.rendering.renderers.StaticRenderer;
 import client.rendering.renderers.TerrainRenderer;
-import client.rendering.terrain.Terrain;
+import client.terrain.Terrain;
 import client.utils.registries.Registries;
 import common.utils.timer.Timer;
 

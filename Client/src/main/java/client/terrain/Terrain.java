@@ -1,4 +1,4 @@
-package client.rendering.terrain;
+package client.terrain;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.joml.Math;
-
-import com.koossa.logger.Log;
 
 import client.logic.internalEvents.IDisposable;
 import client.logic.internalEvents.IUpdatable;
@@ -19,14 +17,20 @@ public class Terrain implements IUpdatable, IDisposable {
 	private int maxSubTiles = 15;
 	private int defaultTileSize = 1;
 	private Map<String, Chunk> torender = new HashMap<String, Chunk>();
-	private int renderChunks = 10;
+	private int renderChunksX = 2;
+	private int renderChunksZ = 10;
 	private int prevcx = -9999999, prevcz = -99999999;
-	private float amplitude = 70;
 	
 	public Terrain() {
+		Globals.terrain = this;
+	}
+	
+	public void createTerrain(int renderX, int renderZ, int numberOfSubTilesPerChunk) {
 		registerUpdatable();
 		registerDisposeHandler();
-		Globals.terrain = this;
+		this.maxSubTiles = numberOfSubTilesPerChunk;
+		this.renderChunksX = renderX;
+		this.renderChunksZ = renderZ;
 		if (maxSubTiles <= 0) Globals.terrain.setMaxSubTiles(2);
 		if ((maxSubTiles % 2) != 0) Globals.terrain.setMaxSubTiles(Globals.terrain.getMaxSubTiles() + 1);
 	}
@@ -42,8 +46,8 @@ public class Terrain implements IUpdatable, IDisposable {
 		int camz = (int) Math.floor(Globals.camera.getPosition().z() / length);
 		if (prevcx != camx || prevcz != camz) {
 			List<String> toremove = new ArrayList<String>(torender.keySet());
-			for (int x = -renderChunks; x <= renderChunks; x++) {
-				for (int z = -renderChunks; z <= renderChunks; z++) {
+			for (int x = -renderChunksX; x <= renderChunksX; x++) {
+				for (int z = -renderChunksZ; z <= renderChunksZ; z++) {
 					int px = camx + x;
 					int pz = camz + z;
 					String name = px + "_" + pz;
@@ -55,7 +59,6 @@ public class Terrain implements IUpdatable, IDisposable {
 			toremove.forEach(rn -> {
 				Chunk c = torender.remove(rn);
 				if (c != null) {
-					//Log.debug(this, "Chunk unloaded: " + rn);
 					c.unloadChunk();
 				}
 			});

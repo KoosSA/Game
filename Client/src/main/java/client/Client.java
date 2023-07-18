@@ -17,7 +17,6 @@ import client.rendering.materials.Material;
 import client.rendering.materials.TextureType;
 import client.rendering.objects.Model;
 import client.rendering.objects.ModelInstance;
-import client.rendering.objects.Player;
 import client.rendering.utils.ModelManager;
 import client.utils.Globals;
 import client.utils.registries.Registries;
@@ -61,11 +60,11 @@ public class Client extends BaseGameLoop {
 		audio.getPlayer("drum").addSound(soundId);
 		
 		
-		physics.enableDebug();
+		//physics.enableDebug();
 		physics.setGravity(0, -10, 0);
 		
-		Player player = new Player(camera, 1.8f, 0.3f, 1.0f);
-		player.getPhysicsCharacter().setPhysicsLocation(new Vector3f(0, 10, 0));
+//		Player player = new Player(camera, 1.8f, 0.3f, 1.0f);
+//		player.getPhysicsCharacter().setPhysicsLocation(new Vector3f(0, 10, 0));
 
 		Globals.input.registerInputHandler(new IInputHandler() {
 			Random r = new Random();
@@ -160,6 +159,8 @@ public class Client extends BaseGameLoop {
 		});
 		
 		gui.show("fps");
+		
+		terrian.createTerrain(1, 10, 15);
 		
 	}
 

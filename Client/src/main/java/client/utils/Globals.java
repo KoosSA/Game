@@ -5,7 +5,7 @@ import client.io.Window;
 import client.io.input.Input;
 import client.physics.Physics;
 import client.rendering.cameras.Camera;
-import client.rendering.terrain.Terrain;
+import client.terrain.Terrain;
 
 public class Globals {
 	
