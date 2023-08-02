@@ -160,8 +160,6 @@ public class Client extends BaseGameLoop {
 		
 		gui.show("fps");
 		
-		terrian.createTerrain(1, 10, 15);
-		
 	}
 
 	

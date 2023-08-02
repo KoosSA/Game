@@ -28,11 +28,13 @@ import client.rendering.objects.Model;
 import client.rendering.objects.ModelInstance;
 import client.rendering.utils.ModelManager;
 import client.utils.registries.Registries;
+import imgui.ImGui;
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
 import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImFloat;
 import imgui.type.ImInt;
+import imgui.type.ImString;
 
 public class Layers {
 	
@@ -55,6 +57,7 @@ public class Layers {
 		ImFloat scaleX = new ImFloat();
 		ImFloat scaleY = new ImFloat();
 		ImFloat scaleZ = new ImFloat();
+		
 		
 		float[] baseColour = new float[4];
 		
@@ -156,6 +159,11 @@ public class Layers {
 					textureInterface(TextureType.NORMAL, normalIndex);
 					textureInterface(TextureType.METALLIC, metallicIndex);
 					textureInterface(TextureType.ROUGHNESS, roughnessIndex);
+					if (button("Save Material")) {
+						ImGui.beginPopup("Material name popup.");
+						
+						ImGui.endPopup();
+					}
 					treePop();
 				}
 			}

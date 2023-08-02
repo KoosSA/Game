@@ -5,12 +5,14 @@ import java.util.Map;
 
 import org.joml.Vector4f;
 
+import com.koossa.savelib.ISavable;
+
 import client.utils.registries.Registries;
 
-public class Material {
+public class Material implements ISavable {
 	
 	//public static final Material DEFAULT = new Material();
-	private Map<TextureType, Texture2D> textures;
+	private Map<TextureType, String> textures;
 	private Vector4f diffuseColour;
 	private float metallic = 1;
 	private float shineDampener = 10;
@@ -22,7 +24,7 @@ public class Material {
 	}
 	
 	public Texture2D getTexture(TextureType type) {
-		return textures.getOrDefault(type, null);
+		return Registries.Textures.get2DTexture(textures.get(type), type);
 	}
 	
 	public Material addTexture(TextureType type, String texName) {
@@ -30,7 +32,7 @@ public class Material {
 			removeTexture(type);
 			return this;
 		}
-		textures.put(type, Registries.Textures.get2DTexture(texName, type));
+		textures.put(type, Registries.Textures.get2DTexture(texName, type).getName());
 		return this;
 	}
 	
@@ -49,12 +51,12 @@ public class Material {
 	 * @param texture
 	 * @return
 	 */
-	public Texture2D setTexture(TextureType type, Texture2D texture) {
+	public String setTexture(TextureType type, Texture2D texture) {
 		if (texture == null) {
 			removeTexture(type);
 			return null;
 		}
-		return textures.put(type, texture);
+		return textures.put(type, texture.getName());
 	}
 	
 	public Material removeTexture(TextureType type) {

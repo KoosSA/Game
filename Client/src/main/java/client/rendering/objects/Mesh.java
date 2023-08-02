@@ -5,7 +5,7 @@ import client.rendering.materials.Material;
 public class Mesh {
 
 	private Material material;
-	private int vaoId;
+	private transient int vaoId;
 	private int numberOfIndices;
 	private String name;
 	private float[] vertices;

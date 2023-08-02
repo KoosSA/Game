@@ -15,13 +15,9 @@ public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 	public static void main(String[] args) {
 		new MaterialEditor().start();
 	}
-	
-	//public static RenderingDemoController controller;
 
 	@Override
 	protected void init() {
-		//ResourceLoader.loadAllTextures();
-		//ResourceLoader.loadAllModels();
 		registerInputHandler(InputStates.GAME);
 		registerInputHandler(InputStates.GUI);
 		
@@ -30,18 +26,10 @@ public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 		camera.getPosition().set(0, 2, 5);
 		FirstPersonCamera.class.cast(camera).pitch(-20);
 		
-//		Material mat = Registries.Models.getStaticModel("barrels_fbx.fbx").getMeshes().get(0).getMaterial();
-//		mat.addTexture(TextureType.BASE_COLOUR, "drum3_base_color.png");
-//		mat.addTexture(TextureType.NORMAL, "drum3_normal.png");
-//		mat.addTexture(TextureType.ROUGHNESS, "drum3_roughness.png");
-//		mat.addTexture(TextureType.METALLIC, "drum3_metallic.png");
-//		ModelManager.addModelInstanceToWorld(new ModelInstance(Registries.Models.getStaticModel("barrels_fbx.fbx")));
-		
 		gui.addGuiLayer("materialSettings", Layers.modelSettings);
 		gui.show("materialSettings");
 		
 		physics.enableDebug();
-		
 	}
 
 	@Override
