@@ -12,6 +12,13 @@ project.ext {
 
 repositories {
     mavenLocal()
+    maven {
+        url file('lib')
+        metadataSources {
+            artifact()
+        }
+    }
+
 }
 
 
@@ -65,8 +72,8 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-yoga::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-zstd::$lwjglNatives"
 	
-	//implementation fileTree(dir:'exlibs', include:'*.jar')
-	implementation group: 'com.github.koossa', name: 'Libbulletjoml', version:'1.1.0'
+	//implementation fileTree(dir:'lib', include:'*.jar')
+	implementation 'koossa:Libbulletjoml:1.1.0'
 
 	implementation group: 'com.github.nifty-gui', name: 'nifty-style-black', version: '1.4.3'
 	implementation group: 'com.github.nifty-gui', name: 'nifty-default-controls', version: '1.4.3'

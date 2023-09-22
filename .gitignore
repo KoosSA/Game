@@ -30,9 +30,9 @@ build/
 !jgoodies-forms-1.8.0.jar
 !jgoodies-forms-1.8.0-sources.jar
 
-!Libbulletjme-15.1.0.jar
-!Libbulletjme-15.1.0-javadoc.jar
-!Libbulletjme-15.1.0-sources.jar
+!Libbulletjoml-1.1.0.jar
+!Libbulletjoml-1.1.0-javadoc.jar
+!Libbulletjoml-1.1.0-sources.jar
 
 # JRebel parts - are generated
 rebel.xml
