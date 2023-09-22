@@ -4,7 +4,7 @@ version '0.0.1'
 apply plugin: 'application'
 
 project.ext {
-	lwjglVersion = "3.3.2"
+	lwjglVersion = "3.3.3"
 	lwjglNatives = "natives-windows"
 	imguiVersion = "1.86.10"
 }

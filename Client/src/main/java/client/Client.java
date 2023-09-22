@@ -83,8 +83,8 @@ public class Client extends BaseGameLoop {
 						for (int i = -10; i < 10; i++) {
 							ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m1));
 							mi.getTransform().setPosition(x * 15, 0, i*15);
-							//mi.addPhysicsToInstance(1);
-							//mi.getRigidBody().setRestitution(0);
+							mi.addPhysicsToInstance(1);
+							mi.getRigidBody().setRestitution(0);
 							counter++;
 						}
 					}
