@@ -6,7 +6,7 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import client.audio.Audio;
-import client.gui.IGuiLayer;
+import client.gui.ImGuiLayer;
 import client.io.KeyBinds;
 import client.io.input.Input;
 import client.io.input.InputStates;
@@ -146,7 +146,7 @@ public class Client extends BaseGameLoop {
 		
 		
 		
-		gui.addGuiLayer("fps", new IGuiLayer() {
+		gui.addGuiLayer("fps", new ImGuiLayer() {
 			
 			@Override
 			public void create() {

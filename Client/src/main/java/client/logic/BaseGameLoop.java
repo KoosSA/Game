@@ -6,7 +6,7 @@ import com.koossa.filesystem.RootFileLocation;
 import com.koossa.logger.Log;
 import com.koossa.savelib.SaveSystem;
 
-import client.gui.GuiTest;
+import client.gui.ImGuiImpl;
 import client.io.Window;
 import client.io.input.Input;
 import client.physics.Physics;
@@ -20,10 +20,10 @@ import common.utils.timer.Timer;
 public abstract class BaseGameLoop extends Thread {
 	
 	protected Input input;
-	//protected Gui gui;
+	//protected NiftyGui gui;
 	protected BaseRenderer renderer;
 	protected Camera camera;
-	protected GuiTest gui;
+	protected ImGuiImpl gui;
 	protected Physics physics;
 	
 	public BaseGameLoop() {
@@ -46,8 +46,8 @@ public abstract class BaseGameLoop extends Thread {
 	
 	public void baseInit() {
 		Log.debug(this, "Starting initialisation process.");
-		//if (gui == null) gui = new Gui();
-		if (gui == null) gui = new GuiTest();
+		//if (gui == null) gui = new NiftyGui();
+		if (gui == null) gui = new ImGuiImpl();
 		if (input == null) input = new Input();
 		if (camera == null) camera = new FirstPersonCamera();
 		if (physics == null) physics = new Physics(camera);

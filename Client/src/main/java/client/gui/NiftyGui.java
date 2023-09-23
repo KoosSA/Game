@@ -20,7 +20,7 @@ import de.lessvoid.nifty.renderer.lwjgl3.render.Lwjgl3BatchRenderBackendCoreProf
 import de.lessvoid.nifty.renderer.lwjgl3.time.Lwjgl3TimeProvider;
 import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
 
-public class Gui implements IDisposable, IUpdatable, IResizable {
+public class NiftyGui implements IDisposable, IUpdatable, IResizable {
 	
 	public Nifty nifty;
 	public Lwjgl3InputSystem input_system;
@@ -31,7 +31,7 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 	private String currentScreen;
 	private String defaultScreen = "hud";
 	
-	public Gui() {
+	public NiftyGui() {
 		Log.debug(this, "Starting nifty gui initialisation.");
 		registerUpdatable();
 		registerDisposeHandler();
@@ -52,7 +52,7 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
 		//render_device.setDisplayFPS(true);
 		filePaths = new ArrayList<>();
-		Log.debug(this, "Gui system initialised.");
+		Log.debug(this, "NiftyGui system initialised.");
 	}
 	
 	public void renderDebugFPS(boolean shouldRender) {
@@ -60,7 +60,7 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 	}
 	
 	public void show(String id) {
-		Log.debug(this, "Gui switching to screen: " + id);
+		Log.debug(this, "NiftyGui switching to screen: " + id);
 		nifty.gotoScreen(id);
 		currentScreen = id;
 	}
@@ -87,16 +87,16 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 	}
 	
 	public void dispose() {
-		Log.debug(this, "Starting Gui disposal");
+		Log.debug(this, "Starting NiftyGui disposal");
 		input_system.shutdown();
 		nifty.exit();
 		unRegisterUpdatable();
-		Log.debug(this, "Gui disposal finished.");
+		Log.debug(this, "NiftyGui disposal finished.");
 	}
 	
 	public void loadXML(String fileName) {
 		Log.debug(this, "Trying to load gui file named: " + fileName);
-		String path = Files.getFolderPath("Gui") + "/" + fileName;
+		String path = Files.getFolderPath("NiftyGui") + "/" + fileName;
 		try {
 			nifty.validateXml(path);
 		} catch (Exception e) {
@@ -105,7 +105,7 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 		}
 		nifty.addXml(path);
 		if (!filePaths.contains(path)) filePaths.add(path);
-		Log.debug(this, "Loading Gui finished: " + fileName);
+		Log.debug(this, "Loading NiftyGui finished: " + fileName);
 	}
 	
 	

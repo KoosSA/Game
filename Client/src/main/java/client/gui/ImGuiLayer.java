@@ -1,6 +1,6 @@
 package client.gui;
 
-public interface IGuiLayer {
+public interface ImGuiLayer {
 	
 	void create();
 
