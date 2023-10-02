@@ -31,7 +31,7 @@ public class ImGuiImpl implements IDisposable{
 		glImpl = new ImGuiImplGl3();
 		glfwImpl.init(Globals.window.getId(), false);
 		glImpl.init("#version 130");
-		Globals.gui = this;
+		Globals.igui = this;
 		alllayers = new HashMap<String, ImGuiLayer>();
 		visibleLayers = new HashMap<String, ImGuiLayer>();
 		

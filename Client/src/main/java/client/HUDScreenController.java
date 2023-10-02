@@ -2,12 +2,13 @@ package client;
 
 import com.koossa.logger.Log;
 
+import client.logic.internalEvents.IUpdatable;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
-public class HUDScreenController implements ScreenController {
+public class HUDScreenController implements ScreenController, IUpdatable {
 	
 	static Label renderFPS;
 	static Label updateFPS;
@@ -25,20 +26,21 @@ public class HUDScreenController implements ScreenController {
 		
 	}
 	
-	public static void update(float delta) {
-		renderFPS.setText("Client render FPS: " + (int) (1/delta));
+	@Override
+	public void update(float delta) {
+		renderFPS.setText("TestTextSystem render FPS: " + (int) (1/delta));
 	}
 
 	@Override
 	public void onStartScreen() {
 		Log.debug(this, "Starting hud screen.");
-		
+		registerUpdatable();
 	}
 
 	@Override
 	public void onEndScreen() {
 		Log.debug(this, "Ending hud screen.");
-
+		unRegisterUpdatable();
 	}
 
 }

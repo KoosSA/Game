@@ -1,7 +1,5 @@
 package client;
 
-import java.util.Random;
-
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
@@ -41,7 +39,8 @@ public class Client extends BaseGameLoop {
 	
 	@Override
 	protected void init() {
-		input.setInputReceiver(InputStates.GAME);
+		input.setInputReceiver(InputStates.GUI);
+		ngui.renderDebugFPS(true);
 
 		Model m = Registries.Models.getStaticModel("t.fbx");
 		Material mat = m.getMeshes().get(0).getMaterial();
@@ -67,7 +66,6 @@ public class Client extends BaseGameLoop {
 //		player.getPhysicsCharacter().setPhysicsLocation(new Vector3f(0, 10, 0));
 
 		Globals.input.registerInputHandler(new IInputHandler() {
-			Random r = new Random();
 			@Override
 			public void handleInputs(Input input, float delta) {
 				if (input.isKeyDown(KeyBinds.INTERACT)) {
@@ -130,6 +128,15 @@ public class Client extends BaseGameLoop {
 						Globals.input.setInputReceiver(InputStates.GAME);
 					}
 				}
+				
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_UP)) {
+					ngui.show("hud");
+				}
+				
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_DOWN)) {
+					ngui.toggle("inv");
+				}
+				
 			}
 		}, InputStates.GUI);
 		
@@ -146,7 +153,7 @@ public class Client extends BaseGameLoop {
 		
 		
 		
-		gui.addGuiLayer("fps", new ImGuiLayer() {
+		igui.addGuiLayer("fps", new ImGuiLayer() {
 			
 			@Override
 			public void create() {
@@ -158,7 +165,10 @@ public class Client extends BaseGameLoop {
 			}
 		});
 		
-		gui.show("fps");
+		igui.show("fps");
+		
+		ngui.loadXML("hud.xml");
+		ngui.loadXML("inv.xml");
 		
 	}
 
