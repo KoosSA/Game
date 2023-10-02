@@ -7,6 +7,12 @@ import client.logic.internalEvents.IDisposable;
 import client.logic.internalEvents.IResizable;
 import client.logic.internalEvents.IUpdatable;
 
+
+/**
+ * Handles all logic events registered in the engine. This includes {@link IUpdatable Updatables} and {@link IDisposable Disposables}.
+ * @author Koos
+ *
+ */
 public class InternalRegistries {
 	
 	private static List<IResizable> resizeHandlers = new ArrayList<>();
