@@ -18,9 +18,11 @@ import de.lessvoid.nifty.render.batch.BatchRenderDevice;
 import de.lessvoid.nifty.renderer.lwjgl3.input.Lwjgl3InputSystem;
 import de.lessvoid.nifty.renderer.lwjgl3.render.Lwjgl3BatchRenderBackendCoreProfileFactory;
 import de.lessvoid.nifty.renderer.lwjgl3.time.Lwjgl3TimeProvider;
+import de.lessvoid.nifty.screen.DefaultScreenController;
+import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
 
-public class Gui implements IDisposable, IUpdatable, IResizable {
+public class NiftyGui implements IDisposable, IUpdatable, IResizable {
 	
 	public Nifty nifty;
 	public Lwjgl3InputSystem input_system;
@@ -29,14 +31,15 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 	public Lwjgl3TimeProvider time_provider;
 	private List<String> filePaths;
 	private String currentScreen;
-	private String defaultScreen = "hud";
+	private String defaultScreen = "emptyScreen";
+	private Screen defaultScreen2;
 	
-	public Gui() {
-		Log.debug(this, "Starting nifty gui initialisation.");
+	public NiftyGui() {
+		Log.debug(this, "Starting nifty igui initialisation.");
 		registerUpdatable();
 		registerDisposeHandler();
 		registerResizeHandler();
-//		Globals.gui = this;
+		Globals.ngui = this;
 		input_system = new Lwjgl3InputSystem(Globals.window.getId());
 		sound_device = new OpenALSoundDevice();
 		//render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendFactory.create(Globals.window.getId()));
@@ -52,7 +55,10 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
 		//render_device.setDisplayFPS(true);
 		filePaths = new ArrayList<>();
-		Log.debug(this, "Gui system initialised.");
+		defaultScreen2 = new Screen(nifty, "emptyScreen", new DefaultScreenController(), time_provider);
+		nifty.addScreen(defaultScreen, defaultScreen2);
+		show(defaultScreen);
+		Log.debug(this, "NiftyGui system initialised.");
 	}
 	
 	public void renderDebugFPS(boolean shouldRender) {
@@ -60,20 +66,31 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 	}
 	
 	public void show(String id) {
-		Log.debug(this, "Gui switching to screen: " + id);
+		Log.debug(this, "NiftyGui switching to screen: " + id);
 		nifty.gotoScreen(id);
 		currentScreen = id;
 	}
 	
 	/**
 	 * Switches to the default screen.
-	 * Default screen is initialised as "hud"
+	 * Default screen is initialised as "emptyScreen"
 	 */
-	public void close() {
-		nifty.gotoScreen(defaultScreen);
+	public void hide() {
+		show(defaultScreen);
 		currentScreen = defaultScreen;
 	}
 
+	public void toggle(String id) {
+		if (currentScreen.equals(id)) {
+			hide();
+		} else {
+			show(id);
+		}
+	}
+	
+	public void setDefaultScreen(String id) {
+		defaultScreen = id;
+	}
 	
 	@Override
 	public void update(float delta) {
@@ -87,25 +104,25 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 	}
 	
 	public void dispose() {
-		Log.debug(this, "Starting Gui disposal");
+		Log.debug(this, "Starting NiftyGui disposal");
 		input_system.shutdown();
 		nifty.exit();
 		unRegisterUpdatable();
-		Log.debug(this, "Gui disposal finished.");
+		Log.debug(this, "NiftyGui disposal finished.");
 	}
 	
 	public void loadXML(String fileName) {
-		Log.debug(this, "Trying to load gui file named: " + fileName);
+		Log.debug(this, "Trying to load nifty gui file named: " + fileName);
 		String path = Files.getFolderPath("Gui") + "/" + fileName;
 		try {
 			nifty.validateXml(path);
 		} catch (Exception e) {
-			Log.error(this, "Invalid gui xml file found: " + fileName);
+			Log.error(this, "Invalid nifty gui xml file found: " + fileName);
 			e.printStackTrace();
 		}
 		nifty.addXml(path);
 		if (!filePaths.contains(path)) filePaths.add(path);
-		Log.debug(this, "Loading Gui finished: " + fileName);
+		Log.debug(this, "Loading NiftyGui finished: " + fileName);
 	}
 	
 	
@@ -132,7 +149,7 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 			e.printStackTrace();
 		}
 		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
-//		Globals.gui.input_system = input_system;
+		Globals.ngui.input_system = input_system;
 		Globals.input.getInputReceiver(InputStates.GUI).reset();
 		
 		filePaths.forEach(path -> {
@@ -140,7 +157,7 @@ public class Gui implements IDisposable, IUpdatable, IResizable {
 		});
 		if (currentScreen != null) show(currentScreen);
 		registerUpdatable();
-		Log.debug(this, "GUI sucsesfully restarted.");
+		Log.debug(this, "Nifty GUI sucsesfully restarted.");
 	}
 
 	

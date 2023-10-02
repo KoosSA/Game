@@ -13,15 +13,15 @@ import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 
-public class GuiTest implements IDisposable{
+public class ImGuiImpl implements IDisposable{
 	
 	private ImGuiImplGlfw glfwImpl;
 	private ImGuiImplGl3 glImpl;
 	private ImGuiIO io;
-	private Map<String, IGuiLayer> alllayers;
-	private Map<String, IGuiLayer> visibleLayers;
+	private Map<String, ImGuiLayer> alllayers;
+	private Map<String, ImGuiLayer> visibleLayers;
 	
-	public GuiTest() {
+	public ImGuiImpl() {
 		registerDisposeHandler();
 		ImGui.createContext();
 		io = ImGui.getIO();
@@ -31,9 +31,9 @@ public class GuiTest implements IDisposable{
 		glImpl = new ImGuiImplGl3();
 		glfwImpl.init(Globals.window.getId(), false);
 		glImpl.init("#version 130");
-		Globals.gui = this;
-		alllayers = new HashMap<String, IGuiLayer>();
-		visibleLayers = new HashMap<String, IGuiLayer>();
+		Globals.igui = this;
+		alllayers = new HashMap<String, ImGuiLayer>();
+		visibleLayers = new HashMap<String, ImGuiLayer>();
 		
 	}
 	
@@ -68,7 +68,7 @@ public class GuiTest implements IDisposable{
 		return glfwImpl;
 	}
 	
-	public IGuiLayer addGuiLayer(String guiId, IGuiLayer layer) {
+	public ImGuiLayer addGuiLayer(String guiId, ImGuiLayer layer) {
 		alllayers.putIfAbsent(guiId, layer);
 		return layer;
 	}
@@ -81,7 +81,7 @@ public class GuiTest implements IDisposable{
 	}
 	
 	public void show(String guiId) {
-		IGuiLayer layer = alllayers.getOrDefault(guiId, null);
+		ImGuiLayer layer = alllayers.getOrDefault(guiId, null);
 		if (layer == null) return;
 		visibleLayers.putIfAbsent(guiId, layer);
 	}

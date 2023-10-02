@@ -26,8 +26,8 @@ public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 		camera.getPosition().set(0, 2, 5);
 		FirstPersonCamera.class.cast(camera).pitch(-20);
 		
-		gui.addGuiLayer("materialSettings", Layers.modelSettings);
-		gui.show("materialSettings");
+		igui.addGuiLayer("materialSettings", Layers.modelSettings);
+		igui.show("materialSettings");
 		
 		physics.enableDebug();
 	}
@@ -47,10 +47,10 @@ public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 		if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
 			if (Globals.input.getCurrentInputState().equals(InputStates.GAME)) {
 				Globals.input.setInputReceiver(InputStates.GUI);
-				gui.show("materialSettings");
+				igui.show("materialSettings");
 			} else {
 				Globals.input.setInputReceiver(InputStates.GAME);
-				gui.hide("materialSettings");
+				igui.hide("materialSettings");
 			}
 		}
 	}

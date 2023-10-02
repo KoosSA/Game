@@ -15,7 +15,7 @@ import client.utils.Globals;
 
 
 /**
- * Input receiver dealing with gui events. Most functionality should be handled by the gui system.
+ * Input receiver dealing with igui events. Most functionality should be handled by the igui system.
  */
 public class GuiInputReceiver extends InputReceiver {
 	
@@ -23,12 +23,12 @@ public class GuiInputReceiver extends InputReceiver {
 		super(input);
 	}
 
-	//private Lwjgl3InputSystem inputSystem = Globals.gui.input_system;
+//	private Lwjgl3InputSystem inputSystem = Globals.ngui.input_system;
 	
 	@Override
 	protected void setCallBacks() {
-//		inputSystem = Globals.gui.input_system;
-		
+//		inputSystem = Globals.ngui.input_system;
+//		
 //		cursorPosCallback = inputSystem.cursorPosCallback;
 //		mouseButtonCallback = inputSystem.mouseButtonCallback;
 //		keyCallback = inputSystem.keyCallback;
@@ -45,8 +45,8 @@ public class GuiInputReceiver extends InputReceiver {
 				if (action==GLFW.GLFW_PRESS) input.addKeyPress(key);
 				if (action == GLFW.GLFW_RELEASE) input.removeKeyPress(key);
 				
-//				inputSystem.keyCallback.invoke(window, key, scancode, action, mods);
-				Globals.gui.getGlfwImpl().keyCallback(window, key, scancode, action, mods);
+				Globals.ngui.input_system.keyCallback.invoke(window, key, scancode, action, mods);
+				Globals.igui.getGlfwImpl().keyCallback(window, key, scancode, action, mods);
 			}
 		};
 		
@@ -54,47 +54,46 @@ public class GuiInputReceiver extends InputReceiver {
 			@Override
 			public void invoke(long window, double xpos, double ypos) {
 				input.addMouseMovement(xpos, ypos);
-//				inputSystem.cursorPosCallback.invoke(window, xpos, ypos);
-				//Globals.gui.getGlfwImpl().call
+				Globals.ngui.input_system.cursorPosCallback.invoke(window, xpos, ypos);
 			}
 		};
 		
 		scrollCallback = new GLFWScrollCallback() {
 			@Override
 			public void invoke(long window, double xoffset, double yoffset) {
-//				inputSystem.scrollCallback.invoke(window, xoffset, yoffset);
-				Globals.gui.getGlfwImpl().scrollCallback(window, xoffset, yoffset);
+				Globals.ngui.input_system.scrollCallback.invoke(window, xoffset, yoffset);
+				Globals.igui.getGlfwImpl().scrollCallback(window, xoffset, yoffset);
 			}
 		};
 		
 		mouseButtonCallback = new GLFWMouseButtonCallback() {
 			@Override
 			public void invoke(long window, int button, int action, int mods) {
-//				inputSystem.mouseButtonCallback.invoke(window, button, action, mods);
-				Globals.gui.getGlfwImpl().mouseButtonCallback(window, button, action, mods);
+				Globals.ngui.input_system.mouseButtonCallback.invoke(window, button, action, mods);
+				Globals.igui.getGlfwImpl().mouseButtonCallback(window, button, action, mods);
 			}
 		};
 		
 		charCallback = new GLFWCharCallback() {
 			@Override
 			public void invoke(long window, int codepoint) {
-				Globals.gui.getGlfwImpl().charCallback(window, codepoint);
+				Globals.igui.getGlfwImpl().charCallback(window, codepoint);
 			}
 		};
 	}
 	
 	@Override
 	public void reset() {
-		//inputSystem = Globals.gui.input_system;
+		//inputSystem = Globals.igui.input_system;
 		super.reset();
 	}
 
 	@Override
 	protected void freeCallbacks() {
-//		inputSystem.cursorPosCallback.free();
-//		inputSystem.keyCallback.free();
-//		inputSystem.mouseButtonCallback.free();
-//		inputSystem.scrollCallback.free();
+		Globals.ngui.input_system.cursorPosCallback.free();
+		Globals.ngui.input_system.keyCallback.free();
+		Globals.ngui.input_system.mouseButtonCallback.free();
+		Globals.ngui.input_system.scrollCallback.free();
 		scrollCallback.free();
 		keyCallback.free();
 		cursorPosCallback.free();

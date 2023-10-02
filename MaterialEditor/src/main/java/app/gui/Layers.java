@@ -19,7 +19,7 @@ import com.koossa.filesystem.CommonFolders;
 import com.koossa.filesystem.Files;
 import com.koossa.logger.Log;
 
-import client.gui.IGuiLayer;
+import client.gui.ImGuiLayer;
 import client.rendering.materials.Material;
 import client.rendering.materials.Texture2D;
 import client.rendering.materials.TextureType;
@@ -38,7 +38,7 @@ import imgui.type.ImString;
 
 public class Layers {
 	
-	public static final IGuiLayer modelSettings = new IGuiLayer() {
+	public static final ImGuiLayer modelSettings = new ImGuiLayer() {
 		ImInt modelIndex = new ImInt(0);
 		ImInt meshIndex = new ImInt(0);
 		ImInt instanceIndex = new ImInt(0);
