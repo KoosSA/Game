@@ -114,13 +114,16 @@ public class Window {
 		GLFW.glfwPollEvents();
 	}
 	
-	public void render() {
+	private void render() {
 		GL30.glClearColor(0.25f, 0.25f, 0.25f, 1);
 		GL30.glClear(GL30.GL_DEPTH_BUFFER_BIT | GL30.GL_COLOR_BUFFER_BIT | GL30.GL_STENCIL_BUFFER_BIT);
 		gameloop.baseRender();
 		GLFW.glfwSwapBuffers(id);
 	}
 	
+	/**
+	 * Set the application to fullscreen mode.
+	 */
 	public void makeFullscreen() {
 		width = videoMode.width();
 		height = videoMode.height();
@@ -151,30 +154,57 @@ public class Window {
 		gameloop.baseResize(w, h);
 	}
 	
+	/**
+	 * Tells the application that it should close on the next update cycle.
+	 */
 	public void exit() {
 		GLFW.glfwSetWindowShouldClose(id, true);
 	}
 
+	/**
+	 * Gets the current title of the application
+	 * @return title
+	 */
 	public String getTITLE() {
 		return TITLE;
 	}
 
+	/**
+	 * Sets the title of the application
+	 * @param tITLE
+	 */
 	public void setTITLE(String tITLE) {
 		TITLE = tITLE;
 	}
 
+	/**
+	 * Gets the current width of the application window
+	 * @return windowWidth
+	 */
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	 * Gets the current height of the application window
+	 * @return windowHeight
+	 */
 	public int getHeight() {
 		return height;
 	}
 
+	/**
+	 * Get the application window's id
+	 * @return
+	 */
 	public long getId() {
 		return id;
 	}
 	
+	/**
+	 * Gets the average fps of the application in frames per second.
+	 * @return average Fps
+	 */
 	public float getFPS() {
 		float res = 1.0f / (aveFps / (float) numFrames);
 		numFrames = 0;

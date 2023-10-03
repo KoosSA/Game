@@ -3,9 +3,9 @@ package client.audio;
 import org.joml.Vector3f;
 import org.lwjgl.openal.AL11;
 
-import client.logic.internalEvents.IUpdatable;
+import client.logic.internalEvents.IInternalEventUpdate;
 
-public class AudioSource implements IUpdatable{
+public class AudioSource implements IInternalEventUpdate{
 	
 	private int id;
 	private Vector3f position;

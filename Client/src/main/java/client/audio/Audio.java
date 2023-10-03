@@ -8,9 +8,9 @@ import org.lwjgl.openal.AL11;
 
 import com.koossa.logger.Log;
 
-import client.logic.internalEvents.IDisposable;
+import client.logic.internalEvents.IInternalEventDispose;
 
-public class Audio implements IDisposable {
+public class Audio implements IInternalEventDispose {
 	
 	private ALUtils utils;
 	private Map<String, AudioSource> sources = new HashMap<String, AudioSource>();

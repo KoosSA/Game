@@ -2,13 +2,13 @@ package client;
 
 import com.koossa.logger.Log;
 
-import client.logic.internalEvents.IUpdatable;
+import client.logic.internalEvents.IInternalEventUpdate;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
-public class HUDScreenController implements ScreenController, IUpdatable {
+public class HUDScreenController implements ScreenController, IInternalEventUpdate {
 	
 	static Label renderFPS;
 	static Label updateFPS;
