@@ -55,12 +55,11 @@ public class ModelLoader {
 			AIMesh mesh = AIMesh.create(scene.mMeshes().get(i));
 //			meshes.add(processMesh(mesh, materials));
 			meshes.add(processMesh(mesh));
-			mesh.free();
 			clearData();
 		}
 
 		scene.free();
-
+		
 		Log.debug(ModelLoader.class, "Model loaded: " + name + " with a total of " + meshes.size() + " meshes.");
 		Model model = new Model(name, meshes);
 		return model;
@@ -170,7 +169,7 @@ public class ModelLoader {
 				indices.add(b.get());
 			}
 		}
-		faces.free();
+//		faces.free();
 
 		int vaoId = Loader.loadModelData(true, MathUtil.listToArrayFloat(vertices), MathUtil.listToArrayFloat(texCoords), MathUtil.listToArrayFloat(normals), MathUtil.ListToArrayInteger(indices), MathUtil.listToArrayFloat(tangents), MathUtil.listToArrayFloat(bitangents));
 		
