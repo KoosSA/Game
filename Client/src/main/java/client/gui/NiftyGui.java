@@ -45,14 +45,15 @@ public class NiftyGui implements IInternalEventDispose, IInternalEventUpdate, II
 		//render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendFactory.create(Globals.window.getId()));
 		render_device = new BatchRenderDevice(Lwjgl3BatchRenderBackendCoreProfileFactory.create(Globals.window.getId()));
 		time_provider = new Lwjgl3TimeProvider();
+		
+		nifty = new Nifty(render_device, sound_device, input_system, time_provider);
+		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
 		try {
 			input_system.startup();
 		} catch (Exception e) {
 			Log.error(this, "Nifty input system startup failed.");
 			e.printStackTrace();
 		}
-		nifty = new Nifty(render_device, sound_device, input_system, time_provider);
-		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
 		//render_device.setDisplayFPS(true);
 		filePaths = new ArrayList<>();
 		defaultScreen2 = new Screen(nifty, "emptyScreen", new DefaultScreenController(), time_provider);
