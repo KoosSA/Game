@@ -21,7 +21,6 @@ import common.utils.timer.Timer;
 public abstract class BaseGameLoop extends Thread {
 	
 	protected Input input;
-	//protected NiftyGui igui;
 	protected BaseRenderer renderer;
 	protected Camera camera;
 	protected ImGuiImpl igui;
@@ -69,7 +68,7 @@ public abstract class BaseGameLoop extends Thread {
 		renderer.baseRender();
 		physics.debugDraw();
 		ngui.render();
-		igui.render();
+		//igui.render();
 	}
 	
 	

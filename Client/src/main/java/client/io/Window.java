@@ -25,15 +25,14 @@ public class Window {
 	private boolean VSYNC = false;
 	private String TITLE = "Engine";
 	private long id;
-	private double TARGET_FPS = 120;
+	private float TARGET_FPS = 60;
 	private boolean initialised = false;
 	private GLFWVidMode videoMode;
 	private long primaryMonitor;
 	private BaseGameLoop gameloop;
 	private boolean resizing = false;
 	private int previousWH;
-	private float aveFps;
-	private int numFrames = 0;
+	private float deltaTime = 0;
 	
 	public Window(BaseGameLoop gameLoop) {
 		Globals.window = this;
@@ -71,7 +70,10 @@ public class Window {
 		GL30.glViewport(0, 0, width, height);
 		GLFW.glfwSetWindowSizeCallback(id, sizeCallBack);
 		if (FULLSCREEN) makeFullscreen();
-		if (VSYNC) GLFW.glfwSwapInterval(1);
+		if (VSYNC) {
+			GLFW.glfwSwapInterval(1);
+		}
+		GLFW.glfwSwapInterval(0);
 		GLFW.glfwShowWindow(id);
 		Log.info(Window.class, "Display created.");
 		gameloop.baseInit();
@@ -80,29 +82,36 @@ public class Window {
 	}
 	
 	private void loop() {
-		double previousTime = GLFW.glfwGetTime();
-		double deltaTime = 0;
-		double targetTime = 1.000 / TARGET_FPS;
-		while (!GLFW.glfwWindowShouldClose(id)) {
-			deltaTime = GLFW.glfwGetTime() - previousTime;
-			if (deltaTime >= targetTime) {
-				update((float) deltaTime);
-				render();
-				previousTime = GLFW.glfwGetTime();
-			} else {
-				try {
-					Thread.sleep((long) ((targetTime - deltaTime) *1000));
-				} catch (InterruptedException e) {
-					Log.error(Window.class, "Thread failed to sleep.");
-					e.printStackTrace();
+		long previousTime = (long) System.nanoTime();
+		float targetTime =  (1.000f / TARGET_FPS);
+		if (TARGET_FPS > 0) {
+			while (!GLFW.glfwWindowShouldClose(id)) {
+				deltaTime = (float) (System.nanoTime() - previousTime) / 1000000000.00000f;
+				if (deltaTime >= targetTime) {
+					previousTime = System.nanoTime();
+					update(deltaTime);
+					render();
+					
+				} else {
+					try {
+						Thread.sleep((long) ((targetTime - deltaTime) * 1000));
+					} catch (InterruptedException e) {
+						Log.error(Window.class, "Thread failed to sleep.");
+						e.printStackTrace();
+					}
 				}
-			}
+			} 
+		} else {
+			while (!GLFW.glfwWindowShouldClose(id)) {
+				deltaTime = (float) (System.nanoTime() - previousTime) / 1000000000.00000f;
+				previousTime = System.nanoTime();
+				update(deltaTime);
+				render();
+			} 
 		}
 	}
 	
 	private void update(float delta) {
-		aveFps += delta;
-		numFrames++;
 		if (resizing) {
 			if (previousWH == width + height) {
 				resizing = false;
@@ -200,19 +209,5 @@ public class Window {
 	public long getId() {
 		return id;
 	}
-	
-	/**
-	 * Gets the average fps of the application in frames per second.
-	 * @return average Fps
-	 */
-	public float getFPS() {
-		float res = 1.0f / (aveFps / (float) numFrames);
-		numFrames = 0;
-		aveFps = 0;
-		return res;
-	}
-	
-	
-	
 
 }

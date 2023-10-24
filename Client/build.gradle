@@ -8,6 +8,7 @@ project.ext {
 	lwjglVersion = "3.3.3"
 	lwjglNatives = "natives-windows"
 	imguiVersion = "1.86.10"
+	niftyGui = "1.0.1"
 }
 
 repositories {
@@ -72,15 +73,13 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-yoga::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-zstd::$lwjglNatives"
 	
-	//implementation fileTree(dir:'lib', include:'*.jar')
-	implementation 'koossa:Libbulletjoml:1.1.0'
-	//implementation 'koossa:test:1.0'
+	implementation 'github.koossa:libbulletjoml:1.0.1'
 
 	implementation group: 'com.github.nifty-gui', name: 'nifty-style-black', version: '1.4.3'
-	implementation group: 'com.github.nifty-gui', name: 'nifty-default-controls', version: '1.4.3'
-	implementation 'com.github.KoosSA:NiftyGui-core:61a27b3d60'
-	implementation 'com.github.KoosSA:NiftyGui-renderer-lwjgl3:b6c93ef131'
-	implementation 'com.github.KoosSA:NiftyGui-SoundSystem-OpenAL:10ba476ce7'
+	implementation "github.koossa:niftygui-core:$niftyGui"
+	implementation "github.koossa:niftygui-renderer:$niftyGui"
+	implementation "github.koossa:niftygui-soundsystem:$niftyGui"
+	implementation "github.koossa:niftygui-defaultcontrols:$niftyGui"
 	
 	implementation project(':Common')
 	

@@ -18,8 +18,6 @@ import client.rendering.objects.ModelInstance;
 import client.rendering.utils.ModelManager;
 import client.utils.Globals;
 import client.utils.registries.Registries;
-import common.utils.timer.ITimedEvent;
-import common.utils.timer.Timer;
 import imgui.ImGui;
 
 public class Client extends BaseGameLoop {
@@ -36,10 +34,11 @@ public class Client extends BaseGameLoop {
 	//Model m;
 	int counter = 0;
 	float af = 120;
+	//FPSCounter fpsCounter;
 	
 	@Override
 	protected void init() {
-		input.setInputReceiver(InputStates.GUI);
+		//input.setInputReceiver(InputStates.GUI);
 		ngui.renderDebugFPS(true);
 
 		Model m = Registries.Models.getStaticModel("t.fbx");
@@ -81,9 +80,9 @@ public class Client extends BaseGameLoop {
 						for (int i = -10; i < 10; i++) {
 							ModelInstance mi = ModelManager.addModelInstanceToWorld(new ModelInstance(m1));
 							mi.getTransform().setPosition(x * 15, 0, i*15);
-							mi.addPhysicsToInstance(1);
+							mi.addPhysicsToInstance(0);
 							mi.getRigidBody().setRestitution(0);
-							counter++;
+							//counter++;
 						}
 					}
 				}
@@ -142,17 +141,6 @@ public class Client extends BaseGameLoop {
 		
 		
 		
-		Timer.registerNewInfiniteRepeatEventMillis(100, 0, new ITimedEvent() {
-			@Override
-			public void handle() {
-				af = Globals.window.getFPS();
-				//fsc = 0;
-			}
-		});
-		
-		
-		
-		
 		igui.addGuiLayer("fps", new ImGuiLayer() {
 			
 			@Override
@@ -170,17 +158,29 @@ public class Client extends BaseGameLoop {
 		ngui.loadXML("hud.xml");
 		ngui.loadXML("inv.xml");
 		
+		
+		
+		//fpsCounter = new FPSCounter();
+		//fpsCounter.start();
+		
+		input.setInputReceiver(InputStates.GAME);
 	}
 
 	
 	@Override
 	protected void update(float delta) {
-		//fsc++;
+		//fpsCounter.receiveDeltaTime(delta);
 	}
 
 	@Override
 	protected void render() {
 		//renderer.baseRender();
+	}
+	
+	@Override
+	public void dispose() {
+		//fpsCounter.dispose();
+		super.dispose();
 	}
 
 }

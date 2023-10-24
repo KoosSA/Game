@@ -15,8 +15,16 @@ allprojects{
 	
 	repositories {
 	    mavenCentral()
+	    maven { 
+	    	url = uri("https://maven.pkg.github.com/KoosSA/MavenRepos") 
+	    	credentials {
+            	username = project.findProperty("gpr.user") ?: System.getenv("GIT_USERNAME")
+            	password = project.findProperty("gpr.key") ?: System.getenv("GIT_TOKEN")
+        	}
+	    }
 	    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-		maven { url 'https://jitpack.io' }
+		
+
 	}
 	
 	dependencies {
@@ -26,9 +34,11 @@ allprojects{
     	
     	implementation "org.joml:joml:${jomlVersion}"
     
-    	implementation 'com.github.KoosSA:FileSystem:v2.0.0'
-		implementation 'com.github.KoosSA:SaveLibrary:master-SNAPSHOT'
-		implementation 'com.github.KoosSA:Logger:v3.0.0'
+    	implementation 'github.koossa:filesystem:2.0.0'
+    	implementation 'github.koossa:logger:3.0.0'
+    	implementation 'github.koossa:savesystem:1.0.1'
+		
+		//implementation 'com.github.KoosSA:Logger:v3.0.0'
 	}
 	
 	test {

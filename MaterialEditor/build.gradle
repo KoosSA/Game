@@ -59,12 +59,6 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-zstd::$lwjglNatives"
 
     implementation project(':Client')
-    
-    implementation group: 'com.github.nifty-gui', name: 'nifty-style-black', version: '1.4.3'
-	implementation group: 'com.github.nifty-gui', name: 'nifty-default-controls', version: '1.4.3'
-	implementation 'com.github.KoosSA:NiftyGui-core:master-SNAPSHOT'
-	implementation 'com.github.KoosSA:NiftyGui-renderer-lwjgl3:master-SNAPSHOT'
-	implementation 'com.github.KoosSA:NiftyGui-SoundSystem-OpenAL:master-SNAPSHOT'
 	
 	implementation "io.github.spair:imgui-java-binding:$imguiVersion"
     implementation "io.github.spair:imgui-java-lwjgl3:$imguiVersion"
