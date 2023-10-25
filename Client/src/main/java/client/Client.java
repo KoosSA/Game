@@ -1,24 +1,14 @@
 package client;
 
-import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
-import client.audio.Audio;
-import client.gui.ImGuiLayer;
-import client.io.KeyBinds;
+import client.gui.inventory.InvItem;
+import client.gui.inventory.Inventory;
 import client.io.input.Input;
 import client.io.input.InputStates;
 import client.io.input.receivers.handlers.IInputHandler;
 import client.logic.BaseGameLoop;
-import client.rendering.cameras.FirstPersonCamera;
-import client.rendering.materials.Material;
-import client.rendering.materials.TextureType;
-import client.rendering.objects.Model;
-import client.rendering.objects.ModelInstance;
-import client.rendering.utils.ModelManager;
 import client.utils.Globals;
-import client.utils.registries.Registries;
-import imgui.ImGui;
 
 public class Client extends BaseGameLoop {
 	
@@ -39,7 +29,7 @@ public class Client extends BaseGameLoop {
 	@Override
 	protected void init() {
 		//input.setInputReceiver(InputStates.GUI);
-		ngui.renderDebugFPS(true);
+		/*ngui.renderDebugFPS(true);
 
 		Model m = Registries.Models.getStaticModel("t.fbx");
 		Material mat = m.getMeshes().get(0).getMaterial();
@@ -161,9 +151,22 @@ public class Client extends BaseGameLoop {
 		
 		
 		//fpsCounter = new FPSCounter();
-		//fpsCounter.start();
+		//fpsCounter.start();*/
+		
+		
+		InvItem item = new InvItem();
+		Inventory inv = new Inventory(1);
 		
 		input.setInputReceiver(InputStates.GAME);
+		
+		Globals.input.registerInputHandler(new IInputHandler() {
+			@Override
+			public void handleInputs(Input input, float delta) {
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_UP)) {
+					inv.addItemToInventory(item, 375);
+				}
+			}
+		}, InputStates.GAME);
 	}
 
 	
