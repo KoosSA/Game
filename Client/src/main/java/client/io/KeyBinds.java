@@ -19,5 +19,6 @@ public class KeyBinds {
 	public static final int CROUCH = GLFW.GLFW_KEY_LEFT_CONTROL;
 	public static final int SPRINT = GLFW.GLFW_KEY_LEFT_SHIFT;
 	public static final int INTERACT = GLFW.GLFW_KEY_E;
+	public static int INVENTORY = GLFW.GLFW_KEY_I;
 
 }

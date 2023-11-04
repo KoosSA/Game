@@ -3,21 +3,33 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://nifty-gui.lessvoid.com/nifty-gui https://raw.githubusercontent.com/nifty-gui/nifty-gui/1.4/nifty-core/src/main/resources/nifty.xsd">
  
-	<useControls filename="nifty-default-controls.xml" />
+	<useControls filename="Resources/Gui/inventory-controls.xml" />
+	<useControls filename="nifty-default-controls.xml"/>
 	<useStyles filename="nifty-default-styles.xml" />
  
-    <screen id="inv">
-        <layer id="background" childLayout="center">
-            <image filename="background.png"/>
-        </layer>
+    <screen id="inv" controller="client.gui.inventory.InventoryController">
+     
+     
+     
         <layer id="foreground" childLayout="center">
-            
-            <control id="txtf" name="textfield" maxLength="20" text="Lool" valign="center"/>
-            
-            <control name="button" label="Button" valign="bottom"></control>
-            
+        
+        	<panel childLayout="vertical" valign="center" align="center" backgroundColor="#000000ff">
+        	
+        		<panel childLayout="horizontal" backgroundColor="#000000ff"  height="25px"  align="center">
+        			<control id="testLbl" name="label" text="Inventory" />
+        		</panel>
+        		
+	        	<panel id="slotpanel" childLayout="vertical" backgroundColor="#141414ff">
+	        	
+	        	</panel>
+	        	
+            </panel>
+            <!--control id="0" name="invSlot" label="x999" valign="center" width="50px" height="50px" icon="Resources/Gui/apple.png"></control-->
             
         </layer>
+        
+        
+        
     </screen>
  
 </nifty>

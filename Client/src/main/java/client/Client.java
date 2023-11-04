@@ -2,8 +2,10 @@ package client;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.koossa.filesystem.Files;
+
 import client.gui.inventory.InvItem;
-import client.gui.inventory.Inventory;
+import client.gui.inventory.SlotInventory;
 import client.io.input.Input;
 import client.io.input.InputStates;
 import client.io.input.receivers.handlers.IInputHandler;
@@ -24,6 +26,7 @@ public class Client extends BaseGameLoop {
 	//Model m;
 	int counter = 0;
 	float af = 120;
+	SlotInventory inv;
 	//FPSCounter fpsCounter;
 	
 	@Override
@@ -154,8 +157,17 @@ public class Client extends BaseGameLoop {
 		//fpsCounter.start();*/
 		
 		
-		InvItem item = new InvItem();
-		Inventory inv = new Inventory(1);
+		//ngui.loadXML("inv.xml");
+		
+		InvItem item = new InvItem() {{
+			setIcon("apple.png");
+			setUsable(true);
+			setStackable(true);
+			setItemName("Apple");
+			setUseText("Eat");
+			setMaxStackSize(10);
+		}};
+		inv = new SlotInventory(10, ngui.nifty, Files.getFolderPath("Gui/Icons"));
 		
 		input.setInputReceiver(InputStates.GAME);
 		
@@ -163,10 +175,48 @@ public class Client extends BaseGameLoop {
 			@Override
 			public void handleInputs(Input input, float delta) {
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_UP)) {
-					inv.addItemToInventory(item, 375);
+					inv.addItemToInventory(item, 1);
+				}
+				
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+					if (Globals.input.getCurrentInputState().equals(InputStates.GAME)) {
+						Globals.input.setInputReceiver(InputStates.GUI);
+					} else {
+						Globals.input.setInputReceiver(InputStates.GAME);
+					}
 				}
 			}
 		}, InputStates.GAME);
+		
+		
+		
+		Globals.input.registerInputHandler(new IInputHandler() {
+			
+			@Override
+			public void handleInputs(Input input, float delta) {
+				
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
+					if (Globals.input.getCurrentInputState().equals(InputStates.GAME)) {
+						Globals.input.setInputReceiver(InputStates.GUI);
+					} else {
+						Globals.input.setInputReceiver(InputStates.GAME);
+					}
+				}
+				
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_UP)) {
+					inv.addItemToInventory(item, 1);
+				}
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT)) {
+					inv.addItemToInventory(item, 15);
+				}
+				/*if (input.isKeyJustPressed(GLFW.GLFW_KEY_I)) {
+					ngui.toggle("inv");
+				}*/
+				
+			}
+		}, InputStates.GUI);
+		
+		//ngui.nifty.setDebugOptionPanelColors(true);
 	}
 
 	

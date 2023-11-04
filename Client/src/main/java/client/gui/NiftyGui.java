@@ -33,12 +33,14 @@ public class NiftyGui implements IInternalEventDispose, IInternalEventUpdate, II
 	private String currentScreen;
 	private String defaultScreen = "emptyScreen";
 	private Screen defaultScreen2;
+	private List<INiftyRestartEventSubscriber> restartSubscribers;
 	
 	public NiftyGui() {
 		Log.debug(this, "Starting nifty igui initialisation.");
 		registerUpdatable();
 		registerDisposeHandler();
 		registerResizeHandler();
+		restartSubscribers = new ArrayList<INiftyRestartEventSubscriber>();
 		Globals.ngui = this;
 		input_system = new Lwjgl3InputSystem(Globals.window.getId());
 		sound_device = new OpenALSoundDevice();
@@ -136,7 +138,11 @@ public class NiftyGui implements IInternalEventDispose, IInternalEventUpdate, II
 	private void restart() {
 		Log.debug(this, "Restarting GUI system.");
 		unRegisterUpdatable();
+		restartSubscribers.forEach(sub -> {
+			sub.beforeRestart();
+		});
 		input_system.shutdown();
+		nifty.getEventService().clearAllSubscribers();
 		nifty.exit();
 		Globals.input.getInputReceiver(InputStates.GUI).dispose();
 		
@@ -152,13 +158,19 @@ public class NiftyGui implements IInternalEventDispose, IInternalEventUpdate, II
 		nifty.enableAutoScaling(Globals.window.getWidth(), Globals.window.getHeight());
 		Globals.ngui.input_system = input_system;
 		Globals.input.getInputReceiver(InputStates.GUI).reset();
-		
 		filePaths.forEach(path -> {
 			nifty.addXml(path);
 		});
 		if (currentScreen != null) show(currentScreen);
 		registerUpdatable();
+		restartSubscribers.forEach(sub -> {
+			sub.afterRestart();
+		});
 		Log.debug(this, "Nifty GUI sucsesfully restarted.");
+	}
+
+	protected void registerRestartSubscriber(INiftyRestartEventSubscriber iNiftyRestartEventSubscriber) {
+		restartSubscribers.add(iNiftyRestartEventSubscriber);
 	}
 
 	

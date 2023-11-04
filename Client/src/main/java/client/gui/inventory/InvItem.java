@@ -9,6 +9,32 @@ public class InvItem {
 	private boolean isUsable = false;
 	private String icon = "icon.png";
 	
+	
+	
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public void setUseText(String useText) {
+		this.useText = useText;
+	}
+
+	public void setMaxStackSize(int maxStackSize) {
+		this.maxStackSize = maxStackSize;
+	}
+
+	public void setStackable(boolean isStackable) {
+		this.isStackable = isStackable;
+	}
+
+	public void setUsable(boolean isUsable) {
+		this.isUsable = isUsable;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
 	public String getItemName() {
 		return itemName;
 	}

@@ -5,8 +5,8 @@ allprojects{
 	apply plugin: 'java-library'
 	apply plugin: 'eclipse'
 	
-	targetCompatibility = '11'
-	sourceCompatibility = '11'
+	targetCompatibility = '17'
+	sourceCompatibility = '17'
 
 	
 	project.ext {
@@ -44,6 +44,18 @@ allprojects{
 	test {
     	useJUnitPlatform()
 	}
+	
+	
+	
+	if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+      tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+      }
+    }
+  }
+  
+  
 }
 apply from: "${rootProject.projectDir}/gradle/build-java.gradle"
 apply from: "${rootProject.projectDir}/gradle/build-maven.gradle"

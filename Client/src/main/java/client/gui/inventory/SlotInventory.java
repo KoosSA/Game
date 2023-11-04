@@ -5,21 +5,43 @@ import java.util.List;
 
 import com.koossa.logger.Log;
 
+import client.gui.INiftyRestartEventSubscriber;
+import client.io.KeyBinds;
+import client.io.input.Input;
+import client.io.input.InputStates;
+import client.io.input.receivers.handlers.IInputHandler;
+import client.utils.Globals;
+import de.lessvoid.nifty.Nifty;
+
 /**
- * The Class Inventory.
+ * The Class SlotInventory.
  */
-public class Inventory {
+public class SlotInventory implements IInputHandler, INiftyRestartEventSubscriber {
 	
-	/** The slots. */
 	private List<InvSlotData> slots = new ArrayList<InvSlotData>();
-	
-	/** The temp list. */
 	private List<Integer> tempList = new ArrayList<Integer>();
+	private boolean visible = false;
+	private InventoryController screenController;
 	
-	public Inventory(int invSize) {
+	public SlotInventory(int invSize, Nifty nifty, String iconFolderPath) {
+		registerInputHandler(InputStates.GAME);
+		registerInputHandler(InputStates.GUI);
+		registerRestartEventSubscriber();
 		for (int i = 0; i < invSize; i++) {
 			slots.add(new InvSlotData());
 		}
+		Globals.ngui.loadXML("inv.xml");
+		
+	}
+	
+	private void updateInvGui() {
+		screenController = (InventoryController) Globals.ngui.nifty.getScreen("inv").getScreenController();
+		screenController.updateGui(slots);
+	}
+	
+	private void createSlots() {
+		screenController = (InventoryController) Globals.ngui.nifty.getScreen("inv").getScreenController();
+		screenController.createSlots(slots);
 	}
 	
 	/**
@@ -106,23 +128,44 @@ public class Inventory {
 			if (slot.getItem() == null) {
 				slot.setItem(itemToAdd);
 			}
-			//int newAmount = slot.getItemCount() + amountToAdd;
 			int space = itemToAdd.getMaxStackSize() - slot.getItemCount();
 			Log.debug(this, "Space on slot " + slotIndex + " = " + space);
 			if (space <= amountToAdd) {
 				int nata = amountToAdd - space;
 				slots.get(slotIndex).setItemCount(itemToAdd.getMaxStackSize());
 				Log.debug(this, "Adding to inventory: " + itemToAdd.getItemName() + " x" + (amountToAdd - itemToAdd.getMaxStackSize()) + " @ slot: " + slotIndex);
+				updateInvGui();
 				return addItemToInventory(itemToAdd, nata);
 			} else {
 				slots.get(slotIndex).setItemCount(slot.getItemCount() + amountToAdd);
 				Log.debug(this, "Added to inventory: " + itemToAdd.getItemName() + " x" + amountToAdd + " @ slot: " + slotIndex);
+				updateInvGui();
 				return 0;
 			}
 		}
 	}
 	
-	
+	@Override
+	public void afterRestart() {
+		createSlots();
+	}
+
 	
 
+	@Override
+	public void handleInputs(Input input, float delta) {
+		if (input.isKeyJustPressed(KeyBinds.INVENTORY)) {
+			if (visible) {
+				Globals.ngui.hide();
+				input.setInputReceiver(InputStates.GAME);
+				visible = false;
+			} else {
+				Globals.ngui.show("inv");
+				input.setInputReceiver(InputStates.GUI);
+				updateInvGui();
+				visible = true;
+			}
+		}
+	}
+	
 }

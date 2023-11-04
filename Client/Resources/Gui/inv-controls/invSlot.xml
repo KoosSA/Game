@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty-controls
+	xmlns="http://nifty-gui.lessvoid.com/nifty-gui"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://nifty-gui.lessvoid.com/nifty-gui https://raw.githubusercontent.com/nifty-gui/nifty-gui/1.4/nifty-core/src/main/resources/nifty.xsd">
+
+	<controlDefinition style="nifty-button"
+		name="invSlot" controller="client.gui.inventory.SlotController">
+
+		<panel id="invSlot" style="#panel" focusable="false" childLayout="center"
+			padding="10%">
+			<!-- interact onClick="onClick()" onRelease="onRelease()" /-->
+			<image id="#icon" width="*" height="*" filename="$icon" visibleToMouse="false"/>
+			<text id="#text" style="#text" text="$count" align="right"
+				valign="bottom" width="*" textHAlign="right" visibleToMouse="false"/>
+		</panel>
+
+	</controlDefinition>
+
+
+</nifty-controls>
