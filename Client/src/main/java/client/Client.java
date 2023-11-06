@@ -167,7 +167,7 @@ public class Client extends BaseGameLoop {
 			setUseText("Eat");
 			setMaxStackSize(10);
 		}};
-		inv = new SlotInventory(10, ngui.nifty, Files.getFolderPath("Gui/Icons"));
+		inv = new SlotInventory(25, ngui.nifty, Files.getFolderPath("Gui/Icons"));
 		
 		input.setInputReceiver(InputStates.GAME);
 		
@@ -176,6 +176,10 @@ public class Client extends BaseGameLoop {
 			public void handleInputs(Input input, float delta) {
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_UP)) {
 					inv.addItemToInventory(item, 1);
+				}
+				
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_DOWN)) {
+					inv.removeItemFromInventory(item, 1);
 				}
 				
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
@@ -208,6 +212,12 @@ public class Client extends BaseGameLoop {
 				}
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT)) {
 					inv.addItemToInventory(item, 15);
+				}
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_DOWN)) {
+					inv.removeItemFromInventory(item, 1);
+				}
+				if (input.isKeyJustPressed(GLFW.GLFW_KEY_LEFT)) {
+					inv.removeItemFromInventory(item, 20);
 				}
 				/*if (input.isKeyJustPressed(GLFW.GLFW_KEY_I)) {
 					ngui.toggle("inv");

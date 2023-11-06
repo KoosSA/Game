@@ -223,10 +223,14 @@ public class SlotController extends AbstractController implements InvSlotControl
 	}
 
 	@Override
-	public void setIcon(String iconPath, Screen screen) {
-		if (iconPath == null)
+	public void setIcon(String iconPath) {
+		if (iconPath == null) {
+			image.setVisible(false);
 			return;
+		}
+		image.setVisible(true);
 		image.getRenderer(ImageRenderer.class).setImage(nifty.createImage(iconPath, true));
+		
 	}
 
 }

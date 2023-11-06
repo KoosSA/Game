@@ -34,9 +34,7 @@ public class InventoryController implements ScreenController {
 	}
 
 	private void createSlots() {
-		System.out.println("Creating slots");
 		int mainRows = 5;
-		//int mainSlots = numPerRow;
 		int restSlot = 0;
 		int restRows = 0;
 		if (slots != null) {
@@ -158,10 +156,10 @@ public class InventoryController implements ScreenController {
 			if (data.getItemCount() > 0 && data.getItem() != null) {
 				guiSlots.get(i).getNiftyControl(InvSlotControl.class).setText("x" + data.getItemCount());
 				guiSlots.get(i).getNiftyControl(InvSlotControl.class).setIcon(
-						Files.getCommonFolderPath(CommonFolders.Gui) + "/Icons/" + data.getItem().getIcon(), screen);
+						Files.getCommonFolderPath(CommonFolders.Gui) + "/Icons/" + data.getItem().getIcon());
 			} else {
 				guiSlots.get(i).getNiftyControl(InvSlotControl.class).setText("");
-				guiSlots.get(i).getNiftyControl(InvSlotControl.class).setIcon(null, screen);
+				guiSlots.get(i).getNiftyControl(InvSlotControl.class).setIcon(null);
 			}
 		}
 	}

@@ -35,6 +35,6 @@ public interface InvSlotControl extends NiftyControl {
 
 	void setTextColor(final Color newColor);
 
-	void setIcon(final String iconPath, final Screen screen);
+	void setIcon(final String iconPath);
 
 }

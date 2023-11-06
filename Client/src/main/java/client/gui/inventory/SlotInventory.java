@@ -17,12 +17,12 @@ import de.lessvoid.nifty.Nifty;
  * The Class SlotInventory.
  */
 public class SlotInventory implements IInputHandler, INiftyRestartEventSubscriber {
-	
+
 	private List<InvSlotData> slots = new ArrayList<InvSlotData>();
 	private List<Integer> tempList = new ArrayList<Integer>();
 	private boolean visible = false;
 	private InventoryController screenController;
-	
+
 	public SlotInventory(int invSize, Nifty nifty, String iconFolderPath) {
 		registerInputHandler(InputStates.GAME);
 		registerInputHandler(InputStates.GUI);
@@ -31,19 +31,19 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 			slots.add(new InvSlotData());
 		}
 		Globals.ngui.loadXML("inv.xml");
-		
+
 	}
-	
+
 	private void updateInvGui() {
 		screenController = (InventoryController) Globals.ngui.nifty.getScreen("inv").getScreenController();
 		screenController.updateGui(slots);
 	}
-	
+
 	private void createSlots() {
 		screenController = (InventoryController) Globals.ngui.nifty.getScreen("inv").getScreenController();
 		screenController.createSlots(slots);
 	}
-	
+
 	/**
 	 * Gets a empty slot in the inventory.
 	 *
@@ -60,7 +60,24 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 		Log.debug(this, "No empty slot found.");
 		return -1;
 	}
-	
+
+	private int getAmountOfItemAvailable(InvItem item) {
+		tempList = getSlotsWithItem(item);
+		int available = 0;
+		for (int i = 0; i < tempList.size(); i++) {
+			available += slots.get(tempList.get(i)).getItemCount();
+		}
+		return available;
+	}
+
+	private int getAmountOfItemAvailable(List<Integer> listOfIndicesContainingItem) {
+		int available = 0;
+		for (int i = 0; i < listOfIndicesContainingItem.size(); i++) {
+			available += slots.get(listOfIndicesContainingItem.get(i)).getItemCount();
+		}
+		return available;
+	}
+
 	/**
 	 * Gets a list of slots with specified item.
 	 *
@@ -78,8 +95,7 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 		Log.debug(this, "Slots containing item: " + tempList);
 		return tempList;
 	}
-	
-	
+
 	/**
 	 * Gets the slot with space for specified item.
 	 *
@@ -108,8 +124,7 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 		Log.debug(this, "No slot with space found, inventory probably full");
 		return getEmptySlot();
 	}
-	
-	
+
 	/**
 	 * Adds the item to inventory if space is found.
 	 *
@@ -133,24 +148,51 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 			if (space <= amountToAdd) {
 				int nata = amountToAdd - space;
 				slots.get(slotIndex).setItemCount(itemToAdd.getMaxStackSize());
-				Log.debug(this, "Adding to inventory: " + itemToAdd.getItemName() + " x" + (amountToAdd - itemToAdd.getMaxStackSize()) + " @ slot: " + slotIndex);
+				Log.debug(this, "Adding to inventory: " + itemToAdd.getItemName() + " x"
+						+ (amountToAdd - itemToAdd.getMaxStackSize()) + " @ slot: " + slotIndex);
 				updateInvGui();
 				return addItemToInventory(itemToAdd, nata);
 			} else {
 				slots.get(slotIndex).setItemCount(slot.getItemCount() + amountToAdd);
-				Log.debug(this, "Added to inventory: " + itemToAdd.getItemName() + " x" + amountToAdd + " @ slot: " + slotIndex);
+				Log.debug(this, "Added to inventory: " + itemToAdd.getItemName() + " x" + amountToAdd + " @ slot: "
+						+ slotIndex);
 				updateInvGui();
 				return 0;
 			}
 		}
 	}
-	
+
+	public boolean removeItemFromInventory(InvItem item, int amountToRemove) {
+		
+		tempList = getSlotsWithItem(item);
+		if (getAmountOfItemAvailable(tempList) < amountToRemove) {
+			Log.debug(this, "Item not found in inventory or not in suficient quntities to remove: " + item.getItemName());
+			return false;
+		}
+		InvSlotData slot = slots.get(tempList.get(0));
+		int onSlot = slot.getItemCount();
+		if (onSlot >= amountToRemove) {
+			onSlot = onSlot - amountToRemove;
+			amountToRemove = 0;
+			slot.setItemCount(onSlot);
+			if (onSlot <= 0) {
+				slot.setItem(null);
+			}
+			updateInvGui();
+			return true;
+		} else {
+			slot.setItem(null);
+			slot.setItemCount(0);
+			amountToRemove = amountToRemove - onSlot;
+			updateInvGui();
+			return removeItemFromInventory(item, amountToRemove);
+		}
+	}
+
 	@Override
 	public void afterRestart() {
 		createSlots();
 	}
-
-	
 
 	@Override
 	public void handleInputs(Input input, float delta) {
@@ -167,5 +209,5 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 			}
 		}
 	}
-	
+
 }
