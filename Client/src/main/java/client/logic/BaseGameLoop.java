@@ -59,7 +59,7 @@ public abstract class BaseGameLoop extends Thread {
 	}
 	
 	public void baseUpdate(float delta) {
-		InternalEventRegistry.update(delta);
+		InternalEventHandlerRegistry.update(delta);
 		update(delta);
 	}
 	
@@ -76,13 +76,13 @@ public abstract class BaseGameLoop extends Thread {
 		Log.debug(this, "Starting base loop disposal.");
 		Timer.stopTimer();
 		Registries.dispose();
-		InternalEventRegistry.dispose();
+		InternalEventHandlerRegistry.dispose();
 		Log.debug(this, "Disposal of base loop finished. Saving log files....");
 		Log.disposeAll();
 	}
 
 	public void baseResize(int width, int height) {
-		InternalEventRegistry.onResize(width, height);
+		InternalEventHandlerRegistry.onResize(width, height);
 	}
 
 	

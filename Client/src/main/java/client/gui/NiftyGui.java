@@ -9,9 +9,9 @@ import com.koossa.filesystem.Files;
 import com.koossa.logger.Log;
 
 import client.io.input.InputStates;
-import client.logic.internalEvents.IInternalEventDispose;
-import client.logic.internalEvents.IInternalEventResize;
-import client.logic.internalEvents.IInternalEventUpdate;
+import client.logic.internalEvents.IDisposeHandler;
+import client.logic.internalEvents.IResizeHandler;
+import client.logic.internalEvents.IUpdateHandler;
 import client.utils.Globals;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.render.batch.BatchRenderDevice;
@@ -22,7 +22,7 @@ import de.lessvoid.nifty.screen.DefaultScreenController;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
 
-public class NiftyGui implements IInternalEventDispose, IInternalEventUpdate, IInternalEventResize {
+public class NiftyGui implements IDisposeHandler, IUpdateHandler, IResizeHandler {
 	
 	public Nifty nifty;
 	public Lwjgl3InputSystem input_system;

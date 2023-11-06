@@ -10,12 +10,12 @@ import client.io.KeyBinds;
 import client.io.input.Input;
 import client.io.input.InputStates;
 import client.io.input.receivers.handlers.IInputHandler;
-import client.logic.internalEvents.IInternalEventUpdate;
+import client.logic.internalEvents.IUpdateHandler;
 import client.rendering.cameras.Camera;
 import client.rendering.cameras.FirstPersonCamera;
 import client.utils.Globals;
 
-public class Player implements IInternalEventUpdate, IInputHandler {
+public class Player implements IUpdateHandler, IInputHandler {
 	
 	private CapsuleCollisionShape capsuleCollisionShape;
 	private FirstPersonCamera camera;

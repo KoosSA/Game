@@ -3,28 +3,28 @@ package client.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import client.logic.internalEvents.IInternalEventDispose;
-import client.logic.internalEvents.IInternalEventResize;
-import client.logic.internalEvents.IInternalEventUpdate;
+import client.logic.internalEvents.IDisposeHandler;
+import client.logic.internalEvents.IResizeHandler;
+import client.logic.internalEvents.IUpdateHandler;
 
 
 /**
- * Handles all logic events registered in the engine. This includes {@link IInternalEventUpdate Updates}, {@link IInternalEventDispose Disposes} and {@link IInternalEventResize ResizeEvents}.
+ * Handles all logic events registered in the engine. This includes {@link IUpdateHandler Updates}, {@link IDisposeHandler Disposes} and {@link IResizeHandler ResizeEvents}.
  * @author Koos
  *
  */
-public class InternalEventRegistry {
+public class InternalEventHandlerRegistry {
 	
-	private static List<IInternalEventResize> resizeHandlers = new ArrayList<>();
-	private static List<IInternalEventDispose> disposalHandlers = new ArrayList<>();
-	private static List<IInternalEventUpdate> updateHandlers = new ArrayList<>();
+	private static List<IResizeHandler> resizeHandlers = new ArrayList<>();
+	private static List<IDisposeHandler> disposalHandlers = new ArrayList<>();
+	private static List<IUpdateHandler> updateHandlers = new ArrayList<>();
 
 	/**
 	 * Adds the resize event to the list to be executed on a window resize. <br>
 	 * <b> ** Only call manually if you know what you are doing. **
 	 * @param iResizeHandler
 	 */
-	public static void addResizeHandler(IInternalEventResize iResizeHandler) {
+	public static void addResizeHandler(IResizeHandler iResizeHandler) {
 		resizeHandlers.add(iResizeHandler);
 	}
 	
@@ -49,28 +49,28 @@ public class InternalEventRegistry {
 	}
 
 	/**
-	 * Adds a dispose subscriber to the internal list. Called through {@link IInternalEventDispose#registerDisposeHandler() registerDisposeHandler()}. <br>
+	 * Adds a dispose subscriber to the internal list. Called through {@link IDisposeHandler#registerDisposeHandler() registerDisposeHandler()}. <br>
 	 * <b> ** Only call manually if you know what you are doing. **
 	 * @param iDisposeHandler
 	 */
-	public static void addDisposeHandler(IInternalEventDispose iDisposeHandler) {
+	public static void addDisposeHandler(IDisposeHandler iDisposeHandler) {
 		disposalHandlers.add(iDisposeHandler);
 	}
 
 	/**
-	 * Adds a update subscriber to the internal list. Called through {@link IInternalEventUpdate#registerUpdatable() registerUpdatable()}. <br>
+	 * Adds a update subscriber to the internal list. Called through {@link IUpdateHandler#registerUpdatable() registerUpdatable()}. <br>
 	 * <b> ** Only call manually if you know what you are doing. **
 	 * @param iUpdatable
 	 */
-	public static void addUpdatable(IInternalEventUpdate iUpdatable) {
+	public static void addUpdatable(IUpdateHandler iUpdatable) {
 		updateHandlers.add(iUpdatable);
 	}
 	
 	/**
-	 * This method is called once every update cycle. It calls the {@link IInternalEventUpdate#update(float) update(float delta)} method in all of the update subscribers.
+	 * This method is called once every update cycle. It calls the {@link IUpdateHandler#update(float) update(float delta)} method in all of the update subscribers.
 	 */
 	public static void update(float delta) {
-		List<IInternalEventUpdate> toUpdate = new ArrayList<IInternalEventUpdate>(updateHandlers);
+		List<IUpdateHandler> toUpdate = new ArrayList<IUpdateHandler>(updateHandlers);
 		toUpdate.forEach(handler -> {
 			handler.update(delta);
 		});
@@ -80,7 +80,7 @@ public class InternalEventRegistry {
 	 * Sometimes the specific class must be paused / not updated. This method removes the event subscriber from the internal update registry.
 	 * @param iUpdatable
 	 */
-	public static void removeUpdatable(IInternalEventUpdate iUpdatable) {
+	public static void removeUpdatable(IUpdateHandler iUpdatable) {
 		updateHandlers.remove(iUpdatable);
 	}
 

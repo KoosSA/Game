@@ -13,11 +13,11 @@ import client.io.input.receivers.DefaultInputReceiver;
 import client.io.input.receivers.GameInputReceiver;
 import client.io.input.receivers.GuiInputReceiver;
 import client.io.input.receivers.handlers.IInputHandler;
-import client.logic.internalEvents.IInternalEventDispose;
-import client.logic.internalEvents.IInternalEventUpdate;
+import client.logic.internalEvents.IDisposeHandler;
+import client.logic.internalEvents.IUpdateHandler;
 import client.utils.Globals;
 
-public class Input implements IInternalEventDispose, IInternalEventUpdate {
+public class Input implements IDisposeHandler, IUpdateHandler {
 	
 	private Map<InputStates, InputReceiver> receivers = new HashMap<InputStates, InputReceiver>();
 	private InputReceiver currentReceiver;

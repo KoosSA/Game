@@ -6,9 +6,9 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
 
-import client.logic.internalEvents.IInternalEventUpdate;
+import client.logic.internalEvents.IUpdateHandler;
 
-class Listener implements IInternalEventUpdate {
+class Listener implements IUpdateHandler {
 	
 	private Vector3f position;
 	private Vector3f rotation;

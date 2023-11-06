@@ -6,8 +6,8 @@ import com.jme3.bullet.collision.shapes.HullCollisionShape;
 import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.koossa.logger.Log;
 
-import client.logic.InternalEventRegistry;
-import client.logic.internalEvents.IInternalEventUpdate;
+import client.logic.InternalEventHandlerRegistry;
+import client.logic.internalEvents.IUpdateHandler;
 import client.rendering.utils.Transform;
 import client.utils.Globals;
 import client.utils.registries.Registries;
@@ -17,7 +17,7 @@ public class ModelInstance {
 	private Model model;
 	private Transform transform;
 	private PhysicsRigidBody rigidBody;
-	private IInternalEventUpdate physicsLink;
+	private IUpdateHandler physicsLink;
 
 	public ModelInstance(Model model) {
 		this.model = model;
@@ -52,7 +52,7 @@ public class ModelInstance {
 		rigidBody.getTransform(null).getRotation().set(transform.getRotation());
 		rigidBody.getTransform(null).setScale(transform.getScale().x());
 		if (mass > 0) {
-			physicsLink = new IInternalEventUpdate() {
+			physicsLink = new IUpdateHandler() {
 				@Override
 				public void update(float delta) {
 					if (rigidBody.isActive()) {
@@ -62,7 +62,7 @@ public class ModelInstance {
 					}
 				}
 			};
-			InternalEventRegistry.addUpdatable(physicsLink);
+			InternalEventHandlerRegistry.addUpdatable(physicsLink);
 		}
 		if (Globals.physics.isDebug()) Globals.physics.addToDebugRenderer(rigidBody);
 		return this;
@@ -73,7 +73,7 @@ public class ModelInstance {
 			Log.error(this, "Physics not enabled in this world for this object. (Thrown while trying to remove modelinstance)");
 			return this;
 		}
-		InternalEventRegistry.removeUpdatable(physicsLink);
+		InternalEventHandlerRegistry.removeUpdatable(physicsLink);
 		Globals.physics.removeObjectFromPhysicsWorld(rigidBody);
 		Globals.physics.removeFromDebugRenderer(rigidBody);
 		rigidBody = null;

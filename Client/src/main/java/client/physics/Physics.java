@@ -17,9 +17,9 @@ import com.jme3.system.NativeLibraryLoader;
 import com.koossa.filesystem.Files;
 import com.koossa.logger.Log;
 
-import client.logic.internalEvents.IInternalEventDispose;
-import client.logic.internalEvents.IInternalEventResize;
-import client.logic.internalEvents.IInternalEventUpdate;
+import client.logic.internalEvents.IDisposeHandler;
+import client.logic.internalEvents.IResizeHandler;
+import client.logic.internalEvents.IUpdateHandler;
 import client.physics.debug.DebugColours;
 import client.physics.debug.DebugModel;
 import client.physics.debug.PhysicsDebugShader;
@@ -27,7 +27,7 @@ import client.rendering.cameras.Camera;
 import client.utils.Globals;
 import client.utils.MathUtil;
 
-public class Physics implements IInternalEventUpdate, IInternalEventDispose, IInternalEventResize {
+public class Physics implements IUpdateHandler, IDisposeHandler, IResizeHandler {
 	
 	private PhysicsSpace world;
 	private Vector3f gravity;

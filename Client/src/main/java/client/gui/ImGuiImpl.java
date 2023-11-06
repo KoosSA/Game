@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.lwjgl.glfw.GLFW;
 
-import client.logic.internalEvents.IInternalEventDispose;
+import client.logic.internalEvents.IDisposeHandler;
 import client.utils.Globals;
 import imgui.ImGui;
 import imgui.ImGuiIO;
@@ -13,7 +13,7 @@ import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 
-public class ImGuiImpl implements IInternalEventDispose{
+public class ImGuiImpl implements IDisposeHandler{
 	
 	private ImGuiImplGlfw glfwImpl;
 	private ImGuiImplGl3 glImpl;
