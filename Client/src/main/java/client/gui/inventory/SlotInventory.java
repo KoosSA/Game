@@ -31,6 +31,7 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 			slots.add(new InvSlotData());
 		}
 		Globals.ngui.loadXML("inv.xml");
+		InventoryRegistry.loadAllItemsFromFolder("Inventory/Items");
 
 	}
 
@@ -63,11 +64,7 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 
 	private int getAmountOfItemAvailable(InvItem item) {
 		tempList = getSlotsWithItem(item);
-		int available = 0;
-		for (int i = 0; i < tempList.size(); i++) {
-			available += slots.get(tempList.get(i)).getItemCount();
-		}
-		return available;
+		return getAmountOfItemAvailable(tempList);
 	}
 
 	private int getAmountOfItemAvailable(List<Integer> listOfIndicesContainingItem) {
@@ -133,6 +130,9 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 	 * @return the amount that could not be added
 	 */
 	public int addItemToInventory(InvItem itemToAdd, int amountToAdd) {
+		if (itemToAdd == null) {
+			return 0;
+		}
 		Log.debug(this, "Adding item to inventory: " + itemToAdd.getItemName() + " x" + amountToAdd);
 		int slotIndex = getSlotWithSpace(itemToAdd);
 		if (slotIndex == -1) {
@@ -163,7 +163,9 @@ public class SlotInventory implements IInputHandler, INiftyRestartEventSubscribe
 	}
 
 	public boolean removeItemFromInventory(InvItem item, int amountToRemove) {
-		
+		if (item == null) {
+			return false;
+		}
 		tempList = getSlotsWithItem(item);
 		if (getAmountOfItemAvailable(tempList) < amountToRemove) {
 			Log.debug(this, "Item not found in inventory or not in suficient quntities to remove: " + item.getItemName());

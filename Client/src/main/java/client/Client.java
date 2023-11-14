@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import com.koossa.filesystem.Files;
 
 import client.gui.inventory.InvItem;
+import client.gui.inventory.InventoryRegistry;
 import client.gui.inventory.SlotInventory;
 import client.io.input.Input;
 import client.io.input.InputStates;
@@ -158,16 +159,16 @@ public class Client extends BaseGameLoop {
 		
 		
 		//ngui.loadXML("inv.xml");
-		
-		InvItem item = new InvItem() {{
+		inv = new SlotInventory(25, ngui.nifty, Files.getFolderPath("Gui/Icons"));
+		/*InvItem item = InventoryRegistry.getItem("apple"); new InvItem() {{
 			setIcon("apple.png");
 			setUsable(true);
 			setStackable(true);
 			setItemName("Apple");
 			setUseText("Eat");
 			setMaxStackSize(10);
-		}};
-		inv = new SlotInventory(25, ngui.nifty, Files.getFolderPath("Gui/Icons"));
+		}};*/
+		
 		
 		input.setInputReceiver(InputStates.GAME);
 		
@@ -175,11 +176,11 @@ public class Client extends BaseGameLoop {
 			@Override
 			public void handleInputs(Input input, float delta) {
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_UP)) {
-					inv.addItemToInventory(item, 1);
+					inv.addItemToInventory(InventoryRegistry.getItem("apple"), 1);
 				}
 				
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_DOWN)) {
-					inv.removeItemFromInventory(item, 1);
+					inv.removeItemFromInventory(InventoryRegistry.getItem("apple"), 1);
 				}
 				
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT_SHIFT)) {
@@ -208,16 +209,16 @@ public class Client extends BaseGameLoop {
 				}
 				
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_UP)) {
-					inv.addItemToInventory(item, 1);
+					inv.addItemToInventory(InventoryRegistry.getItem("apple"), 1);
 				}
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_RIGHT)) {
-					inv.addItemToInventory(item, 15);
+					inv.addItemToInventory(InventoryRegistry.getItem("pear"), 1);
 				}
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_DOWN)) {
-					inv.removeItemFromInventory(item, 1);
+					inv.removeItemFromInventory(InventoryRegistry.getItem("apple"), 1);
 				}
 				if (input.isKeyJustPressed(GLFW.GLFW_KEY_LEFT)) {
-					inv.removeItemFromInventory(item, 20);
+					inv.removeItemFromInventory(InventoryRegistry.getItem("pear"), 1);
 				}
 				/*if (input.isKeyJustPressed(GLFW.GLFW_KEY_I)) {
 					ngui.toggle("inv");

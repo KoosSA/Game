@@ -12,7 +12,7 @@
 			<!-- interact onClick="onClick()" onRelease="onRelease()" /-->
 			<image id="#icon" width="*" height="*" filename="$icon" visibleToMouse="false"/>
 			<text id="#text" style="#text" text="$count" align="right"
-				valign="bottom" width="*" textHAlign="right" visibleToMouse="false"/>
+				valign="bottom" width="*" textHAlign="right" visibleToMouse="false" backgroundColor="#00000077"/>
 		</panel>
 
 	</controlDefinition>

@@ -1,0 +1,36 @@
+{
+	"items": [
+		{
+			"itemName": "Apple",
+			"useText": "Eat",
+			"maxStackSize": 15,
+			"isStackable": true,
+			"isUsable": true,
+			"icon": "apple.png"
+		},
+		{
+			"itemName": "Pear",
+			"useText": "Eat",
+			"maxStackSize": 20,
+			"isStackable": true,
+			"isUsable": true,
+			"icon": "pear.png"
+		},
+		{
+			"itemName": "None",
+			"useText": "Use",
+			"maxStackSize": 100,
+			"isStackable": true,
+			"isUsable": false,
+			"icon": "icon.png"
+		},
+		{
+			"itemName": "None",
+			"useText": "Use",
+			"maxStackSize": 100,
+			"isStackable": true,
+			"isUsable": false,
+			"icon": "icon.png"
+		}
+	]
+}
