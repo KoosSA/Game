@@ -1,5 +1,7 @@
 package client.rendering.objects;
 
+import com.koossa.savelib.SaveSystem;
+
 import client.rendering.materials.Material;
 
 public class Mesh {
@@ -18,6 +20,13 @@ public class Mesh {
 		this.name = name;
 		this.vertices = vertices;
 		this.indices = indices;
+	}
+	
+	public void loadMaterial(String materialName) {
+		Material mat = SaveSystem.load(Material.class, true, "Materials", materialName);
+		if (mat != null) {
+			this.material = mat;
+		} 
 	}
 
 	public Material getMaterial() {

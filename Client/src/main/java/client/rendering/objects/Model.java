@@ -20,6 +20,9 @@ public class Model {
 		this.meshes = meshes;
 		this.name = name;
 		generateMeshNameList();
+		meshes.forEach(mesh -> {
+			mesh.loadMaterial(getName() + "_" + mesh.getName() + ".json");
+		});
 	}
 
 	public List<Mesh> getMeshes() {

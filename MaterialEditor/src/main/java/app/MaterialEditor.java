@@ -3,6 +3,7 @@ package app;
 import org.lwjgl.glfw.GLFW;
 
 import app.gui.Layers;
+import client.gui.ImGuiImpl;
 import client.io.input.Input;
 import client.io.input.InputStates;
 import client.io.input.receivers.handlers.IInputHandler;
@@ -39,7 +40,7 @@ public class MaterialEditor extends BaseGameLoop implements IInputHandler {
 
 	@Override
 	protected void render() {
-		
+		igui.render();
 	}
 	
 	@Override

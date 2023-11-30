@@ -35,7 +35,7 @@ public class Registries {
 		public static Texture2D get2DTexture(String name, TextureType textureType) {
 			Map<String, Texture2D> textures2D = texMaps.get(textureType);
 			Texture2D t = textures2D.getOrDefault(name, null);
-			if (t == null) {
+			if (t == null && name != null) {
 				if (name.equalsIgnoreCase("none")) {
 					return null;
 				}

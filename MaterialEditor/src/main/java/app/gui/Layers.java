@@ -28,13 +28,11 @@ import client.rendering.objects.Model;
 import client.rendering.objects.ModelInstance;
 import client.rendering.utils.ModelManager;
 import client.utils.registries.Registries;
-import imgui.ImGui;
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
 import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImFloat;
 import imgui.type.ImInt;
-import imgui.type.ImString;
 
 public class Layers {
 	
@@ -160,9 +158,9 @@ public class Layers {
 					textureInterface(TextureType.METALLIC, metallicIndex);
 					textureInterface(TextureType.ROUGHNESS, roughnessIndex);
 					if (button("Save Material")) {
-						ImGui.beginPopup("Material name popup.");
 						
-						ImGui.endPopup();
+						currentmaterial.save(true, currentmodel.getName() + "_" + currentmesh.getName() + ".json", "Materials");
+						
 					}
 					treePop();
 				}
@@ -235,6 +233,32 @@ public class Layers {
 				ImGuiFileDialog.close();
 			}
 		}
+		
+		/*private void importTexture(TextureType texType) {
+			if (button("Import New Texture")) {
+				ImGuiFileDialog.openDialog("Import Texture", "Import Texture", ".png,.jpg", Files.getCommonFolderPath(CommonFolders.Textures), "", 1, 1, ImGuiFileDialogFlags.None);
+			}
+			if (ImGuiFileDialog.display("Import Texture", ImGuiWindowFlags.NoCollapse, 600, 400, 800, 600)) {
+				if (ImGuiFileDialog.isOk()) {
+					String filename = ImGuiFileDialog.getCurrentFileName();
+					String path = ImGuiFileDialog.getCurrentPath();
+					File newFile = new File(path, filename);
+					File targetFile = new File(Files.getCommonFolder(CommonFolders.Textures), filename);
+					if (!newFile.getAbsolutePath().equals(targetFile.getAbsolutePath())) {
+						Log.debug(this, "Importing texture to textures folder: " + filename);
+						newFile.renameTo(targetFile);
+					}
+					Texture2D t = Registries.Textures.get2DTexture(filename, texType);
+					//Model m = Registries.Models.getStaticModel(filename);
+					if (t == null) return;
+					//if (currentmodel == null) currentmodel = m;
+					//meshIndex.set(0);
+					//currentmesh = currentmodel.getMeshes().get(0);
+					//loadMaterial();
+				}
+				ImGuiFileDialog.close();
+			}
+		}*/
 
 		private void textureInterface(TextureType texType, ImInt index) {
 			if (checkbox("Use " + texType.name() + " Map", currentmaterial.isUseTexture(texType))) {
